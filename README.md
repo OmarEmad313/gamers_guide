@@ -1,2 +1,16 @@
-# gamers_guide
-Gamer's guide helps gamers explore the world of video games, and discover the new, with detailed games showcasing every game, and bringing the scattered games from all platforms into one place. Gamers can Track their video game collections, filter through thousands of video games to get find what they want and tackle their backlog.
+# flutter_application_1
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
