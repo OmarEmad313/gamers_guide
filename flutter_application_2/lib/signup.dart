@@ -10,6 +10,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,6 +29,7 @@ class _SignupState extends State<Signup> {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(25),
@@ -45,144 +47,177 @@ class _SignupState extends State<Signup> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Enter your name',
-                            style: GoogleFonts.acme(
-                              fontSize: 20,
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Enter your name',
+                              style: GoogleFonts.acme(
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          Padding(
+                            Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 30),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter an Name';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: const Color(0XFFD3D3D3),
+                                    hintText: 'Name',
+                                    hintStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                    focusedBorder: const UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.grey)),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        borderSide: BorderSide.none),
+                                  ),
+                                )),
+                            Text(
+                              'Enter your email',
+                              style: GoogleFonts.acme(
+                                fontSize: 20,
+                              ),
+                            ),
+                            Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 30),
-                              child: TextField(
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter an email';
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: const Color(0XFFD3D3D3),
+                                  hintText: 'Email',
+                                  hintStyle: const TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                  focusedBorder: const UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey)),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'Enter your Password',
+                              style: GoogleFonts.acme(
+                                fontSize: 20,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 30),
+                              child: TextFormField(
+                                ///to make the dots in the password
+                                validator: (value) {
+                                  RegExp regex =
+                                      RegExp(r'^(?=.?[a-z])(?=.?[0-9])');
+                                  if (value == null || value.length <= 6) {
+                                    return 'Please enter min 6 digits';
+                                  } else {
+                                    if (!regex.hasMatch(value)) {
+                                      return 'Enter valid password';
+                                    } else {
+                                      return null;
+                                    }
+                                  }
+                                },
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Color(0XFFD3D3D3),
-                                  labelText: 'Name',
-                                  labelStyle: const TextStyle(
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(
+                                      fontFamily: 'Inter',
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey),
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey)),
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      borderSide: BorderSide.none),
-                                ),
-                              )),
-                          Text(
-                            'Enter your email',
-                            style: GoogleFonts.acme(
-                              fontSize: 20,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 30),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color(0XFFD3D3D3),
-                                labelText: 'Email',
-                                labelStyle: const TextStyle(
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey)),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    borderSide: BorderSide.none,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Text(
-                            'Enter your Password',
-                            style: GoogleFonts.acme(
-                              fontSize: 20,
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(40, 10, 0, 0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        context.go('/home');
+                                      }
+                                    },
+                                    // ignore: sort_child_properties_last
+                                    child: const Text('Sign up ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic)),
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.all(10)),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ))),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(130, 10, 0, 0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      context.go('/');
+                                    },
+                                    // ignore: sort_child_properties_last
+                                    child: const Text('Back ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic)),
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.red),
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10)),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ))),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 30),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color(0XFFD3D3D3),
-                                labelText: 'Password',
-                                labelStyle: const TextStyle(
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey)),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(40, 10, 0, 0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    context.go('/home');
-                                  },
-                                  // ignore: sort_child_properties_last
-                                  child: const Text('Sign up ',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          fontStyle: FontStyle.italic)),
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.all(10)),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ))),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(130, 10, 0, 0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    context.go('/');
-                                  },
-                                  // ignore: sort_child_properties_last
-                                  child: const Text('Back ',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          fontStyle: FontStyle.italic)),
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(Colors.red),
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 10)),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ))),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
