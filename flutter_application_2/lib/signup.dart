@@ -26,10 +26,12 @@ class _SignupState extends State<Signup> {
           ),
           child: Column(
             children: [
-              Expanded(
+              SizedBox(
+                height: 40,
+              ),
+              Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(25),
@@ -43,7 +45,10 @@ class _SignupState extends State<Signup> {
                   ],
                 ),
               ),
-              Expanded(
+              SizedBox(
+                height: 40,
+              ),
+              Container(
                 child: Row(
                   children: [
                     Expanded(
@@ -127,16 +132,8 @@ class _SignupState extends State<Signup> {
                               child: TextFormField(
                                 ///to make the dots in the password
                                 validator: (value) {
-                                  RegExp regex =
-                                      RegExp(r'^(?=.?[a-z])(?=.?[0-9])');
                                   if (value == null || value.length <= 6) {
                                     return 'Please enter min 6 digits';
-                                  } else {
-                                    if (!regex.hasMatch(value)) {
-                                      return 'Enter valid password';
-                                    } else {
-                                      return null;
-                                    }
                                   }
                                 },
                                 decoration: InputDecoration(
