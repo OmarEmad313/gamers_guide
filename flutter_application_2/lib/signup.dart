@@ -130,6 +130,8 @@ class _SignupState extends State<Signup> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 30),
                               child: TextFormField(
+                                obscureText: true,
+
                                 ///to make the dots in the password
                                 validator: (value) {
                                   if (value == null || value.length <= 6) {

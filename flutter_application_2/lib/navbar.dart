@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_2/gameDetails.dart';
+import 'package:flutter_application_2/homepage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -15,9 +16,9 @@ class myHomePage extends StatefulWidget {
 class _myHomePageState extends State<myHomePage> {
   int selectedIndex = 0;
   final screens = [
-    Center(child: Text('home', style: TextStyle(fontSize: 50))),
-    //Center(child: Text('likes', style: TextStyle(fontSize: 50))),
-    GameDetails(),
+    const HomePageWidget(),
+    Center(child: Text('likes', style: TextStyle(fontSize: 50))),
+    //const GameDetails(),
     Center(child: Text('search', style: TextStyle(fontSize: 50))),
     Center(child: Text('profile', style: TextStyle(fontSize: 50))),
   ];
@@ -26,21 +27,7 @@ class _myHomePageState extends State<myHomePage> {
     return Scaffold(
       body: screens[selectedIndex],
       bottomNavigationBar: GNav(
-          /* haptic: true, // haptic feedback
-          tabActiveBorder: Border.all(
-              color: Colors.blueAccent, width: 2), // tab button border
-          tabBorder:
-              Border.all(color: Colors.grey, width: 1), // tab button border
-          tabShadow: [
-            BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
-          ], // tab button shadow
-          ------------------------ */
           onTabChange: (index) => setState(() => selectedIndex = index),
-          /* onTabChange: (index) => setState(() {
-                selectedIndex = index;
-                print(selectedIndex);
-              }), */
-          //selectedIndex: 2,
           rippleColor:
               Colors.grey.shade800, // tab button ripple color when pressed
           tabBorderRadius: 10,
@@ -62,7 +49,7 @@ class _myHomePageState extends State<myHomePage> {
             ),
             GButton(
               icon: LineIcons.heart,
-              text: 'games',
+              text: 'Likes',
             ),
             GButton(
               icon: LineIcons.search,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/gameDetails.dart';
 import 'package:flutter_application_2/login.dart';
-import 'package:flutter_application_2/myHomePage.dart';
+
+import 'package:flutter_application_2/signup.dart';
 import 'package:go_router/go_router.dart';
 
-import 'home.dart';
+import 'navbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: _router,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -31,13 +33,25 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return SplashScreenWidget();
+        return const SplashScreenWidget();
       },
     ),
     GoRoute(
       path: '/home',
       builder: (BuildContext context, GoRouterState state) {
-        return myHomePage();
+        return const myHomePage();
+      },
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (BuildContext context, GoRouterState state) {
+        return const Signup();
+      },
+    ),
+    GoRoute(
+      path: '/gamedetails',
+      builder: (BuildContext context, GoRouterState state) {
+        return const GameDetails();
       },
     ),
   ],

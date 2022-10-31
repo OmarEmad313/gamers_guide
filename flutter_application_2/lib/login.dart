@@ -46,12 +46,12 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Form(
-                            key: formKey,
-                            child: Padding(
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 30),
                                 child: TextFormField(
@@ -59,16 +59,17 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter an email';
                                     }
+                                    return null;
                                   },
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: Color(0XFFD3D3D3),
+                                    fillColor: const Color(0XFFD3D3D3),
                                     hintText: 'Email',
                                     hintStyle: const TextStyle(
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey),
-                                    focusedBorder: UnderlineInputBorder(
+                                    focusedBorder: const UnderlineInputBorder(
                                         borderSide:
                                             BorderSide(color: Colors.grey)),
                                     border: OutlineInputBorder(
@@ -77,86 +78,88 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
                                         borderSide: BorderSide.none),
                                   ),
                                 )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter an email';
-                                }
-                              },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: const Color(0XFFD3D3D3),
-                                hintText: 'Password',
-                                hintStyle: const TextStyle(
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                                focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey)),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: SizedBox(
-                              width: 200,
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    context.go('/home');
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 30),
+                              child: TextFormField(
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value == null || value.length <= 6) {
+                                    return 'Please enter min 6 digits';
                                   }
+                                  return null;
                                 },
-                                child: const Text(
-                                  'login ',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: const Color(0XFFD3D3D3),
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(
+                                      fontFamily: 'Inter',
                                       fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic),
+                                      color: Colors.grey),
+                                  focusedBorder: const UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey)),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    borderSide: BorderSide.none,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          const Text(
-                            'OR',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: SizedBox(
-                              width: 200,
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  context.go('/signup');
-                                },
-                                child: const Text(
-                                  'Register',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: SizedBox(
+                                width: 200,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      context.go('/home');
+                                    }
+                                  },
+                                  child: const Text(
+                                    'login ',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          const Text(
-                            'if you dant have one already',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
+                            const Text(
+                              'OR',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: SizedBox(
+                                width: 200,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context.go('/signup');
+                                  },
+                                  child: const Text(
+                                    'Register',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Text(
+                              'if you dant have one already',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
