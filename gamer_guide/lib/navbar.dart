@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_2/gameDetails.dart';
+
+import 'package:flutter_application_2/game_details.dart';
 import 'package:flutter_application_2/homepage.dart';
+import 'package:flutter_application_2/search.dart';
+import 'package:flutter_application_2/similarr_games.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
-class myHomePage extends StatefulWidget {
-  const myHomePage({Key? key}) : super(key: key);
+class Navbar extends StatefulWidget {
+  const Navbar({Key? key}) : super(key: key);
 
   @override
-  State<myHomePage> createState() => _myHomePageState();
+  State<Navbar> createState() => _NavbarState();
 }
 
-class _myHomePageState extends State<myHomePage> {
+class _NavbarState extends State<Navbar> {
   int selectedIndex = 0;
   final screens = [
     const HomePageWidget(),
-    Center(child: Text('likes', style: TextStyle(fontSize: 50))),
-    //const GameDetails(),
-    Center(child: Text('search', style: TextStyle(fontSize: 50))),
-    Center(child: Text('profile', style: TextStyle(fontSize: 50))),
+    const Center(child: Text('likes', style: TextStyle(fontSize: 50))),
+    const Search(),
+    const Center(child: Text('profile', style: TextStyle(fontSize: 50))),
   ];
   @override
   Widget build(BuildContext context) {

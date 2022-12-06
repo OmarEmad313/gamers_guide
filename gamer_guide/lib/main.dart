@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/gameDetails.dart';
+import 'package:flutter_application_2/game_details.dart';
 import 'package:flutter_application_2/login.dart';
 
 import 'package:flutter_application_2/signup.dart';
+import 'package:flutter_application_2/similarr_games.dart';
 import 'package:go_router/go_router.dart';
 
 import 'navbar.dart';
@@ -33,13 +34,14 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const SplashScreenWidget();
+        //return const SplashScreenWidget();
+        return const Navbar();
       },
     ),
     GoRoute(
       path: '/home',
       builder: (BuildContext context, GoRouterState state) {
-        return const myHomePage();
+        return const Navbar();
       },
     ),
     GoRoute(
@@ -49,9 +51,15 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/gamedetails',
-      builder: (BuildContext context, GoRouterState state) {
-        return const GameDetails();
+      path: '/gamedetails/:id',
+      builder: (context, state) {
+        return GameDetails(gameId: state.params["id"]!);
+      },
+    ),
+    GoRoute(
+      path: '/similarGames/:id',
+      builder: (context, state) {
+        return SimilarGamess(gameId: state.params["id"]!);
       },
     ),
   ],
