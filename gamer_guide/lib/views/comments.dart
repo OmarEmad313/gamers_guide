@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application_2/widgets/my_text.dart';
+import 'package:flutter_application_2/widgets/sliver_app_bar.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -95,25 +96,11 @@ class _CommentsState extends State<Comments> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              leading: IconButton(
-                color: Colors.white,
-                onPressed: () {
+            MySliverAppbar(
+                text: 'Comments on \n game name',
+                ontap: () {
                   context.go('/');
-                },
-                icon: const Icon(
-                  Icons.arrow_circle_left,
-                  size: 40,
-                ),
-              ),
-              backgroundColor: Colors.lightBlue,
-              pinned: true,
-              expandedHeight: 100.0,
-              // ignore: prefer_const_constructors
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text('Comments'),
-              ),
-            ),
+                }),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {

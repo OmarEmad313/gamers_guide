@@ -6,6 +6,7 @@ import 'package:flutter_application_2/services/game_services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/game_cover_model.dart';
+import '../widgets/sliver_app_bar.dart';
 
 class SimilarGamess extends StatefulWidget {
   final String gameId;
@@ -21,12 +22,6 @@ class _SimilarGamessState extends State<SimilarGamess> {
   List tempList = [];
   var isLoaded = false;
   var size = 0;
-
-  /* @override
-  void didChangeDependencies() {
-    getGames();
-    super.didChangeDependencies();
-  } */
 
   @override
   void initState() {
@@ -65,25 +60,11 @@ class _SimilarGamessState extends State<SimilarGamess> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              leading: IconButton(
-                color: Colors.white,
-                onPressed: () {
+            MySliverAppbar(
+                text: 'Similar Games for \n game name',
+                ontap: () {
                   context.go('/');
-                },
-                icon: const Icon(
-                  Icons.arrow_circle_left,
-                  size: 40,
-                ),
-              ),
-              backgroundColor: Colors.lightBlue,
-              pinned: true,
-              expandedHeight: 100.0,
-              // ignore: prefer_const_constructors
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text('Similar Games'),
-              ),
-            ),
+                }),
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200.0,
