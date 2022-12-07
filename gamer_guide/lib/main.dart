@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/game_details.dart';
-import 'package:flutter_application_2/login.dart';
-
-import 'package:flutter_application_2/signup.dart';
-import 'package:flutter_application_2/similarr_games.dart';
 import 'package:go_router/go_router.dart';
-
-import 'navbar.dart';
+import 'views/comments.dart';
+import 'views/game_details.dart';
+import 'views/navbar.dart';
+import 'views/signup.dart';
+import 'views/similarr_games.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,6 +58,12 @@ final GoRouter _router = GoRouter(
       path: '/similarGames/:id',
       builder: (context, state) {
         return SimilarGamess(gameId: state.params["id"]!);
+      },
+    ),
+    GoRoute(
+      path: '/comments',
+      builder: (context, state) {
+        return const Comments();
       },
     ),
   ],
