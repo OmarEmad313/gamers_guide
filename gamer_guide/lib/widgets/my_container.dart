@@ -8,19 +8,21 @@ class MyContainer extends StatelessWidget {
   final String? hintText;
   final double? horizontalPadding;
   final double? verticalPadding;
+  final double? size;
   final Icon? leadingIcon;
-  final Icon? trailingIcon;
+
   final VoidCallback onTap;
 
-  const MyContainer(
-      {super.key,
-      required this.text,
-      this.hintText,
-      this.horizontalPadding,
-      this.verticalPadding,
-      this.leadingIcon,
-      this.trailingIcon,
-      required this.onTap});
+  const MyContainer({
+    super.key,
+    required this.text,
+    this.hintText,
+    this.horizontalPadding,
+    this.verticalPadding,
+    this.leadingIcon,
+    required this.onTap,
+    this.size,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,12 @@ class MyContainer extends StatelessWidget {
           child: ListTile(
             dense: true,
             leading: leadingIcon,
-            title: Text(text),
+            title: Text(
+              text,
+              style: TextStyle(fontSize: size),
+            ),
             subtitle: Text(hintText ?? ""),
-            trailing: trailingIcon,
+            trailing: const Icon(Icons.arrow_forward),
           ),
         ),
       ),

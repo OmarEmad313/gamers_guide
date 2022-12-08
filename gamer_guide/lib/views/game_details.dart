@@ -201,7 +201,9 @@ class _GameDetailsState extends State<GameDetails> {
                                 ),
                               ),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  //context.go('/profile/');
+                                },
                                 // ignore: sort_child_properties_last
                                 child: const Text(
                                   'want',
@@ -228,7 +230,6 @@ class _GameDetailsState extends State<GameDetails> {
                           horizontalPadding: 25,
                           verticalPadding: 5,
                           leadingIcon: const Icon(Icons.developer_board),
-                          trailingIcon: const Icon(Icons.arrow_forward),
                           onTap: () {},
                         ),
                         MyContainer(
@@ -236,7 +237,6 @@ class _GameDetailsState extends State<GameDetails> {
                           horizontalPadding: 25,
                           verticalPadding: 5,
                           leadingIcon: const Icon(Icons.publish),
-                          trailingIcon: const Icon(Icons.arrow_forward),
                           onTap: () {
                             context.go(
                                 '/similarGames/${int.parse(widget.gameId)}');

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/views/edit_profile.dart';
+import 'package:flutter_application_2/views/profile_page.dart';
 import 'package:go_router/go_router.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
@@ -64,6 +66,18 @@ final GoRouter _router = GoRouter(
       path: '/comments',
       builder: (context, state) {
         return const Comments();
+      },
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) {
+        return const ProfilePage();
+      },
+    ),
+    GoRoute(
+      path: '/editProfile',
+      builder: (context, state) {
+        return const EditProfile();
       },
     ),
   ],

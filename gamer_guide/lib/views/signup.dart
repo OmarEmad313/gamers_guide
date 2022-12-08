@@ -26,7 +26,7 @@ class _SignupState extends State<Signup> {
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Container(

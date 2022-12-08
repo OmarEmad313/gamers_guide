@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/views/profile_page.dart';
 
 import 'package:flutter_application_2/views/search.dart';
 
@@ -20,7 +21,8 @@ class _NavbarState extends State<Navbar> {
     const HomePageWidget(),
     const Center(child: Text('likes', style: TextStyle(fontSize: 50))),
     const Search(),
-    const Center(child: Text('profile', style: TextStyle(fontSize: 50))),
+    // const Center(child: Text('profile', style: TextStyle(fontSize: 50))),
+    const ProfilePage()
   ];
   @override
   Widget build(BuildContext context) {
