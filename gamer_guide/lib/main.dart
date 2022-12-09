@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/edit_profile.dart';
+import 'package:flutter_application_2/views/favorite_games_page.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
+import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:go_router/go_router.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
 import 'views/navbar.dart';
 import 'views/signup.dart';
 import 'views/similarr_games.dart';
+import 'views/your_lists.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +26,8 @@ class MyApp extends StatelessWidget {
       routerConfig: _router,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.lightBlue,
+        //useMaterial3: true,
       ),
     );
   }
@@ -78,6 +82,24 @@ final GoRouter _router = GoRouter(
       path: '/editProfile',
       builder: (context, state) {
         return const EditProfile();
+      },
+    ),
+    GoRoute(
+      path: '/favoriteGames',
+      builder: (context, state) {
+        return const FavoriteGames();
+      },
+    ),
+    GoRoute(
+      path: '/yourComments',
+      builder: (context, state) {
+        return const YourComments();
+      },
+    ),
+    GoRoute(
+      path: '/yourLists',
+      builder: (context, state) {
+        return const YourLists();
       },
     ),
   ],

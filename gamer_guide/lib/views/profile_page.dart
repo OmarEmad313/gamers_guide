@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/my_button.dart';
 
 import 'package:flutter_application_2/widgets/my_container.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -28,7 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
     Icons.comment_rounded,
     Icons.accessibility_new_outlined,
   ];
-  List<VoidCallback> functions = [() {}, () {}, () {}, () {}];
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 horizontalPadding: 30,
                 verticalPadding: 5,
                 size: 20,
-                onTap: functions[index],
+                onTap: () {
+                  if (index == 0) {
+                    context.go('/favoriteGames/');
+                  }
+                  if (index == 1) {
+                    context.go('/yourLists/');
+                  }
+                  if (index == 2) {
+                    context.go('/yourComments/');
+                  }
+                },
                 leadingIcon: Icon(
                   icons[index],
                   color: Colors.lightBlue,
@@ -64,12 +74,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 delegate: SliverChildBuilderDelegate(
               childCount: 1,
               (context, index) {
-                return const Center(child: Text('Button'));
+                return Center(
+                    child: MyButton(
+                        color: Colors.red, text: 'Sign Out', onPressed: () {}));
               },
             ))
           ],
         ),
         floatingActionButton: SpeedDial(
+          foregroundColor: Colors.white,
           overlayColor: Colors.black,
           overlayOpacity: 0.6,
           animatedIcon: AnimatedIcons.menu_close,

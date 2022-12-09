@@ -22,11 +22,13 @@ class MyButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
           ))),
       child: MyText(
-          text: text,
-          size: 20,
-          style: FontStyle.italic,
-          weight: FontWeight.bold,
-          paddingSize: 0),
+        text: text,
+        size: 20,
+        style: FontStyle.italic,
+        weight: FontWeight.bold,
+        paddingSize: 0,
+        color: Colors.white,
+      ),
     );
   }
 }

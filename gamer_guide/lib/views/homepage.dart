@@ -96,9 +96,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(20)),
-                                  // ignore: prefer_const_constructors
                                   image: DecorationImage(
-                                      // ignore: prefer_const_constructors
                                       image: NetworkImage(
                                           'https:${covers[index].cover?.url}'), //${covers[index].cover?.url}
                                       fit: BoxFit.fill),
