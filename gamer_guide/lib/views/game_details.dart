@@ -101,7 +101,7 @@ class _GameDetailsState extends State<GameDetails> {
                     child: IconButton(
                       color: Colors.black,
                       onPressed: () {
-                        context.go('/');
+                        context.go('/home');
                       },
                       icon: const Icon(
                         Icons.arrow_circle_left,

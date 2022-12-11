@@ -6,6 +6,7 @@ import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:go_router/go_router.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
+import 'views/login.dart';
 import 'views/navbar.dart';
 import 'views/signup.dart';
 import 'views/similarr_games.dart';
@@ -39,13 +40,13 @@ final GoRouter _router = GoRouter(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
         //return const SplashScreenWidget();
-        return const Navbar();
+        return Navbar(id: state.params["id"]!);
       },
     ),
     GoRoute(
-      path: '/home',
+      path: '/home/:id',
       builder: (BuildContext context, GoRouterState state) {
-        return const Navbar();
+        return Navbar(id: state.params["id"]!);
       },
     ),
     GoRoute(

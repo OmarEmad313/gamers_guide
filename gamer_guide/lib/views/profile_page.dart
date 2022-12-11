@@ -35,7 +35,11 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         body: CustomScrollView(
           slivers: [
-            MySliverAppbar(text: 'Profile', ontap: () {}),
+            MySliverAppbar(
+              text: 'Profile',
+              ontap: () {},
+              noBack: true,
+            ),
             SliverList(
                 delegate: SliverChildBuilderDelegate(
               childCount: 1,

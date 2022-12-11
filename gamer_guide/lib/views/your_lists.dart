@@ -18,10 +18,12 @@ class _YourListsState extends State<YourLists> {
       body: CustomScrollView(
         slivers: [
           MySliverAppbar(
-              text: 'Your Lists',
-              ontap: () {
-                context.go('/profile');
-              }),
+            text: 'Your Lists',
+            ontap: () {
+              context.go('/profile');
+            },
+            noBack: false,
+          ),
           SliverList(
               delegate: SliverChildBuilderDelegate(
             childCount: 4,

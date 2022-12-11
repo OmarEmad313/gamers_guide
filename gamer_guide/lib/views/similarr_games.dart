@@ -61,10 +61,12 @@ class _SimilarGamessState extends State<SimilarGamess> {
         body: CustomScrollView(
           slivers: <Widget>[
             MySliverAppbar(
-                text: 'Similar Games for \n game name',
-                ontap: () {
-                  context.go('/');
-                }),
+              text: 'Similar Games for \n game name',
+              ontap: () {
+                context.go('/home');
+              },
+              noBack: false,
+            ),
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200.0,

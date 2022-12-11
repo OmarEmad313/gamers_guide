@@ -18,10 +18,12 @@ class _YourCommentsState extends State<YourComments> {
     return Scaffold(
       body: CustomScrollView(slivers: [
         MySliverAppbar(
-            text: 'Your Comments',
-            ontap: () {
-              context.go('/profile');
-            }),
+          text: 'Your Comments',
+          ontap: () {
+            context.go('/profile');
+          },
+          noBack: false,
+        ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             childCount: 4,
@@ -59,7 +61,7 @@ class _YourCommentsState extends State<YourComments> {
                       ),
                       Container(
                         padding: const EdgeInsets.all(10),
-                        height: 95,
+                        height: 94,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius:

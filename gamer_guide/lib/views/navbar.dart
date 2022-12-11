@@ -9,17 +9,24 @@ import 'package:line_icons/line_icons.dart';
 import 'homepage.dart';
 
 class Navbar extends StatefulWidget {
-  const Navbar({Key? key}) : super(key: key);
+  final String id;
+  const Navbar({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Navbar> createState() => _NavbarState();
 }
 
 class _NavbarState extends State<Navbar> {
-  int selectedIndex = 0;
+  int index() {
+    int index = 0;
+    widget.id == '0' ? index = 0 : index = 2;
+    return index;
+  }
+
+  int selectedIndex = index();
+
   final screens = [
     const HomePageWidget(),
-    const Center(child: Text('likes', style: TextStyle(fontSize: 50))),
     const Search(),
     // const Center(child: Text('profile', style: TextStyle(fontSize: 50))),
     const ProfilePage()
@@ -48,10 +55,6 @@ class _NavbarState extends State<Navbar> {
             GButton(
               icon: LineIcons.home,
               text: 'Home',
-            ),
-            GButton(
-              icon: LineIcons.heart,
-              text: 'Likes',
             ),
             GButton(
               icon: LineIcons.search,

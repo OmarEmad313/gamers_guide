@@ -97,10 +97,12 @@ class _CommentsState extends State<Comments> {
         body: CustomScrollView(
           slivers: <Widget>[
             MySliverAppbar(
-                text: 'Comments on \n game name',
-                ontap: () {
-                  context.go('/');
-                }),
+              text: 'Comments on \n game name',
+              ontap: () {
+                context.go('/');
+              },
+              noBack: false,
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {

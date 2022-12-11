@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:flutter_application_2/widgets/sliver_app_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -22,10 +21,12 @@ class _FavoriteGamesState extends State<FavoriteGames> {
         body: CustomScrollView(
           slivers: [
             MySliverAppbar(
-                text: 'Your Games',
-                ontap: () {
-                  context.go('/profile');
-                }),
+              text: 'Your Games',
+              ontap: () {
+                context.go('/profile');
+              },
+              noBack: false,
+            ),
             SliverToBoxAdapter(
               child: Column(
                 children: [

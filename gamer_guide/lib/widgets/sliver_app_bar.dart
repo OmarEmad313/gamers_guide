@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class MySliverAppbar extends StatelessWidget {
   final String text;
   final VoidCallback ontap;
-  const MySliverAppbar({super.key, required this.text, required this.ontap});
+  final bool noBack;
+  const MySliverAppbar(
+      {super.key,
+      required this.text,
+      required this.ontap,
+      required this.noBack});
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: IconButton(
-        color: Colors.white,
-        onPressed: ontap,
-        icon: const Icon(
-          Icons.arrow_circle_left,
-          size: 40,
-        ),
-      ),
+      leading: noBack
+          ? null
+          : IconButton(
+              color: Colors.white,
+              onPressed: ontap,
+              icon: const Icon(
+                Icons.arrow_circle_left,
+                size: 40,
+              ),
+            ),
       backgroundColor: Colors.lightBlue,
       pinned: true,
       expandedHeight: 150.0,
