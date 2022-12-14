@@ -4,6 +4,7 @@ import 'package:flutter_application_2/views/favorite_games_page.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
 import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:go_router/go_router.dart';
+import 'provider/theme_provider.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
 import 'views/login.dart';
@@ -26,10 +27,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       title: 'Flutter Demo',
-      theme: ThemeData(
+      themeMode: ThemeMode.system,
+      /* theme: ThemeData(
         primarySwatch: Colors.lightBlue,
         //useMaterial3: true,
-      ),
+      ), */
+      darkTheme: MyThemes.darkTheme,
+      theme: MyThemes.lightTheme,
     );
   }
 }
@@ -40,7 +44,7 @@ final GoRouter _router = GoRouter(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
         //return const SplashScreenWidget();
-        return Navbar(id: state.params["id"]!);
+        return Navbar(id: state.params["id"]);
       },
     ),
     GoRoute(

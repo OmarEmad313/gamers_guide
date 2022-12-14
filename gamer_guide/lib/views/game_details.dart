@@ -5,7 +5,10 @@ import 'package:video_player/video_player.dart'; */
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:flutter_application_2/services/game_services.dart';
+import 'package:flutter_application_2/widgets/horizantal_listview.dart';
+import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_container.dart';
+import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -89,32 +92,26 @@ class _GameDetailsState extends State<GameDetails> {
               height: MediaQuery.of(context).size.height * 0.6,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                image: NetworkImage('https:${game[0].cover?.url}'),
-                //fit: BoxFit.fill
-              )),
+                      image: NetworkImage('https:${game[0].cover?.url}'),
+                      fit: BoxFit.fill)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  IconButton(
                     color: Colors.white,
-                    child: IconButton(
-                      color: Colors.black,
-                      onPressed: () {
-                        context.go('/home');
-                      },
-                      icon: const Icon(
-                        Icons.arrow_circle_left,
-                        size: 60,
-                      ),
+                    onPressed: () {
+                      context.go('/home/0');
+                    },
+                    icon: const Icon(
+                      Icons.arrow_circle_left,
+                      size: 60,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.6,
@@ -146,19 +143,14 @@ class _GameDetailsState extends State<GameDetails> {
                             left: 20,
                             right: 20,
                           ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "${game[0].name}",
-                                  style: const TextStyle(
-                                      fontSize: 36,
-                                      fontWeight: FontWeight.bold,
-                                      color:
-                                          Colors.black), //googleFonts.ptSans(),
-                                ),
-                              ),
-                            ],
+                          child: Expanded(
+                            child: MyText(
+                              text: '${game[0].name}',
+                              paddingSize: 0,
+                              size: 36,
+                              weight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         Padding(
@@ -181,44 +173,15 @@ class _GameDetailsState extends State<GameDetails> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  context.go('/comments/');
-                                },
-                                style: ButtonStyle(
-                                    padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 40, vertical: 10)),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                    ))),
-                                child: const Text(
-                                  'want',
-                                  style: TextStyle(fontSize: 30),
-                                ),
+                              MyButton(
+                                text: 'Comments',
+                                onPressed: (() => context.go('/comments/')),
+                                size: 30,
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  //context.go('/profile/');
-                                },
-                                // ignore: sort_child_properties_last
-                                child: const Text(
-                                  'want',
-                                  style: TextStyle(fontSize: 30),
-                                ),
-                                style: ButtonStyle(
-                                    padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 40, vertical: 10)),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                    ))),
+                              MyButton(
+                                text: 'Add',
+                                onPressed: (() => context.go('/comments/')),
+                                size: 30,
                               ),
                             ],
                           ),
@@ -250,161 +213,78 @@ class _GameDetailsState extends State<GameDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                          child: Text(
-                            'Genres',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
+                        const MyText(
+                          text: 'Genres',
+                          paddingSize: 20,
+                          size: 20,
+                          weight: FontWeight.bold,
                         ),
-                        SizedBox(
-                          height: 45,
-                          child: Visibility(
-                            visible: isLoaded,
-                            replacement: const Center(
-                                child: CircularProgressIndicator()),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: game[0].genres?.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20)),
-                                      color: Colors.grey.withOpacity(0.4),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 20),
-                                      child: Text(
-                                          '${game[0].genres?[index].name}'),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                        HorizantalListview(
+                          game: game,
+                          isTheme: false,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                          child: Text(
-                            'Themes',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
+                        const MyText(
+                          text: 'Themes',
+                          paddingSize: 20,
+                          size: 20,
+                          weight: FontWeight.bold,
                         ),
-                        SizedBox(
-                          height: 45,
-                          child: Visibility(
-                            visible: isLoaded,
-                            replacement: const Center(
-                                child: CircularProgressIndicator()),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: game[0].themes?.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20)),
-                                      color: Colors.grey.withOpacity(0.4),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 20),
-                                      child: Text(
-                                          ' ${game[0].themes?[index].name}'),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                        HorizantalListview(
+                          game: game,
+                          isTheme: true,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            'Videos',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                        const MyText(
+                            text: 'Videos',
+                            paddingSize: 20,
+                            size: 20,
+                            weight: FontWeight.bold),
+
                         /*  YoutubePlayer(
                           controller: _controller,
                           showVideoProgressIndicator: true,
                         ), */
-                        const Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            'Screenshots',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                        const MyText(
+                            text: 'Screenshots',
+                            paddingSize: 20,
+                            size: 20,
+                            weight: FontWeight.bold),
                       ],
                     ),
                   ),
-                  Container(
-                    color: Colors.white,
+                  SizedBox(
                     height: 200,
-                    child: Visibility(
-                      visible: isLoaded,
-                      replacement:
-                          const Center(child: CircularProgressIndicator()),
-                      child: ListView.builder(
-                        itemCount: game[0].screenshots?.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(30)),
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https:${game[0].screenshots?[index].url}'),
-                                    fit: BoxFit.fill),
-                              ),
-                              width: 200,
-                              height: 150,
+                    child: ListView.builder(
+                      itemCount: game[0].screenshots?.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https:${game[0].screenshots?[index].url}'),
+                                  fit: BoxFit.fill),
                             ),
-                          );
-                        },
-                      ),
+                            width: 200,
+                            height: 150,
+                          ),
+                        );
+                      },
                     ),
                   ),
-                  Container(
-                    color: Colors.white,
-                    child: const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        'Summary',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 20),
-                      child: Text(
-                        '${game[0].summary} ',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
+                  const MyText(
+                      text: 'Summary',
+                      paddingSize: 20,
+                      size: 20,
+                      weight: FontWeight.bold),
+                  MyText(
+                    text: '${game[0].summary}',
+                    paddingSize: 20,
+                    size: 15,
+                    color: Colors.black.withOpacity(0.5),
                   ),
                 ], //children
               ),

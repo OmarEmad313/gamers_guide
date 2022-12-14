@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/my_icon_button.dart';
 
 import 'package:go_router/go_router.dart';
 
+import '../widgets/add_list_dialog.dart';
+import '../widgets/my_text.dart';
 import '../widgets/sliver_app_bar.dart';
 
 class YourLists extends StatefulWidget {
@@ -19,9 +22,7 @@ class _YourListsState extends State<YourLists> {
         slivers: [
           MySliverAppbar(
             text: 'Your Lists',
-            ontap: () {
-              context.go('/profile');
-            },
+            ontap: () => context.go('/home/1'),
             noBack: false,
           ),
           SliverList(
@@ -29,7 +30,8 @@ class _YourListsState extends State<YourLists> {
             childCount: 4,
             (context, index) {
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -37,11 +39,65 @@ class _YourListsState extends State<YourLists> {
                     color: Colors.grey.withOpacity(0.4),
                   ),
                   height: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          MyText(
+                            paddingSize: 0,
+                            text: 'List Name',
+                            weight: FontWeight.bold,
+                            style: FontStyle.italic,
+                            size: 20,
+                          ),
+                          MyText(text: 'Games : 5', paddingSize: 0),
+                        ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            MyIconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.edit),
+                              color: Colors.lightBlue,
+                              size: 30,
+                            ),
+                            MyIconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.delete),
+                              color: Colors.red,
+                              size: 30,
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             },
           ))
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addlistdialog(context);
+        },
+        backgroundColor: Colors.lightBlue,
+        child: const Icon(
+          Icons.add_circle,
+          color: Colors.white,
+          size: 35,
+        ),
       ),
     );
   }

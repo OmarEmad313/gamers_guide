@@ -9,8 +9,8 @@ import 'package:line_icons/line_icons.dart';
 import 'homepage.dart';
 
 class Navbar extends StatefulWidget {
-  final String id;
-  const Navbar({Key? key, required this.id}) : super(key: key);
+  final String? id;
+  const Navbar({Key? key, this.id}) : super(key: key);
 
   @override
   State<Navbar> createState() => _NavbarState();
@@ -20,23 +20,32 @@ class _NavbarState extends State<Navbar> {
   int index() {
     int index = 0;
     widget.id == '0' ? index = 0 : index = 2;
+    print('init index $index');
     return index;
   }
 
-  int selectedIndex = index();
+  int pageIndex = 0;
 
-  final screens = [
-    const HomePageWidget(),
-    const Search(),
-    // const Center(child: Text('profile', style: TextStyle(fontSize: 50))),
-    const ProfilePage()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    pageIndex = index();
+  }
+
+  final screens = [const HomePageWidget(), const Search(), const ProfilePage()];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[selectedIndex],
+      body: screens[pageIndex],
       bottomNavigationBar: GNav(
-          onTabChange: (index) => setState(() => selectedIndex = index),
+          onTabChange: (index) {
+            setState(() {
+              pageIndex = index;
+              //print('selected index = $pageIndex');
+            });
+          },
+          selectedIndex: pageIndex,
           rippleColor:
               Colors.grey.shade800, // tab button ripple color when pressed
           tabBorderRadius: 10,
