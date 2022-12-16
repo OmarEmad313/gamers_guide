@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/provider/theme_provider.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 
 import 'package:flutter_application_2/widgets/my_container.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/sliver_app_bar.dart';
 
@@ -80,7 +83,13 @@ class _ProfilePageState extends State<ProfilePage> {
               (context, index) {
                 return Center(
                     child: MyButton(
-                        color: Colors.red, text: 'Sign Out', onPressed: () {}));
+                  color: Colors.red,
+                  text: 'Sign Out',
+                  onPressed: () {
+                    context.go('/');
+                    FirebaseAuth.instance.signOut();
+                  },
+                ));
               },
             ))
           ],

@@ -8,7 +8,8 @@ import 'package:go_router/go_router.dart';
 import '../widgets/comments_dialog.dart';
 
 class Comments extends StatefulWidget {
-  const Comments({super.key});
+  final String gameId;
+  const Comments({super.key, required this.gameId});
 
   @override
   State<Comments> createState() => _CommentsState();
@@ -96,7 +97,7 @@ class _CommentsState extends State<Comments> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showcommentdialog(context);
+            showcommentdialog(context, widget.gameId);
           },
           backgroundColor: Colors.lightBlue,
           child: const Icon(

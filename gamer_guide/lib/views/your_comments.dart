@@ -20,7 +20,7 @@ class _YourCommentsState extends State<YourComments> {
         MySliverAppbar(
           text: 'Your Comments',
           ontap: () {
-            context.go('/profile');
+            context.go('/home/1');
           },
           noBack: false,
         ),

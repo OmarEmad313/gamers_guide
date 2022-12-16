@@ -23,7 +23,7 @@ class _FavoriteGamesState extends State<FavoriteGames> {
             MySliverAppbar(
               text: 'Your Games',
               ontap: () {
-                context.go('/profile');
+                context.go('/home/2');
               },
               noBack: false,
             ),
