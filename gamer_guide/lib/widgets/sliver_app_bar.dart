@@ -16,14 +16,14 @@ class MySliverAppbar extends StatelessWidget {
       leading: noBack
           ? null
           : IconButton(
-              color: Colors.white,
+              //color: Colors.white,
               onPressed: ontap,
               icon: const Icon(
                 Icons.arrow_circle_left,
                 size: 40,
               ),
             ),
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.deepPurple,
       pinned: true,
       expandedHeight: 150.0,
       // ignore: prefer_const_constructors
