@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/similar_games.dart';
-import 'package:flutter_application_2/services/game_services.dart';
+import 'package:flutter_application_2/services/api_services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/game_cover_model.dart';

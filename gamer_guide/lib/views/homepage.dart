@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/popular_games.dart';
-import 'package:flutter_application_2/services/game_services.dart';
+import 'package:flutter_application_2/services/api_services.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePageWidget extends StatefulWidget {
@@ -13,6 +14,9 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget> {
   List<PopularGamesModel> covers = [];
   var isLoaded = false;
+
+  final user = FirebaseAuth.instance.currentUser!;
+  //user.email
 
   @override
   void initState() {

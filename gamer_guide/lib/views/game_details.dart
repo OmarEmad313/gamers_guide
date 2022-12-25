@@ -4,7 +4,8 @@
 import 'package:video_player/video_player.dart'; */
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
-import 'package:flutter_application_2/services/game_services.dart';
+import 'package:flutter_application_2/services/api_services.dart';
+import 'package:flutter_application_2/services/user_lists_services.dart';
 import 'package:flutter_application_2/widgets/horizantal_listview.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_container.dart';
@@ -12,6 +13,9 @@ import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../models/list_records_model.dart';
+import '../widgets/show_buttons_dialog.dart';
 
 class GameDetails extends StatefulWidget {
   final String gameId;
@@ -23,6 +27,7 @@ class GameDetails extends StatefulWidget {
 
 class _GameDetailsState extends State<GameDetails> {
   List<GameDetailsModel> game = [];
+  List<ListsRecordsModel> userLists = [];
   var isLoaded = false;
   final videoUrl = "https://www.youtube.com/watch?v=YMx8Bbev6T4";
   late YoutubePlayerController _controller;
@@ -42,13 +47,11 @@ class _GameDetailsState extends State<GameDetails> {
 
   Future<void> getData() async {
     game = await GameServices().getGameDetails(int.parse(widget.gameId));
-
+    //userLists = await fetchListsRecords();
     if (game.isNotEmpty) {
       setState(() {
         isLoaded = true;
       });
-      //print('screenshots ${game[0].screenshots![0].url}');
-
     }
   }
 
@@ -158,13 +161,16 @@ class _GameDetailsState extends State<GameDetails> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                  'Release Date : ${getTime(game[0].firstReleaseDate!)}'),
-                              Text(
-                                'Rating : ${game[0].rating?.floor()}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              )
+                              MyText(
+                                text:
+                                    'Release Date : ${getTime(game[0].firstReleaseDate!)}',
+                                color: Colors.black,
+                              ),
+                              MyText(
+                                text: 'Rating : ${game[0].rating?.floor()}',
+                                color: Colors.black,
+                                weight: FontWeight.bold,
+                              ),
                             ],
                           ),
                         ),
@@ -175,12 +181,14 @@ class _GameDetailsState extends State<GameDetails> {
                             children: [
                               MyButton(
                                 text: 'Comments',
-                                onPressed: (() => context.go('/comments/')),
+                                onPressed: (() => context.go(
+                                    '/comments/${int.parse(widget.gameId)}/${game[0].name}')),
                                 size: 30,
                               ),
                               MyButton(
                                 text: 'Add',
-                                onPressed: (() => context.go('/comments/')),
+                                onPressed: () =>
+                                    showButtons(context, userLists),
                                 size: 30,
                               ),
                             ],

@@ -4,16 +4,21 @@ import 'package:flutter_application_2/views/favorite_games_page.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
 import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'provider/theme_provider.dart';
+import 'views/bridge.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
-import 'views/login.dart';
 import 'views/navbar.dart';
 import 'views/signup.dart';
 import 'views/similarr_games.dart';
 import 'views/your_lists.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -23,18 +28,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: _router,
-      title: 'Flutter Demo',
-      themeMode: ThemeMode.system,
-      /* theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-        //useMaterial3: true,
-      ), */
-      darkTheme: MyThemes.darkTheme,
-      theme: MyThemes.lightTheme,
-    );
+    return ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          final themeProvidor = Provider.of<ThemeProvider>(context);
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: _router,
+            title: 'Flutter Demo',
+            themeMode: themeProvidor.themeMode,
+            /* theme: ThemeData(
+          primarySwatch: Colors.lightBlue,
+          //useMaterial3: true,
+        ), */
+            darkTheme: MyThemes.darkTheme,
+            theme: MyThemes.lightTheme,
+          );
+        });
   }
 }
 
@@ -43,8 +53,8 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        //return const SplashScreenWidget();
-        return Navbar(id: state.params["id"]);
+        return const Bridge();
+        //return Navbar(id: state.params["id"]);
       },
     ),
     GoRoute(
@@ -72,9 +82,10 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/comments',
+      path: '/comments/:id/:name',
       builder: (context, state) {
-        return const Comments();
+        return Comments(
+            gameId: state.params["id"]!, gameName: state.params["name"]!);
       },
     ),
     GoRoute(
@@ -90,9 +101,9 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/favoriteGames',
+      path: '/favoriteGames/:idUser',
       builder: (context, state) {
-        return const FavoriteGames();
+        return FavoriteGames(userId: state.params["idUser"]!);
       },
     ),
     GoRoute(
@@ -102,9 +113,9 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/yourLists',
+      path: '/yourLists/:idUser',
       builder: (context, state) {
-        return const YourLists();
+        return YourLists(userId: state.params["idUser"]!);
       },
     ),
   ],

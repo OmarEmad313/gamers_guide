@@ -6,7 +6,7 @@ class MyText extends StatelessWidget {
   final FontWeight? weight;
   final FontStyle? style;
   final Color? color;
-  final double paddingSize;
+  final double? paddingSize;
 
   const MyText(
       {super.key,
@@ -14,13 +14,13 @@ class MyText extends StatelessWidget {
       this.size,
       this.weight,
       this.color,
-      required this.paddingSize,
+      this.paddingSize,
       this.style});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(paddingSize),
+      padding: EdgeInsets.all(paddingSize ?? 0),
       child: Text(
         text,
         style: TextStyle(

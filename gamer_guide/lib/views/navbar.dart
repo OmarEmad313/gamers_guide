@@ -20,7 +20,7 @@ class _NavbarState extends State<Navbar> {
   int index() {
     int index = 0;
     widget.id == '0' ? index = 0 : index = 2;
-    print('init index $index');
+    //print('init index $index');
     return index;
   }
 
@@ -51,11 +51,11 @@ class _NavbarState extends State<Navbar> {
           tabBorderRadius: 10,
           curve: Curves.easeInOut, //animation when an icon is clicked
           gap: 6, // the tab button gap between icon and text
-          color: Colors.lightBlue[800], // unselected icon color
+          color: Colors.deepPurple, // unselected icon color
           activeColor: Colors.white, // selected icon and text color
           iconSize: 30,
           // tab button icon size
-          tabBackgroundColor: const Color.fromARGB(255, 45, 133, 233)
+          tabBackgroundColor: Colors.deepPurple
               .withOpacity(0.5), // selected tab background color
 
           padding: const EdgeInsets.symmetric(

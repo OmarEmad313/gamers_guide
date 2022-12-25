@@ -1,4 +1,11 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/my_button.dart';
+import 'package:flutter_application_2/widgets/text_form_field.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +17,36 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
+
+  Future createUser({
+    required String name,
+    required String email,
+  }) async {
+    final userInsatnce = FirebaseFirestore.instance.collection('users').doc();
+
+    final userData = {
+      'name': name,
+      'email': email,
+      'favGames': [],
+      'wishlist': [],
+    };
+
+    await userInsatnce.set(userData);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,28 +62,17 @@ class _SignupState extends State<Signup> {
           ),
           child: Column(
             children: [
-              const SizedBox(
-                height: 40,
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: Image.asset(
-                        'assets/logo.jpeg',
-                        width: 165,
-                        height: 233,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 40),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.asset(
+                  'assets/logo.jpeg',
+                  width: 165,
+                  height: 233,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
-              SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 40),
               Container(
                 child: Row(
                   children: [
@@ -62,63 +87,28 @@ class _SignupState extends State<Signup> {
                                 fontSize: 20,
                               ),
                             ),
-                            Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 30),
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter an Name';
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: const Color(0XFFD3D3D3),
-                                    hintText: 'Name',
-                                    hintStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey),
-                                    focusedBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.grey)),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        borderSide: BorderSide.none),
-                                  ),
-                                )),
+                            MyTextFormField(
+                              text: 'Name',
+                              controller: nameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter an Name';
+                                }
+                              },
+                            ),
                             Text(
                               'Enter your email',
                               style: GoogleFonts.acme(
                                 fontSize: 20,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 30),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter an email';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color(0XFFD3D3D3),
-                                  hintText: 'Email',
-                                  hintStyle: const TextStyle(
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey),
-                                  focusedBorder: const UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey)),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
+                            MyTextFormField(
+                              text: 'Email',
+                              controller: emailController,
+                              validator: (value) => value != null &&
+                                      !EmailValidator.validate(value)
+                                  ? 'Please enter a valid email'
+                                  : null,
                             ),
                             Text(
                               'Enter your Password',
@@ -126,92 +116,42 @@ class _SignupState extends State<Signup> {
                                 fontSize: 20,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 30),
-                              child: TextFormField(
-                                obscureText: true,
-
-                                ///to make the dots in the password
-                                validator: (value) {
-                                  if (value == null || value.length <= 6) {
-                                    return 'Please enter min 6 digits';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color(0XFFD3D3D3),
-                                  hintText: 'Password',
-                                  hintStyle: const TextStyle(
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey)),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
+                            MyTextFormField(
+                              secure: true,
+                              text: 'Password',
+                              controller: passwordController,
+                              validator: (value) =>
+                                  value != null && value.length <= 6
+                                      ? 'Enter min 6 characters'
+                                      : null,
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(40, 10, 0, 0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (formKey.currentState!.validate()) {
-                                        context.go('/home');
-                                      }
-                                    },
-                                    // ignore: sort_child_properties_last
-                                    child: const Text('Sign up ',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            fontStyle: FontStyle.italic)),
-                                    style: ButtonStyle(
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.all(10)),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ))),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(130, 10, 0, 0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      context.go('/');
-                                    },
-                                    // ignore: sort_child_properties_last
-                                    child: const Text('Back ',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            fontStyle: FontStyle.italic)),
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.red),
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 10)),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ))),
-                                  ),
+                                MyButton(
+                                    text: 'Back',
+                                    color: Colors.red,
+                                    onPressed: () => context.go('/')),
+                                MyButton(
+                                  text: 'Sign up',
+                                  onPressed: () {
+                                    final isValid =
+                                        formKey.currentState!.validate();
+                                    if (!isValid) return;
+                                    FirebaseAuth.instance
+                                        .createUserWithEmailAndPassword(
+                                            email: emailController.text,
+                                            password: passwordController.text)
+                                        .then((value) {
+                                      createUser(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                      );
+                                      context.go('/home/0');
+                                    }).onError((error, stackTrace) {
+                                      print("Error ${error.toString()}");
+                                    });
+                                  },
                                 ),
                               ],
                             ),
