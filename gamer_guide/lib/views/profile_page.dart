@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ontap: () {},
                 noBack: true,
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 70)),
+              const SliverToBoxAdapter(child: SizedBox(height: 60)),
               SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                 return MyContainer(
