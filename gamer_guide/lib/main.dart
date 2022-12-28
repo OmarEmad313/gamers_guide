@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/edit_profile.dart';
 import 'package:flutter_application_2/views/favorite_games_page.dart';
+import 'package:flutter_application_2/views/listGames.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
 import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:go_router/go_router.dart';
@@ -116,6 +117,12 @@ final GoRouter _router = GoRouter(
       path: '/yourLists/:idUser',
       builder: (context, state) {
         return YourLists(userId: state.params["idUser"]!);
+      },
+    ),
+    GoRoute(
+      path: '/listGames/:nameList',
+      builder: (context, state) {
+        return ListGames(listName: state.params["nameList"]!);
       },
     ),
   ],

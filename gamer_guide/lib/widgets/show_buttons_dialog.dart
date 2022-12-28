@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/list_records_model.dart';
-import 'package:flutter_application_2/services/user_lists_services.dart';
-import 'package:flutter_application_2/services/user_services.dart';
+
 import 'package:flutter_application_2/widgets/my_text.dart';
 
 import '../services/user_games_services.dart';
+import 'horizontal_user_lists.dart';
 
-void showButtons(BuildContext context, List<ListsRecordsModel> userList) {
+void showButtons({required BuildContext context, required String gameId}) {
   List<bool> isSelected = [false, false];
-  List<bool> isSelected2 = [true];
+  // List<bool> isSelected2 = [true];
   showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
@@ -27,6 +27,7 @@ void showButtons(BuildContext context, List<ListsRecordsModel> userList) {
                   text: 'Add Game',
                   size: 20,
                   weight: FontWeight.bold,
+                  paddingSize: 8,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -63,19 +64,19 @@ void showButtons(BuildContext context, List<ListsRecordsModel> userList) {
                           } */
                           if (index == 0) {
                             if (isSelected[index] == false) {
-                              addFavGame('2');
+                              addGame(gameId, 'favGames');
                               isSelected[index] = !isSelected[index];
                             } else {
-                              removeFavGame('2');
+                              removeGame(gameId, 'favGames');
                               isSelected[index] = !isSelected[index];
                             }
                           }
                           if (index == 1) {
                             if (isSelected[index] == false) {
-                              addWishlistGame('2');
+                              addGame(gameId, 'wishlist');
                               isSelected[index] = !isSelected[index];
                             } else {
-                              removeWishlistGame('2');
+                              removeGame(gameId, 'wishlist');
                               isSelected[index] = !isSelected[index];
                             }
                           }
@@ -84,39 +85,16 @@ void showButtons(BuildContext context, List<ListsRecordsModel> userList) {
                     },
                   ),
                 ),
-                /*  ToggleButtons(
-                  isSelected: isSelected2,
-                  color: Colors.grey,
-                  fillColor: Colors.purple,
-                  splashColor: Colors.purple.withOpacity(0.4),
-                  selectedColor: Colors.white,
-                  renderBorder: false,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  children: [
-                    StreamBuilder<List<ListsRecordsModel>>(
-                      stream: fetchListsRecords(userId[0]),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final lists = snapshot.data;
-                          return SizedBox(
-                            width: 200,
-                            height: 50,
-                            child: ListView.builder(
-                                itemCount: 2,
-                                itemBuilder: (context, index) {
-                                  return  Text(lists![0].gameId![0]);
-                                }),
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    )
-                  ],
-                  onPressed: (index) {},
-                ) */
+                const SizedBox(height: 20),
+                const MyText(
+                  text: 'Your Lists',
+                  paddingSize: 10,
+                  weight: FontWeight.bold,
+                  size: 20,
+                ),
+                HorizontalUserLists(
+                  gamId: gameId,
+                ),
               ],
             ),
           );

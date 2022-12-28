@@ -1,49 +1,94 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
+import '../models/user_games_model.dart';
+import '../widgets/my_text.dart';
+import 'api_services.dart';
 import 'user_services.dart';
 
 //used in show button dialog
-Future addFavGame(String gameId) async {
+Future addGame(String gameId, String listName) async {
   await getUserId();
   await FirebaseFirestore.instance.collection('users').doc(userId[0]).update({
-    'favGames': FieldValue.arrayUnion([gameId])
+    listName: FieldValue.arrayUnion([gameId])
   });
 }
 
 //used in show button dialog
-Future removeFavGame(String gameId) async {
+Future removeGame(String gameId, String listName) async {
   await getUserId();
   await FirebaseFirestore.instance.collection('users').doc(userId[0]).update({
-    'favGames': FieldValue.arrayRemove([gameId])
+    listName: FieldValue.arrayRemove([gameId])
   });
 }
 
-//used in show button dialog
-Future addWishlistGame(String gameId) async {
+//used in horizontal_user_lists in show button dialog
+Future addGameToUserList(
+    {required String listName, required String gameId}) async {
   await getUserId();
-  await FirebaseFirestore.instance.collection('users').doc(userId[0]).update({
-    'wishlist': FieldValue.arrayUnion([gameId])
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId[0])
+      .collection('Lists')
+      .where('listName', isEqualTo: listName)
+      .get();
+  querySnapshot.docs.first.reference.update({
+    'gameId': FieldValue.arrayUnion([gameId])
   });
 }
 
-//used in show button dialog
-Future removeWishlistGame(String gameId) async {
+//used in horizontal_user_lists in show button dialog
+Future removeGameToUserList(
+    {required String listName, required String gameId}) async {
   await getUserId();
-  await FirebaseFirestore.instance.collection('users').doc(userId[0]).update({
-    'wishlist': FieldValue.arrayRemove([gameId])
-  }); //arrayUnion(gameId)
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId[0])
+      .collection('Lists')
+      .where('listName', isEqualTo: listName)
+      .get();
+  querySnapshot.docs.first.reference.update({
+    'gameId': FieldValue.arrayRemove([gameId])
+  });
 }
 
-//used in favorite_games_page
-Future getFavGamesIds() async {
+//used in game_tabs widget in favorite_games_page
+Future getGamesIds({required String whichList}) async {
   await getUserId();
-  List<String> favGamesIds = [];
+  List<String> gamesIds = [];
   final userInsatnce =
       await FirebaseFirestore.instance.collection('users').doc(userId[0]).get();
   Map<String, dynamic>? userData = userInsatnce.data();
-  for (var gameId in userData?['favGames']) {
-    favGamesIds.add(gameId);
+  for (var gameId in userData?[whichList]) {
+    gamesIds.add(gameId);
   }
   // print(favGamesIds);
-  return favGamesIds;
+  return gamesIds;
+}
+
+//used in your_comments page--------------------------------
+class GetGameName extends StatelessWidget {
+  final String gameId;
+  const GetGameName({super.key, required this.gameId});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<UserGamesModel>>(
+        future: GameServices.getUserGames(gameId),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // print(snapshot.data!.data());
+
+            // snapshot.data![0].name;
+            return MyText(
+              text: ' ${snapshot.data![0].name}',
+              weight: FontWeight.bold,
+              style: FontStyle.italic,
+              size: 16,
+              paddingSize: 8,
+            );
+          }
+          return const Text('loading');
+        }));
+  }
 }

@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/list_records_model.dart';
-
-import '../widgets/my_text.dart';
 import 'user_services.dart';
 
-Future getListsIds() async {
+/* Future getListsIds() async {
   await getUserId();
   List<String> listId2 = [];
   await FirebaseFirestore.instance
@@ -22,10 +18,10 @@ Future getListsIds() async {
         }),
       );
   return listId2;
-}
+} */
 
 //used in add_list_dialog in your_lists
-Future addList({required listname}) async {
+Future addList({required listName}) async {
   await getUserId();
   final listInsatnce = FirebaseFirestore.instance
       .collection('users')
@@ -33,30 +29,38 @@ Future addList({required listname}) async {
       .collection('Lists')
       .doc();
   final listData = {
-    'listName': listname,
+    'listName': listName,
     'gameId': [],
   };
   await listInsatnce.set(listData);
 }
-/* 
-Future fetchListsRecords() async {
-  await getUserId();
-  var listsRecords = await FirebaseFirestore.instance
+
+//used in edit_delete widget in your_list page
+Future deleteList({required listName}) async {
+  //await getUserId();
+  await FirebaseFirestore.instance
       .collection('users')
       .doc(userId[0])
       .collection('Lists')
-      .get();
+      .where('listName', isEqualTo: listName)
+      .get()
+      .then((snapshot) => snapshot.docs[0].reference.delete());
+}
 
-  var list = listsRecords.docs
-      .map((e) => ListsRecordsModel(
-            listName: e['listName'],
-            gameId: e['gameId'],
-          ))
-      .toList();
-  return list;
-} */
+//used in edit_delete widget in your_list page
+Future updateList({required oldListName, required newListName}) async {
+  //await getUserId();
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId[0])
+      .collection('Lists')
+      .where('listName', isEqualTo: oldListName)
+      .get()
+      .then((snapshot) =>
+          snapshot.docs[0].reference.update({'listName': newListName}));
+}
 
-//used in your_lists
+//used in your_lists  AND HorizontalUserLists widget
 Stream<List<ListsRecordsModel>> fetchListsRecords(String userid) {
   return FirebaseFirestore.instance
       .collection('users')
@@ -68,40 +72,23 @@ Stream<List<ListsRecordsModel>> fetchListsRecords(String userid) {
           .toList());
 }
 
+//used in listGames page
+Future getUserListGamesIds(String listName) async {
+  await getUserId();
+  List<String> userListGamesIds = [];
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId[0])
+      .collection('Lists')
+      .where('listName', isEqualTo: listName)
+      .get();
 
+  var data = querySnapshot.docs.first.data();
+  // print(data);
 
-/////////////////////////////////////////////
-
-/* class GetListName extends StatelessWidget {
-  final String listId;
-
-  const GetListName({super.key, required this.listId});
-
-  @override
-  Widget build(BuildContext context) {
-    userid();
-    // print('user id is ${userId[0]}');
-    CollectionReference lists = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId[0])
-        .collection('Lists');
-
-    return FutureBuilder<DocumentSnapshot>(
-        future: lists.doc(listId).get(),
-        builder: ((context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // print(snapshot.data!.data());
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
-            return MyText(
-              text: ' ${data['listName']}', //${data['listName']}
-              weight: FontWeight.bold,
-              style: FontStyle.italic,
-              size: 20,
-            );
-          }
-          return const Text('loading');
-        }));
+  for (var oneGame in data['gameId']) {
+    userListGamesIds.add(oneGame);
   }
+  //print(userListGamesIds);
+  return userListGamesIds;
 }
- */

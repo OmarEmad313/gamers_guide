@@ -20,7 +20,7 @@ Future createComment(
   await commentInsatnce.set(commentData);
 }
 
-Future fetchCommentsRecords(String gameId) async {
+Future fetchGameComments(String gameId) async {
   var commentsRecords = await FirebaseFirestore.instance
       .collection('comments')
       .where('gameId', isEqualTo: int.parse(gameId))
@@ -28,11 +28,21 @@ Future fetchCommentsRecords(String gameId) async {
 
   var list = commentsRecords.docs
       .map((e) => CommentsRecordsModel(
-          id: e.id,
           commentDescription: e['commentDescription'],
           starsNumber: e['starsNumber'],
           gameId: e['gameId'],
           userId: e['userId']))
       .toList();
   return list;
+}
+
+// used in your_comments page
+Stream<List<CommentsRecordsModel>> fetchUserComments(String userid) {
+  return FirebaseFirestore.instance
+      .collection('comments')
+      .where('userId', isEqualTo: userid)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => CommentsRecordsModel.fromJson(doc.data()))
+          .toList());
 }

@@ -112,7 +112,8 @@ class GameServices {
   }
 
   //--------------------------------
-  static Future<List<UserGamesModel>> getUserGames(int id) async {
+  // used in fav_games_page
+  static Future<List<UserGamesModel>> getUserGames(String id) async {
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {

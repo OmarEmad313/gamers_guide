@@ -24,7 +24,10 @@ class MyText extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-            color: color, fontSize: size, fontWeight: weight, fontStyle: style),
+            color: color,
+            fontSize: size,
+            fontWeight: weight,
+            fontStyle: style ?? FontStyle.italic),
       ),
     );
   }

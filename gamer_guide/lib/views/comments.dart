@@ -33,7 +33,7 @@ class _CommentsState extends State<Comments> {
   }
 
   void initComments() async {
-    comments = await fetchCommentsRecords(widget.gameId);
+    comments = await fetchGameComments(widget.gameId);
     userName = await getUserName();
     if (comments.isNotEmpty && userName.isNotEmpty) {
       setState(() {

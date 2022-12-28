@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_application_2/views/login.dart';
 
+import 'intro_screens/parent.dart';
 import 'navbar.dart';
 
 class Bridge extends StatelessWidget {
@@ -19,7 +20,7 @@ class Bridge extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Something went wrong'));
           } else if (snapshot.hasData) {
-            return const Navbar(id: '0');
+            return const ParentsIntroScreen(); //Navbar(id: '0')
           } else {
             return const LogIn();
           }

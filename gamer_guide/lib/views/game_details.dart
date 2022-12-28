@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:flutter_application_2/services/api_services.dart';
 import 'package:flutter_application_2/services/user_lists_services.dart';
+import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_application_2/widgets/horizantal_listview.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_container.dart';
@@ -27,7 +28,7 @@ class GameDetails extends StatefulWidget {
 
 class _GameDetailsState extends State<GameDetails> {
   List<GameDetailsModel> game = [];
-  List<ListsRecordsModel> userLists = [];
+  //List<ListsRecordsModel> userLists = [];
   var isLoaded = false;
   final videoUrl = "https://www.youtube.com/watch?v=YMx8Bbev6T4";
   late YoutubePlayerController _controller;
@@ -46,6 +47,9 @@ class _GameDetailsState extends State<GameDetails> {
   }
 
   Future<void> getData() async {
+    await getUserId();
+    /*   userLists = fetchListsRecords(userId[0]) as List<ListsRecordsModel>;
+    print('userLists ${userLists}'); */
     game = await GameServices().getGameDetails(int.parse(widget.gameId));
     //userLists = await fetchListsRecords();
     if (game.isNotEmpty) {
@@ -187,8 +191,9 @@ class _GameDetailsState extends State<GameDetails> {
                               ),
                               MyButton(
                                 text: 'Add',
-                                onPressed: () =>
-                                    showButtons(context, userLists),
+                                onPressed: () => showButtons(
+                                    context: context,
+                                    gameId: game[0].id.toString()),
                                 size: 30,
                               ),
                             ],
