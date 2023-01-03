@@ -6,9 +6,8 @@ import '../services/user_services.dart';
 import 'sliver_app_bar.dart';
 
 class ListGamesReplacment extends StatefulWidget {
-  const ListGamesReplacment({
-    super.key,
-  });
+  final String userid;
+  const ListGamesReplacment({super.key, required this.userid});
 
   @override
   State<ListGamesReplacment> createState() => _ListGamesReplacmentState();
@@ -21,7 +20,7 @@ class _ListGamesReplacmentState extends State<ListGamesReplacment> {
       body: CustomScrollView(slivers: [
         MySliverAppbar(
           text: 'Loading',
-          ontap: () => context.go('/yourLists/${userId[0]}'),
+          ontap: () => context.go('/yourLists/${widget.userid}'),
           noBack: false,
         ),
         const SliverToBoxAdapter(

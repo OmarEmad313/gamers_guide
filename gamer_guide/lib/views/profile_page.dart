@@ -8,6 +8,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../services/user_lists_services.dart';
 import '../services/user_services.dart';
 import '../widgets/sliver_app_bar.dart';
 
@@ -19,6 +20,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String myuserid = '';
   bool isloaded = false;
   List<String> texts = [
     'Favorite Games',
@@ -41,9 +43,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future userid() async {
-    await getUserId();
-    if (userId.isNotEmpty) {
-      //print(userId[0]);
+    myuserid = await getUserId();
+    if (myuserid.isNotEmpty) {
+      print(myuserid);
       setState(() => isloaded = true);
     }
   }
@@ -74,13 +76,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   size: 20,
                   onTap: () {
                     if (index == 0) {
-                      context.go('/favoriteGames/${userId[0]}');
+                      context.go('/favoriteGames/$myuserid');
                     }
                     if (index == 1) {
-                      context.go('/yourLists/${userId[0]}');
+                      context.go('/yourLists/$myuserid');
                     }
                     if (index == 2) {
-                      context.go('/yourComments/');
+                      context.go('/yourComments/$myuserid');
                     }
                   },
                   leadingIcon: Icon(

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/text_form_field.dart';
@@ -16,14 +14,20 @@ void addlistdialog(BuildContext context) {
     builder: (context) {
       return AlertDialog(
         title: const MyText(text: 'ADD A LIST'),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0))),
         //titleTextStyle: TextStyle(backgroundColor: Colors.lightBlue),
         content: SizedBox(
-          height: 300,
+          height: 160,
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                const SizedBox(height: 50),
+                const Divider(
+                  color: Colors.grey,
+                  height: 4.0,
+                ),
+                const SizedBox(height: 30),
                 const MyText(
                     text: ' List Name :',
                     paddingSize: 8,
@@ -38,21 +42,26 @@ void addlistdialog(BuildContext context) {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
-                MyButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      context.go('/home/1');
-                      addList(listname: nameController.text);
-                    }
-                  },
-                  color: Colors.lightBlue,
-                )
               ],
             ),
           ),
         ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MyButton(
+                text: 'Submit',
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    // context.go('/home/1');
+                    addList(listName: nameController.text);
+                  }
+                },
+              )
+            ],
+          )
+        ],
       );
     },
   );

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/services/user_services.dart';
+import 'package:flutter_application_2/views/comments.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/comments_records_model.dart';
+import '../services/user_comments_services.dart';
+import '../services/user_games_services.dart';
 import '../services/user_lists_services.dart';
 import '../widgets/my_text.dart';
 import '../widgets/sliver_app_bar.dart';
 
 class YourComments extends StatefulWidget {
-  const YourComments({super.key});
+  final String userId;
+  const YourComments({super.key, required this.userId});
 
   @override
   State<YourComments> createState() => _YourCommentsState();
@@ -25,7 +31,81 @@ class _YourCommentsState extends State<YourComments> {
           },
           noBack: false,
         ),
-        SliverList(
+        SliverToBoxAdapter(
+          child: StreamBuilder<List<CommentsRecordsModel>>(
+            stream: fetchUserComments(widget.userId),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+              }
+              if (snapshot.hasData) {
+                final comments = snapshot.data;
+                //print(comments!.length);
+                // print(userId[0]);
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: ListView.builder(
+                      itemCount: comments!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                              color: Colors.grey.withOpacity(0.4),
+                            ),
+                            height: 200,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GetGameName(
+                                    gameId: '${comments[index].gameId}'),
+                                RatingBar.builder(
+                                  initialRating: comments[index].starsNumber,
+                                  allowHalfRating: true,
+                                  ignoreGestures: true,
+                                  itemSize: 20,
+                                  itemBuilder: (context, index) {
+                                    return const Icon(Icons.star,
+                                        color: Colors.amber);
+                                  },
+                                  onRatingUpdate: (value) {},
+                                ),
+                                const MyText(
+                                  text: 'Comment :',
+                                  size: 10,
+                                  paddingSize: 8,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  height: 94,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)),
+                                    color: Colors.white.withOpacity(0.4),
+                                  ),
+                                  child: MyText(
+                                    text: comments[index].commentDescription,
+                                    paddingSize: 0,
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
+        ),
+        /* SliverList(
           delegate: SliverChildBuilderDelegate(
             childCount: 4,
             (context, index) {
@@ -82,7 +162,7 @@ class _YourCommentsState extends State<YourComments> {
               );
             },
           ),
-        )
+        ) */
       ]),
     );
   }

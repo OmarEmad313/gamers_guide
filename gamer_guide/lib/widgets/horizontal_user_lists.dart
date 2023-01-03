@@ -7,13 +7,15 @@ import '../services/user_lists_services.dart';
 import '../services/user_services.dart';
 
 class HorizontalUserLists extends StatelessWidget {
+  final String myUserid;
   final String gamId;
-  const HorizontalUserLists({super.key, required this.gamId});
+  const HorizontalUserLists(
+      {super.key, required this.gamId, required this.myUserid});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ListsRecordsModel>>(
-      stream: fetchListsRecords(userId[0]),
+      stream: fetchListsRecords(myUserid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print('error');

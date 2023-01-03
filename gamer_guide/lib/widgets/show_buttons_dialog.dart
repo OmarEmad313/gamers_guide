@@ -6,7 +6,10 @@ import 'package:flutter_application_2/widgets/my_text.dart';
 import '../services/user_games_services.dart';
 import 'horizontal_user_lists.dart';
 
-void showButtons({required BuildContext context, required String gameId}) {
+void showButtons(
+    {required BuildContext context,
+    required String gameId,
+    required String userId}) {
   List<bool> isSelected = [false, false];
   // List<bool> isSelected2 = [true];
   showModalBottomSheet(
@@ -92,9 +95,7 @@ void showButtons({required BuildContext context, required String gameId}) {
                   weight: FontWeight.bold,
                   size: 20,
                 ),
-                HorizontalUserLists(
-                  gamId: gameId,
-                ),
+                HorizontalUserLists(gamId: gameId, myUserid: userId),
               ],
             ),
           );

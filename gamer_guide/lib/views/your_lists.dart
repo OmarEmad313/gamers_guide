@@ -41,7 +41,7 @@ class _YourListsState extends State<YourLists> {
               if (snapshot.hasData) {
                 final lists = snapshot.data;
                 //print('lists are $lists');
-                print(userId[0]);
+
                 return SizedBox(
                   width: 200,
                   height: MediaQuery.of(context).size.height,
@@ -51,41 +51,45 @@ class _YourListsState extends State<YourLists> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 20),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                              color: Colors.grey.withOpacity(0.4),
-                            ),
-                            height: 100,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MyText(
-                                        text: lists[index]
-                                            .listName!), //listId[index]
-                                    MyText(
-                                        text:
-                                            'Games : ${lists[index].gameId!.length}'),
-                                  ],
-                                ),
-                                const EditDelete(),
-                              ],
+                          child: InkWell(
+                            onTap: () => context
+                                .go('/listGames/${lists[index].listName}'),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                color: Colors.grey.withOpacity(0.4),
+                              ),
+                              height: 100,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      MyText(
+                                          text: lists[index]
+                                              .listName!), //listId[index]
+                                      MyText(
+                                          text:
+                                              'Games : ${lists[index].gameId!.length}'),
+                                    ],
+                                  ),
+                                  EditDelete(listName: lists[index].listName!),
+                                ],
+                              ),
                             ),
                           ),
                         );
                       }),
                 );
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
             },
           )
@@ -97,7 +101,7 @@ class _YourListsState extends State<YourLists> {
         onPressed: () {
           addlistdialog(context);
         },
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.deepPurple,
         child: const Icon(
           Icons.add_circle,
           color: Colors.white,
