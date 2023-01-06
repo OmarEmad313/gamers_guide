@@ -22,6 +22,7 @@ class _ListGamesState extends State<ListGames> {
   List<GameCoverModel> gamecovers = [];
   List tempList = [];
   bool isloaded = false;
+  String myUserid = '';
   @override
   void initState() {
     mainFunction();
@@ -29,6 +30,7 @@ class _ListGamesState extends State<ListGames> {
   }
 
   Future<void> mainFunction() async {
+    myUserid = await getUserId();
     userListGamesIds = await getUserListGamesIds(widget.listName);
 
     for (var i = 0; i < userListGamesIds.length; i++) {
@@ -37,7 +39,7 @@ class _ListGamesState extends State<ListGames> {
       tempList.add(gamecovers[0].cover?.url);
     }
     //print(tempList[0]);
-    if (tempList.isNotEmpty && userId[0].isNotEmpty) {
+    if (tempList.isNotEmpty) {
       setState(() {
         isloaded = true;
       });
@@ -48,13 +50,13 @@ class _ListGamesState extends State<ListGames> {
   Widget build(BuildContext context) {
     return Visibility(
       visible: isloaded,
-      replacement: const ListGamesReplacment(),
+      replacement: ListGamesReplacment(userid: myUserid),
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
             MySliverAppbar(
               text: 'Games in\n${widget.listName}',
-              ontap: () => context.go('/yourLists/${userId[0]}'),
+              ontap: () => context.go('/yourLists/$myUserid'),
               noBack: false,
             ),
             SliverGrid(

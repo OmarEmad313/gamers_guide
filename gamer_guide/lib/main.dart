@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/edit_profile.dart';
 import 'package:flutter_application_2/views/favorite_games_page.dart';
+import 'package:flutter_application_2/views/intro_screens/parent.dart';
 import 'package:flutter_application_2/views/listGames.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
 import 'package:flutter_application_2/views/your_comments.dart';
@@ -59,6 +60,12 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/parentIntro',
+      builder: (BuildContext context, GoRouterState state) {
+        return const ParentsIntroScreen();
+      },
+    ),
+    GoRoute(
       path: '/home/:id',
       builder: (BuildContext context, GoRouterState state) {
         return Navbar(id: state.params["id"]!);
@@ -108,9 +115,9 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/yourComments',
+      path: '/yourComments/:idUser',
       builder: (context, state) {
-        return const YourComments();
+        return YourComments(userId: state.params["idUser"]!);
       },
     ),
     GoRoute(

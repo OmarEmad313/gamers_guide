@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/views/homepage.dart';
 
 import 'package:flutter_application_2/views/login.dart';
 
@@ -20,7 +21,7 @@ class Bridge extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Something went wrong'));
           } else if (snapshot.hasData) {
-            return const ParentsIntroScreen(); //Navbar(id: '0')
+            return const Navbar(id: '0'); //Navbar(id: '0')
           } else {
             return const LogIn();
           }

@@ -2,17 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/popular_games.dart';
 import 'package:flutter_application_2/services/api_services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_application_2/widgets/my_text.dart';
+
+import '../widgets/homepage_container.dart';
+import '../widgets/homepage_listview.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  HomePageWidgetState createState() => HomePageWidgetState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
-  List<PopularGamesModel> covers = [];
+class HomePageWidgetState extends State<HomePageWidget> {
+  List<PopularGamesModel> popularGames = [];
+  List<PopularGamesModel> newGames = [];
   var isLoaded = false;
 
   final user = FirebaseAuth.instance.currentUser!;
@@ -25,7 +29,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   getData() async {
-    covers = await GameServices().populargames();
+    popularGames = await GameServices().populargames();
+    newGames = await GameServices().newgames();
     /* for (var i = 1; i <= games!.length; i++) {
       covers = await GameServices().getCovers(games![i].cover!);
       url[i] = covers![i].url!;
@@ -33,7 +38,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     /* for (var element in games!) {
       covers = await GameServices().getCovers(games![element.cover!].cover!);
     } */
-    if (covers.isNotEmpty) {
+    if (popularGames.isNotEmpty && newGames.isNotEmpty) {
       setState(() {
         isLoaded = true;
         //print('id is ${covers[0].game.id}');
@@ -45,86 +50,28 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'HomePage',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.blue,
+        title:
+            const MyText(text: 'HomePage', size: 30, weight: FontWeight.bold),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Visibility(
         visible: isLoaded,
         replacement: const Center(child: CircularProgressIndicator()),
         child: ListView(
           children: [
+            HomePageContainer(covers: popularGames, name: 'Popular'),
+            HomePageContainer(covers: newGames, name: 'Latest Releases'),
+            const Center(
+                child:
+                    MyText(text: 'Genres', size: 25, weight: FontWeight.bold)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 25),
+              padding: const EdgeInsets.all(8.0),
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  color: Colors.grey.withOpacity(0.4),
-                ),
-                width: MediaQuery.of(context).size.width,
-                height: 250,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'Popular',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        itemCount: covers.length, //games!.length
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 8),
-                            child: InkWell(
-                              onTap: () {
-                                context.go('/gamedetails/${covers[index].id}');
-                              },
-                              child: Container(
-                                width: 100,
-                                // ignore: prefer_const_constructors
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https:${covers[index].cover?.url}'), //${covers[index].cover?.url}
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  color: Colors.grey.withOpacity(0.4),
-                ),
-                width: MediaQuery.of(context).size.width,
-                height: 200,
-              ),
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  decoration: const BoxDecoration(
+                      color: Colors.deepPurple,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Center(child: HomePageListview())),
             )
           ],
         ),

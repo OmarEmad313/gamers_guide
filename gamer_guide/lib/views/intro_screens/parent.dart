@@ -3,6 +3,7 @@ import 'package:flutter_application_2/views/intro_screens/screen1.dart';
 import 'package:flutter_application_2/views/intro_screens/screen2.dart';
 import 'package:flutter_application_2/views/intro_screens/screen3.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -52,7 +53,9 @@ class _ParentsIntroScreenState extends State<ParentsIntroScreen> {
                   onLastPage
                       ? MyButton(
                           text: 'Done',
-                          onPressed: () {},
+                          onPressed: () {
+                            context.go('/home/0');
+                          },
                         )
                       : MyButton(
                           text: 'Next',

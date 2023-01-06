@@ -6,7 +6,7 @@ class PopularGamesModel {
 
   PopularGamesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    cover = json['cover'] != null ? new Cover.fromJson(json['cover']) : null;
+    cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
   }
 
   static List<PopularGamesModel> games(List oneGame) {

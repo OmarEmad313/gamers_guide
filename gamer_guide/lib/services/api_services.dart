@@ -64,6 +64,30 @@ class GameServices {
   }
 
   //------------------------
+  Future<List<PopularGamesModel>> newgames() async {
+    var client = http.Client();
+    var url = Uri.parse('https://api.igdb.com/v4/games');
+    var headers = {
+      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
+      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Content-Type': 'text/plain',
+    };
+    var body =
+        '''fields cover.url;\r\nwhere platforms = 48 & first_release_date < 1609689433 & cover.url!=null; \r\nsort first_release_date desc;\r\nlimit 6;''';
+    var response = await client.post(url, headers: headers, body: body);
+
+    var data = jsonDecode(response.body);
+    // print("data ${data}"); // varaiable data contain multiple objects
+    List tempList = [];
+    for (var v in data) {
+      //print("v $v"); // varaiable v is one object
+      tempList.add(v);
+    }
+    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
+    return PopularGamesModel.games(tempList);
+  }
+
+  //------------------------
 
   static Future<List<SimilarGamesModel>> getSimilarGames(int id) async {
     var client = http.Client();

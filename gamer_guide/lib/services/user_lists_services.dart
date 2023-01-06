@@ -22,10 +22,10 @@ import 'user_services.dart';
 
 //used in add_list_dialog in your_lists
 Future addList({required listName}) async {
-  await getUserId();
+  String myuserid = await getUserId();
   final listInsatnce = FirebaseFirestore.instance
       .collection('users')
-      .doc(userId[0])
+      .doc(myuserid)
       .collection('Lists')
       .doc();
   final listData = {
@@ -37,10 +37,10 @@ Future addList({required listName}) async {
 
 //used in edit_delete widget in your_list page
 Future deleteList({required listName}) async {
-  //await getUserId();
+  String myuserid = await getUserId();
   await FirebaseFirestore.instance
       .collection('users')
-      .doc(userId[0])
+      .doc(myuserid)
       .collection('Lists')
       .where('listName', isEqualTo: listName)
       .get()
@@ -49,10 +49,10 @@ Future deleteList({required listName}) async {
 
 //used in edit_delete widget in your_list page
 Future updateList({required oldListName, required newListName}) async {
-  //await getUserId();
+  String myuserid = await getUserId();
   await FirebaseFirestore.instance
       .collection('users')
-      .doc(userId[0])
+      .doc(myuserid)
       .collection('Lists')
       .where('listName', isEqualTo: oldListName)
       .get()
@@ -74,11 +74,11 @@ Stream<List<ListsRecordsModel>> fetchListsRecords(String userid) {
 
 //used in listGames page
 Future getUserListGamesIds(String listName) async {
-  await getUserId();
+  String myuserid = await getUserId();
   List<String> userListGamesIds = [];
   final querySnapshot = await FirebaseFirestore.instance
       .collection('users')
-      .doc(userId[0])
+      .doc(myuserid)
       .collection('Lists')
       .where('listName', isEqualTo: listName)
       .get();

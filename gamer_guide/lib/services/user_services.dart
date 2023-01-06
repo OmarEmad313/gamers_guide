@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/container.dart';
 
 import '../widgets/my_text.dart';
 
-List<String> userId = [];
 String username = '';
 
 Future<String> getUserId() async {
+  List<String> userId = [];
   await FirebaseFirestore.instance
       .collection('users')
       .where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email)
@@ -24,14 +22,15 @@ Future<String> getUserId() async {
   return userId[0];
 }
 
-void userid() async {
-  userId[0] = await getUserId();
+Future<String> userid() async {
+  String myuserid = await getUserId();
+  return myuserid;
 }
 
 Future<String> getUserName() async {
-  await getUserId();
+  String myuserid = await getUserId();
   DocumentSnapshot user =
-      await FirebaseFirestore.instance.collection('users').doc(userId[0]).get();
+      await FirebaseFirestore.instance.collection('users').doc(myuserid).get();
 
   username = user.get('name');
   return username;

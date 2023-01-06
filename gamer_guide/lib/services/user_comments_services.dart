@@ -7,12 +7,12 @@ Future createComment(
     {required String gameId,
     required String comment,
     required double rating}) async {
-  await getUserId();
+  String myuserid = await getUserId();
   final commentInsatnce =
       FirebaseFirestore.instance.collection('comments').doc();
 
   final commentData = {
-    'userId': userId[0],
+    'userId': myuserid,
     'gameId': int.parse(gameId),
     'starsNumber': rating,
     'commentDescription': comment,

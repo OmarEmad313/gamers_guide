@@ -8,16 +8,16 @@ import 'user_services.dart';
 
 //used in show button dialog
 Future addGame(String gameId, String listName) async {
-  await getUserId();
-  await FirebaseFirestore.instance.collection('users').doc(userId[0]).update({
+  String myuserid = await getUserId();
+  await FirebaseFirestore.instance.collection('users').doc(myuserid).update({
     listName: FieldValue.arrayUnion([gameId])
   });
 }
 
 //used in show button dialog
 Future removeGame(String gameId, String listName) async {
-  await getUserId();
-  await FirebaseFirestore.instance.collection('users').doc(userId[0]).update({
+  String myuserid = await getUserId();
+  await FirebaseFirestore.instance.collection('users').doc(myuserid).update({
     listName: FieldValue.arrayRemove([gameId])
   });
 }
@@ -25,10 +25,10 @@ Future removeGame(String gameId, String listName) async {
 //used in horizontal_user_lists in show button dialog
 Future addGameToUserList(
     {required String listName, required String gameId}) async {
-  await getUserId();
+  String myuserid = await getUserId();
   final querySnapshot = await FirebaseFirestore.instance
       .collection('users')
-      .doc(userId[0])
+      .doc(myuserid)
       .collection('Lists')
       .where('listName', isEqualTo: listName)
       .get();
@@ -40,10 +40,10 @@ Future addGameToUserList(
 //used in horizontal_user_lists in show button dialog
 Future removeGameToUserList(
     {required String listName, required String gameId}) async {
-  await getUserId();
+  String myuserid = await getUserId();
   final querySnapshot = await FirebaseFirestore.instance
       .collection('users')
-      .doc(userId[0])
+      .doc(myuserid)
       .collection('Lists')
       .where('listName', isEqualTo: listName)
       .get();
@@ -54,10 +54,10 @@ Future removeGameToUserList(
 
 //used in game_tabs widget in favorite_games_page
 Future getGamesIds({required String whichList}) async {
-  await getUserId();
+  String myuserid = await getUserId();
   List<String> gamesIds = [];
   final userInsatnce =
-      await FirebaseFirestore.instance.collection('users').doc(userId[0]).get();
+      await FirebaseFirestore.instance.collection('users').doc(myuserid).get();
   Map<String, dynamic>? userData = userInsatnce.data();
   for (var gameId in userData?[whichList]) {
     gamesIds.add(gameId);

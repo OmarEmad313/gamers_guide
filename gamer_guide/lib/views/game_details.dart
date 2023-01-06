@@ -7,7 +7,7 @@ import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:flutter_application_2/services/api_services.dart';
 import 'package:flutter_application_2/services/user_lists_services.dart';
 import 'package:flutter_application_2/services/user_services.dart';
-import 'package:flutter_application_2/widgets/horizantal_listview.dart';
+import 'package:flutter_application_2/widgets/gamedetails_listview.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_container.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
@@ -32,6 +32,7 @@ class _GameDetailsState extends State<GameDetails> {
   var isLoaded = false;
   final videoUrl = "https://www.youtube.com/watch?v=YMx8Bbev6T4";
   late YoutubePlayerController _controller;
+  String myUserId = '';
 
   @override
   void initState() {
@@ -47,14 +48,15 @@ class _GameDetailsState extends State<GameDetails> {
   }
 
   Future<void> getData() async {
-    await getUserId();
+    myUserId = await getUserId();
     /*   userLists = fetchListsRecords(userId[0]) as List<ListsRecordsModel>;
     print('userLists ${userLists}'); */
     game = await GameServices().getGameDetails(int.parse(widget.gameId));
     //userLists = await fetchListsRecords();
-    if (game.isNotEmpty) {
+    if (game.isNotEmpty && myUserId.isNotEmpty) {
       setState(() {
         isLoaded = true;
+        //print(myUserId);
       });
     }
   }
@@ -193,7 +195,8 @@ class _GameDetailsState extends State<GameDetails> {
                                 text: 'Add',
                                 onPressed: () => showButtons(
                                     context: context,
-                                    gameId: game[0].id.toString()),
+                                    gameId: game[0].id.toString(),
+                                    userId: myUserId),
                                 size: 30,
                               ),
                             ],
