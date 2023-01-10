@@ -20,20 +20,19 @@ Future createComment(
   await commentInsatnce.set(commentData);
 }
 
-Future fetchGameComments(String gameId) async {
-  var commentsRecords = await FirebaseFirestore.instance
+// used in comments page
+Stream<List<CommentsRecordsModel>> fetchGameComments(String gameId) {
+  return FirebaseFirestore.instance
       .collection('comments')
       .where('gameId', isEqualTo: int.parse(gameId))
-      .get();
-
-  var list = commentsRecords.docs
-      .map((e) => CommentsRecordsModel(
-          commentDescription: e['commentDescription'],
-          starsNumber: e['starsNumber'],
-          gameId: e['gameId'],
-          userId: e['userId']))
-      .toList();
-  return list;
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => CommentsRecordsModel(
+              commentDescription: doc['commentDescription'],
+              starsNumber: doc['starsNumber'],
+              gameId: doc['gameId'],
+              userId: doc['userId']))
+          .toList());
 }
 
 // used in your_comments page
@@ -45,4 +44,15 @@ Stream<List<CommentsRecordsModel>> fetchUserComments(String userid) {
       .map((snapshot) => snapshot.docs
           .map((doc) => CommentsRecordsModel.fromJson(doc.data()))
           .toList());
+}
+
+Future deleteComment({required gameId}) async {
+  String myuserid = await getUserId();
+  await FirebaseFirestore.instance
+      .collection('comments')
+      .where('userId', isEqualTo: myuserid)
+      .where('gameId', isEqualTo: gameId)
+      .limit(1)
+      .get()
+      .then((snapshot) => snapshot.docs[0].reference.delete());
 }

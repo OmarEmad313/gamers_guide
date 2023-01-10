@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/services/user_lists_services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +10,7 @@ import '../models/list_records_model.dart';
 import '../services/user_services.dart';
 import '../widgets/add_list_dialog.dart';
 import '../widgets/edit_delete.dart';
+import '../widgets/edit_list_dialog.dart';
 import '../widgets/my_text.dart';
 import '../widgets/sliver_app_bar.dart';
 
@@ -38,7 +40,7 @@ class _YourListsState extends State<YourLists> {
               if (snapshot.hasError) {
                 print('error');
               }
-              if (snapshot.hasData) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 final lists = snapshot.data;
                 //print('lists are $lists');
 
@@ -48,40 +50,73 @@ class _YourListsState extends State<YourLists> {
                   child: ListView.builder(
                       itemCount: lists!.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 20),
-                          child: InkWell(
-                            onTap: () => context
-                                .go('/listGames/${lists[index].listName}'),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
+                        return Slidable(
+                          startActionPane: ActionPane(
+                            motion: const StretchMotion(),
+                            children: [
+                              SlidableAction(
+                                foregroundColor: Colors.white,
+                                spacing: 10,
+                                label: 'Edit',
+                                icon: (Icons.edit),
+                                backgroundColor: Colors.lightBlue,
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
-                                color: Colors.grey.withOpacity(0.4),
+                                onPressed: (context) {
+                                  // print('in $index');
+                                  editListDialog(
+                                      context, lists[index].listName!);
+                                },
                               ),
-                              height: 100,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      MyText(
-                                          text: lists[index]
-                                              .listName!), //listId[index]
-                                      MyText(
-                                          text:
-                                              'Games : ${lists[index].gameId!.length}'),
-                                    ],
-                                  ),
-                                  EditDelete(listName: lists[index].listName!),
-                                ],
+                              SlidableAction(
+                                spacing: 10,
+                                label: 'Delete',
+                                icon: (Icons.delete),
+                                backgroundColor: Colors.red,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                onPressed: (context) async {
+                                  await deleteList(
+                                      listName: lists[index].listName!);
+                                },
+                              )
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 20),
+                            child: InkWell(
+                              onTap: () => context
+                                  .go('/listGames/${lists[index].listName}'),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: Colors.grey.withOpacity(0.4),
+                                ),
+                                height: 100,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        MyText(
+                                            text: lists[index]
+                                                .listName!), //listId[index]
+                                        MyText(
+                                            text:
+                                                'Games : ${lists[index].gameId!.length}'),
+                                      ],
+                                    ),
+                                    const Icon(Icons.arrow_forward)
+                                  ],
+                                ),
                               ),
                             ),
                           ),

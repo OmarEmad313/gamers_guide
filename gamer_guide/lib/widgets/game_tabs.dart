@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -37,66 +38,70 @@ class GameTabs extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemCount: tempList.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: borderRad,
-                      color: Colors.grey.withOpacity(0.4),
-                    ),
-                    height: 200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 125,
-                          decoration: BoxDecoration(
-                            borderRadius: borderRad,
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    'https:${tempList[index].cover!.url}'),
-                                fit: BoxFit.fill),
+                return Slidable(
+                  startActionPane: ActionPane(
+                    motion: const StretchMotion(),
+                    children: [
+                      SlidableAction(
+                        spacing: 10,
+                        label: 'Delete',
+                        icon: (Icons.delete),
+                        backgroundColor: Colors.red,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        onPressed: (context) async {
+                          context.go('/home/2');
+                          await removeGame('${tempList[index].id}', listName);
+                        },
+                      )
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: borderRad,
+                        color: Colors.grey.withOpacity(0.4),
+                      ),
+                      height: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 125,
+                            decoration: BoxDecoration(
+                              borderRadius: borderRad,
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https:${tempList[index].cover!.url}'),
+                                  fit: BoxFit.fill),
+                            ),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 159,
-                              child: MyText(
-                                text: tempList[index].name!,
-                                paddingSize: 8,
-                                weight: FontWeight.bold,
-                                style: FontStyle.italic,
-                                size: 20,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 159,
+                                child: MyText(
+                                  text: tempList[index].name!,
+                                  paddingSize: 8,
+                                  weight: FontWeight.bold,
+                                  style: FontStyle.italic,
+                                  size: 20,
+                                ),
                               ),
-                            ),
-                            MyText(
-                              text:
-                                  'Game Rating : ${tempList[index].rating!.floor()}',
-                              paddingSize: 8,
-                              style: FontStyle.italic,
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.remove_circle,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            onPressed: () async {
-                              context.go('/home/2');
-                              await removeGame(
-                                  '${tempList[index].id}', listName);
-                            },
+                              MyText(
+                                text:
+                                    'Game Rating : ${tempList[index].rating!.floor()}',
+                                paddingSize: 8,
+                                style: FontStyle.italic,
+                              ),
+                            ],
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );

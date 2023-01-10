@@ -23,25 +23,24 @@ class Comments extends StatefulWidget {
 class _CommentsState extends State<Comments> {
   var isloaded = false;
   List<CommentsRecordsModel> comments = [];
-  String userName = '';
+  // String userName = '';
 
   @override
   void initState() {
-    initComments();
+    // initComments();
 
     super.initState();
   }
 
-  void initComments() async {
+  /*  void initComments() async {
     comments = await fetchGameComments(widget.gameId);
-    userName = await getUserName();
-    if (comments.isNotEmpty && userName.isNotEmpty) {
+    if (comments.isNotEmpty) {
       setState(() {
         isloaded = true;
         //print('Users id are ${comments[1].userId}');
       });
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -54,73 +53,82 @@ class _CommentsState extends State<Comments> {
             noBack: false,
           ),
           SliverToBoxAdapter(
-            child: Visibility(
-              visible: isloaded,
-              replacement: const Center(
-                heightFactor: 18,
-                child: MyText(
-                    text: "No Comments For This Game",
-                    size: 25,
-                    weight: FontWeight.bold),
-              ),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: ListView.builder(
-                    itemCount: comments.length,
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            color: Colors.grey.withOpacity(0.4),
-                          ),
-                          height: 200,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GetUsersNames(
-                                  userId: comments[index]
-                                      .userId), // comments[index].userId
-                              RatingBar.builder(
-                                initialRating: comments[index].starsNumber,
-                                minRating: 0.5,
-                                ignoreGestures: true,
-                                allowHalfRating: true,
-                                itemSize: 20,
-                                itemBuilder: (context, index) {
-                                  return const Icon(Icons.star,
-                                      color: Colors.amber);
-                                },
-                                onRatingUpdate: (value) {},
+            child: StreamBuilder<List<CommentsRecordsModel>>(
+              stream: fetchGameComments(widget.gameId),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  print('error');
+                }
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  final comments = snapshot.data;
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView.builder(
+                        itemCount: comments!.length,
+                        itemBuilder: ((context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                color: Colors.grey.withOpacity(0.4),
                               ),
-                              const MyText(
-                                text: 'Comment :',
-                                size: 10,
-                                paddingSize: 8,
+                              height: 200,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GetUsersNames(
+                                      userId: comments[index]
+                                          .userId), // comments[index].userId
+                                  RatingBar.builder(
+                                    initialRating: comments[index].starsNumber,
+                                    minRating: 0.5,
+                                    ignoreGestures: true,
+                                    allowHalfRating: true,
+                                    itemSize: 20,
+                                    itemBuilder: (context, index) {
+                                      return const Icon(Icons.star,
+                                          color: Colors.amber);
+                                    },
+                                    onRatingUpdate: (value) {},
+                                  ),
+                                  const MyText(
+                                    text: 'Comment :',
+                                    size: 10,
+                                    paddingSize: 8,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    height: 94,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(20)),
+                                      color: Colors.white.withOpacity(0.4),
+                                    ),
+                                    child: MyText(
+                                      text: comments[index].commentDescription,
+                                      color: Colors.black.withOpacity(0.7),
+                                    ),
+                                  )
+                                ],
                               ),
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                height: 94,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
-                                  color: Colors.white.withOpacity(0.4),
-                                ),
-                                child: MyText(
-                                  text: comments[index].commentDescription,
-                                  color: Colors.black.withOpacity(0.7),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    })),
-              ),
+                            ),
+                          );
+                        })),
+                  );
+                } else {
+                  return const Center(
+                    heightFactor: 18,
+                    child: MyText(
+                        text: "No Comments For This Game",
+                        size: 25,
+                        weight: FontWeight.bold),
+                  );
+                }
+              },
             ),
           ),
         ],

@@ -22,10 +22,10 @@ Future<String> getUserId() async {
   return userId[0];
 }
 
-Future<String> userid() async {
+/* Future<String> userid() async {
   String myuserid = await getUserId();
   return myuserid;
-}
+} */
 
 Future<String> getUserName() async {
   String myuserid = await getUserId();
