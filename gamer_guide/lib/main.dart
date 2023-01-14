@@ -12,6 +12,7 @@ import 'provider/theme_provider.dart';
 import 'views/bridge.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
+import 'views/genres_games.dart';
 import 'views/navbar.dart';
 import 'views/signup.dart';
 import 'views/similarr_games.dart';
@@ -90,6 +91,14 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/genreGames/:idGenre/:nameGenre',
+      builder: (context, state) {
+        return GenreGames(
+            genreId: state.params["idGenre"]!,
+            genreName: state.params["nameGenre"]!);
+      },
+    ),
+    GoRoute(
       path: '/comments/:id/:name',
       builder: (context, state) {
         return Comments(
@@ -103,9 +112,12 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/editProfile',
+      path: '/editProfile/:nameUser/:idUser',
       builder: (context, state) {
-        return const EditProfile();
+        return EditProfile(
+          userName: state.params["nameUser"]!,
+          userId: state.params["idUser"]!,
+        );
       },
     ),
     GoRoute(

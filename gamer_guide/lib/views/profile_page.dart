@@ -21,6 +21,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   String myuserid = '';
+  String userName = '';
+
   bool isloaded = false;
   List<String> texts = [
     'Favorite Games',
@@ -44,8 +46,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future userid() async {
     myuserid = await getUserId();
-    if (myuserid.isNotEmpty) {
-      print(myuserid);
+    userName = await getUserName();
+
+    if (myuserid.isNotEmpty && userName.isNotEmpty) {
       setState(() => isloaded = true);
     }
   }
@@ -116,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 label: 'Edit profile',
                 onTap: () {
-                  context.go('/editProfile/');
+                  context.go('/editProfile/$userName/$myuserid');
                 },
               ),
               SpeedDialChild(

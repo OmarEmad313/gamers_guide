@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePageListview extends StatelessWidget {
-  List<String> genres = ['shooter', 'adventure', 'puzzle', 'RPG'];
+  List<String> genresNames = [
+    'Shooter',
+    'Adventure',
+    'Puzzle',
+    'Racing',
+    'Sport'
+  ];
+  List<int> genresIds = [5, 31, 9, 10, 14];
   HomePageListview({super.key});
 
   @override
@@ -12,12 +20,15 @@ class HomePageListview extends StatelessWidget {
         height: 45,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: genres.length,
+          itemCount: genresNames.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  context.go(
+                      '/genreGames/${genresIds[index]}/${genresNames[index]}');
+                },
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -26,7 +37,7 @@ class HomePageListview extends StatelessWidget {
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    child: Text(genres[index]),
+                    child: Text(genresNames[index]),
                   ),
                 ),
               ),

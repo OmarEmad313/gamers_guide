@@ -32,6 +32,7 @@ class _SignupState extends State<Signup> {
     final userData = {
       'name': name,
       'email': email,
+      'DOB': '',
       'favGames': [],
       'wishlist': [],
     };

@@ -136,6 +136,33 @@ class GameServices {
   }
 
   //--------------------------------
+  // used in genre_games page
+  static Future<List<GameCoverModel>> getGenreGameCovers(
+      String genreName) async {
+    var client = http.Client();
+    var url = Uri.parse('https://api.igdb.com/v4/games');
+    var headers = {
+      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
+      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Content-Type': 'text/plain',
+    };
+    var body = '''fields cover.url,genres.name,name;
+where genres.name ="$genreName" & cover.url!=null & aggregated_rating>90; 
+limit 8;''';
+    var response = await client.post(url, headers: headers, body: body);
+
+    var data = jsonDecode(response.body);
+    //print("data ${data}"); // varaiable data contain multiple objects
+    List tempList = [];
+    for (var v in data) {
+      //print("v $v"); // varaiable v is one object
+      tempList.add(v);
+    }
+    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
+    return GameCoverModel.games(tempList);
+  }
+
+  //--------------------------------
   // used in fav_games_page
   static Future<List<UserGamesModel>> getUserGames(String id) async {
     var client = http.Client();
