@@ -5,6 +5,7 @@ import 'package:flutter_application_2/views/intro_screens/parent.dart';
 import 'package:flutter_application_2/views/listGames.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
 import 'package:flutter_application_2/views/your_comments.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,23 +32,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    /*  return ChangeNotifierProvider(
         create: (context) => ThemeProvider(),
         builder: (context, _) {
-          final themeProvidor = Provider.of<ThemeProvider>(context);
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routerConfig: _router,
-            title: 'Flutter Demo',
-            themeMode: themeProvidor.themeMode,
-            /* theme: ThemeData(
+          final themeProvidor = Provider.of<ThemeProvider>(context); */
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: _router,
+      title: 'Flutter Demo',
+      // themeMode: themeProvidor.themeMode,
+      /* theme: ThemeData(
           primarySwatch: Colors.lightBlue,
           //useMaterial3: true,
         ), */
-            darkTheme: MyThemes.darkTheme,
-            theme: MyThemes.lightTheme,
-          );
-        });
+      darkTheme: MyThemes.darkTheme,
+      theme: MyThemes.lightTheme,
+    );
   }
 }
 
