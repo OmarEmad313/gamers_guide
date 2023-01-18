@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/game_cover_model.dart';
 import '../models/popular_games.dart';
@@ -187,6 +186,3 @@ limit 8;''';
     return UserGamesModel.games(tempList);
   }
 }
-
-final gameProvider =
-    Provider.family<GameServices, int>((ref, id) => GameServices());

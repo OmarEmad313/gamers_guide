@@ -1,4 +1,4 @@
-package com.example.mobile_app_final.GamersGuide
+package com.example.flutter_application_2
 
 import io.flutter.embedding.android.FlutterActivity
 
