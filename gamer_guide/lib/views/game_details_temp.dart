@@ -13,21 +13,22 @@ import 'package:flutter_application_2/widgets/my_container.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../models/list_records_model.dart';
 import '../services/date_functions.dart';
 import '../widgets/show_buttons_dialog.dart';
 
-class GameDetails extends StatefulWidget {
+class GameDetails2 extends StatefulWidget {
   final String gameId;
-  const GameDetails({Key? key, required this.gameId}) : super(key: key);
+  const GameDetails2({Key? key, required this.gameId}) : super(key: key);
 
   @override
-  State<GameDetails> createState() => _GameDetailsState();
+  State<GameDetails2> createState() => _GameDetails2State();
 }
 
-class _GameDetailsState extends State<GameDetails> {
+class _GameDetails2State extends State<GameDetails2> {
   List<GameDetailsModel> game = [];
 
   var isLoaded = false;
@@ -38,14 +39,6 @@ class _GameDetailsState extends State<GameDetails> {
 
   @override
   void initState() {
-    //final videoId = YoutubePlayer.convertUrlToId(videoUrl);
-    //print('video id is $videoId');
-    /*  _controller = YoutubePlayerController(
-        initialVideoId: videoId!,
-        flags: const YoutubePlayerFlags(
-          autoPlay: true,
-          //mute: false,
-        )); */
     super.initState();
     //getData();
   }

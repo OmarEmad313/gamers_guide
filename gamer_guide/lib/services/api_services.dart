@@ -12,6 +12,8 @@ import '../models/popular_games.dart';
 import '../models/similar_games.dart';
 import '../models/user_games_model.dart';
 
+final gameProvider = Provider<GameServices>((ref) => GameServices());
+
 class GameServices {
   Future<List<GameDetailsModel>> getGameDetails(int id) async {
     var client = http.Client();
@@ -40,7 +42,7 @@ class GameServices {
 
   //------------------------
 
-  Future<List<PopularGamesModel>> populargames() async {
+  Future<List<GamesCoverModel>> populargames() async {
     // the ? mark + PopularGames is the class name from (popular_games.dart)
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
@@ -61,11 +63,11 @@ class GameServices {
       tempList.add(v);
     }
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return PopularGamesModel.games(tempList);
+    return GamesCoverModel.games(tempList);
   }
 
   //------------------------
-  Future<List<PopularGamesModel>> newgames() async {
+  Future<List<GamesCoverModel>> newgames() async {
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
@@ -85,7 +87,7 @@ class GameServices {
       tempList.add(v);
     }
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return PopularGamesModel.games(tempList);
+    return GamesCoverModel.games(tempList);
   }
 
   //------------------------
@@ -187,6 +189,3 @@ limit 8;''';
     return UserGamesModel.games(tempList);
   }
 }
-
-final gameProvider =
-    Provider.family<GameServices, int>((ref, id) => GameServices());

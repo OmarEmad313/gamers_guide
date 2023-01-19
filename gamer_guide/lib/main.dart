@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/edit_profile.dart';
 import 'package:flutter_application_2/views/favorite_games_page.dart';
+import 'package:flutter_application_2/views/game_details_temp.dart';
 import 'package:flutter_application_2/views/intro_screens/parent.dart';
 import 'package:flutter_application_2/views/listGames.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
@@ -79,9 +80,9 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/gamedetails/:id',
+      path: '/gamedetails/:idGame',
       builder: (context, state) {
-        return GameDetails(gameId: state.params["id"]!);
+        return GameDetails(gameId: state.params["idGame"]!);
       },
     ),
     GoRoute(

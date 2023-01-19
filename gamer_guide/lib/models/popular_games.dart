@@ -1,18 +1,18 @@
-class PopularGamesModel {
+class GamesCoverModel {
   int? id;
   Cover? cover;
 
-  PopularGamesModel({this.id, this.cover});
+  GamesCoverModel({this.id, this.cover});
 
-  PopularGamesModel.fromJson(Map<String, dynamic> json) {
+  GamesCoverModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
   }
 
-  static List<PopularGamesModel> games(List oneGame) {
+  static List<GamesCoverModel> games(List oneGame) {
     return oneGame.map((data) {
       //print("data $data");
-      return PopularGamesModel.fromJson(data);
+      return GamesCoverModel.fromJson(data);
     }).toList();
   }
 }

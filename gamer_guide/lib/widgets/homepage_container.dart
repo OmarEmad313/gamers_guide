@@ -6,9 +6,13 @@ import 'my_text.dart';
 
 class HomePageContainer extends StatelessWidget {
   final String name;
-  final List<PopularGamesModel> covers;
+  final List<GamesCoverModel> covers;
+  final String userId;
   const HomePageContainer(
-      {super.key, required this.covers, required this.name});
+      {super.key,
+      required this.covers,
+      required this.name,
+      required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class HomePageContainer extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
                     child: InkWell(
                       onTap: () {
-                        context.go('/gamedetails/${covers[index].id}');
+                        context.go('/gamedetails/${covers[index].id}/$userId');
                       },
                       child: Container(
                         width: 100,
