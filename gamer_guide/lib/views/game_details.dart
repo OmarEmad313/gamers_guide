@@ -1,6 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
@@ -8,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/game_details_model.dart';
-import '../services/api_services.dart';
 import '../services/data_provider.dart';
 import '../services/date_functions.dart';
 import '../widgets/gamedetails_listview.dart';
@@ -34,12 +30,12 @@ class GameDetails extends ConsumerWidget {
           data: (gameData) {
             List<GameDetailsModel> game = gameData.map((e) => e).toList();
 
-            controller = YoutubePlayerController(
+            /* controller = YoutubePlayerController(
                 initialVideoId: game[0].videos![0].videoId!,
                 flags: const YoutubePlayerFlags(
                   autoPlay: true,
                   //mute: false,
-                ));
+                )); */
             // String myUserId = getUserId();
             return Scaffold(
               body: SafeArea(
@@ -50,8 +46,8 @@ class GameDetails extends ConsumerWidget {
                       height: MediaQuery.of(context).size.height * 0.6,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image:
-                                  NetworkImage('https:${game[0].cover?.url}'),
+                              image: NetworkImage(
+                                  'https:${game[0].cover?.url != null ? game[0].cover?.url : ''}'),
                               fit: BoxFit.fill)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -93,7 +89,7 @@ class GameDetails extends ConsumerWidget {
                                   children: [
                                     Expanded(
                                       child: MyText(
-                                        text: '${game[0].name}',
+                                        text: game[0].name ?? 'No Name',
                                         paddingSize: 20,
                                         size: 36,
                                         weight: FontWeight.bold,
@@ -116,12 +112,12 @@ class GameDetails extends ConsumerWidget {
                                     children: [
                                       MyText(
                                         text:
-                                            'Release Date : ${getTime(game[0].firstReleaseDate!)}',
+                                            'Release Date : ${game[0].firstReleaseDate != null ? getTime(game[0].firstReleaseDate!) : null}',
                                         color: Colors.black,
                                       ),
                                       MyText(
                                         text:
-                                            'Rating : ${game[0].rating?.floor()}',
+                                            'Rating : ${game[0].rating != null ? game[0].rating!.floor() : null}',
                                         color: Colors.black,
                                         weight: FontWeight.bold,
                                       ),
@@ -155,8 +151,11 @@ class GameDetails extends ConsumerWidget {
                                   ),
                                 ),
                                 MyContainer(
-                                  text:
-                                      '${game[0].involvedCompanies?[0].company?.name}',
+                                  text: game[0]
+                                          .involvedCompanies![0]
+                                          .company!
+                                          .name ??
+                                      'null',
                                   hintText: 'Developer',
                                   horizontalPadding: 25,
                                   verticalPadding: 5,
@@ -207,10 +206,10 @@ class GameDetails extends ConsumerWidget {
                                     paddingSize: 20,
                                     size: 20,
                                     weight: FontWeight.bold),
-                                YoutubePlayer(
+                                /*  YoutubePlayer(
                                   controller: controller,
                                   showVideoProgressIndicator: true,
-                                ),
+                                ), */
                                 const MyText(
                                     text: 'Screenshots',
                                     paddingSize: 20,
@@ -221,39 +220,49 @@ class GameDetails extends ConsumerWidget {
                           ),
                           Container(
                             color: Colors.white,
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            child: ListView.builder(
-                              itemCount: game[0].screenshots?.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20)),
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https:${game[0].screenshots?[index].url}'),
-                                          fit: BoxFit.fill),
-                                    ),
-                                    width: MediaQuery.of(context).size.height *
-                                        0.25,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
+                                  child: ListView.builder(
+                                    itemCount: game[0].screenshots?.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    'https:${game[0].screenshots?[index].url}'),
+                                                fit: BoxFit.fill),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.25,
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
+                                ),
+                                const MyText(
+                                    text: 'Summary',
+                                    paddingSize: 20,
+                                    size: 20,
+                                    weight: FontWeight.bold),
+                                MyText(
+                                  text: game[0].summary ?? 'No Summary',
+                                  paddingSize: 20,
+                                  size: 15,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ],
                             ),
-                          ),
-                          const MyText(
-                              text: 'Summary',
-                              paddingSize: 20,
-                              size: 20,
-                              weight: FontWeight.bold),
-                          MyText(
-                            text: '${game[0].summary}',
-                            paddingSize: 20,
-                            size: 15,
-                            color: Colors.black.withOpacity(0.5),
                           ),
                         ], //children
                       ),

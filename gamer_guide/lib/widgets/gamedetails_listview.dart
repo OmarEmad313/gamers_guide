@@ -13,7 +13,8 @@ class HorizantalListview extends StatelessWidget {
       height: 45,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: isTheme ? game[0].themes?.length : game[0].genres?.length,
+        itemCount:
+            isTheme ? game[0].themes?.length ?? 1 : game[0].genres?.length ?? 1,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -25,8 +26,9 @@ class HorizantalListview extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: Text(
-                    '${isTheme ? game[0].themes![index].name : game[0].genres?[index].name}'),
+                child: Text(isTheme
+                    ? (game[0].themes?[index].name ?? 'No Themes')
+                    : (game[0].genres?[index].name ?? 'No Genres')),
               ),
             ),
           );
