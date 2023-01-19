@@ -9,7 +9,7 @@ import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
+
 import 'provider/theme_provider.dart';
 import 'views/bridge.dart';
 import 'views/comments.dart';
