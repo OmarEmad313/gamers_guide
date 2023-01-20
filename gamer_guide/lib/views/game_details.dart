@@ -24,18 +24,22 @@ class GameDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gameData = ref.watch(gameDetailsProvider(gameId));
     late YoutubePlayerController controller;
+    bool video = false;
 
     return Scaffold(
       body: gameData.when(
           data: (gameData) {
             List<GameDetailsModel> game = gameData.map((e) => e).toList();
+            if (game[0].videos?[0].videoId != null) {
+              controller = YoutubePlayerController(
+                  initialVideoId: game[0].videos![0].videoId!,
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: true,
+                    //mute: false,
+                  ));
+              video = true;
+            }
 
-            /* controller = YoutubePlayerController(
-                initialVideoId: game[0].videos![0].videoId!,
-                flags: const YoutubePlayerFlags(
-                  autoPlay: true,
-                  //mute: false,
-                )); */
             // String myUserId = getUserId();
             return Scaffold(
               body: SafeArea(
@@ -112,12 +116,12 @@ class GameDetails extends ConsumerWidget {
                                     children: [
                                       MyText(
                                         text:
-                                            'Release Date : ${game[0].firstReleaseDate != null ? getTime(game[0].firstReleaseDate!) : null}',
+                                            'Release Date : ${game[0].firstReleaseDate != null ? getTime(game[0].firstReleaseDate!) : 'No Date'}',
                                         color: Colors.black,
                                       ),
                                       MyText(
                                         text:
-                                            'Rating : ${game[0].rating != null ? game[0].rating!.floor() : null}',
+                                            'Rating : ${game[0].rating != null ? game[0].rating!.floor() : 'No Rating'}',
                                         color: Colors.black,
                                         weight: FontWeight.bold,
                                       ),
@@ -201,15 +205,25 @@ class GameDetails extends ConsumerWidget {
                                   game: game,
                                   isTheme: true,
                                 ),
-                                const MyText(
-                                    text: 'Videos',
-                                    paddingSize: 20,
-                                    size: 20,
-                                    weight: FontWeight.bold),
-                                /*  YoutubePlayer(
-                                  controller: controller,
-                                  showVideoProgressIndicator: true,
-                                ), */
+                                Container(
+                                  child: video
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const MyText(
+                                                text: 'Videos',
+                                                paddingSize: 20,
+                                                size: 20,
+                                                weight: FontWeight.bold),
+                                            YoutubePlayer(
+                                              controller: controller,
+                                              showVideoProgressIndicator: true,
+                                            ),
+                                          ],
+                                        )
+                                      : const SizedBox(height: 1),
+                                ),
                                 const MyText(
                                     text: 'Screenshots',
                                     paddingSize: 20,

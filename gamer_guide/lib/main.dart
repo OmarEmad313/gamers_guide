@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/edit_profile.dart';
 import 'package:flutter_application_2/views/favorite_games_page.dart';
@@ -22,8 +23,10 @@ import 'views/your_lists.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
+  await Firebase.initializeApp();
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print(fcmToken);
   runApp(const ProviderScope(child: MyApp()));
 }
 

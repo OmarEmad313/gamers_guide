@@ -121,7 +121,12 @@ class _YourListsState extends State<YourLists> {
                       }),
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: MyText(
+                  text: 'No Comments',
+                  size: 30,
+                  weight: FontWeight.bold,
+                ));
               }
             },
           )

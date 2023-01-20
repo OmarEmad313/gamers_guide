@@ -180,12 +180,12 @@ limit 8;''';
 
     var data = jsonDecode(response.body);
     // print("data ${data}"); // varaiable data contain multiple objects
-    List tempList = [];
+    /* List tempList = [];
     for (var v in data) {
       //print("v $v"); // varaiable v is one object
       tempList.add(v);
-    }
+    } */
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return UserGamesModel.games(tempList);
+    return UserGamesModel.games(data);
   }
 }

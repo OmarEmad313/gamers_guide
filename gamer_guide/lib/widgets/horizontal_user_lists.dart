@@ -36,8 +36,8 @@ class HorizontalUserLists extends StatelessWidget {
                     onTap: () async {
                       await addGameToUserList(
                           listName: lists[index].listName!, gameId: gamId);
-                      NotificationApi.showNotification(
-                          title: 'hello', body: 'game is added');
+                      /* NotificationApi.showNotification(
+                          title: 'hello', body: 'game is added', payload: ''); */
                     },
                     onLongPress: () async => await removeGameToUserList(
                         listName: lists[index].listName!, gameId: gamId),

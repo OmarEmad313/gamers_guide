@@ -62,9 +62,9 @@ class _SimilarGamessState extends State<SimilarGamess> {
         body: CustomScrollView(
           slivers: <Widget>[
             MySliverAppbar(
-              text: 'Similar Games for \n game name',
+              text: 'Similar Games ',
               ontap: () {
-                context.go('/home');
+                context.go('/gamedetails/${widget.gameId}');
               },
               noBack: false,
             ),

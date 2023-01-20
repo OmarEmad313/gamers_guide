@@ -59,6 +59,7 @@ Future getGamesIds({required String whichList}) async {
   final userInsatnce =
       await FirebaseFirestore.instance.collection('users').doc(myuserid).get();
   Map<String, dynamic>? userData = userInsatnce.data();
+  //print('userdata $userData');
   for (var gameId in userData?[whichList]) {
     gamesIds.add(gameId);
   }

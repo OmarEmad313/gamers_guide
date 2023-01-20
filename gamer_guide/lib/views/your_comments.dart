@@ -117,7 +117,12 @@ class _YourCommentsState extends State<YourComments> {
                     }),
               );
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: MyText(
+                text: 'No Comments',
+                size: 30,
+                weight: FontWeight.bold,
+              ));
             }
           },
         ),
