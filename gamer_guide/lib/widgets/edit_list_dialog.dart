@@ -12,7 +12,6 @@ void editListDialog(BuildContext context, String listName) {
     builder: (context) {
       return AlertDialog(
           title: const MyText(text: 'Edit the LIST'),
-          //titleTextStyle: TextStyle(backgroundColor: Colors.lightBlue),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(32.0))),
           contentPadding: const EdgeInsets.only(top: 10.0),
@@ -48,7 +47,7 @@ void editListDialog(BuildContext context, String listName) {
               text: 'save',
               onTap: () {
                 if (formKey.currentState!.validate()) {
-                  updateList(
+                  UserListsServices.updateList(
                       oldListName: listName, newListName: nameController.text);
                   Navigator.pop(context);
                 }

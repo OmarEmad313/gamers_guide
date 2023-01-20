@@ -41,10 +41,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    userid();
+    userdata();
   }
 
-  Future userid() async {
+  Future userdata() async {
     myuserid = await getUserId();
     userName = await getUserName();
 
@@ -68,7 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ontap: () {},
                 noBack: true,
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 60)),
+              SliverToBoxAdapter(
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1)),
               SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                 return MyContainer(
@@ -124,14 +126,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SpeedDialChild(
                   child: const Icon(
-                    Icons.dark_mode_outlined,
+                    Icons.privacy_tip_outlined,
                   ),
-                  label: 'Switch theme',
+                  label: 'Privacy and Policy',
                   onTap: () {}),
             ],
           )),
     );
   }
 }
-/* backgroundColor: Colors.lightBlue,
-        child: const Icon(Icons.settings), */

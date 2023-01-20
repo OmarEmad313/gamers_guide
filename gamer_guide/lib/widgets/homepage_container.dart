@@ -45,7 +45,7 @@ class HomePageContainer extends StatelessWidget {
                         context.go('/gamedetails/${covers[index].id}');
                       },
                       child: Container(
-                        width: 100,
+                        width: MediaQuery.of(context).size.width * 0.3,
                         decoration: BoxDecoration(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),

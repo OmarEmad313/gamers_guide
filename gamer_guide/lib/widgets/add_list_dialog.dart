@@ -24,7 +24,6 @@ void addlistdialog(BuildContext context) {
             child: Column(
               children: [
                 const Divider(color: Colors.black, height: 30),
-                //const SizedBox(height: 30),
                 const MyText(
                     text: ' List Name :',
                     paddingSize: 8,
@@ -48,7 +47,7 @@ void addlistdialog(BuildContext context) {
             text: 'Add',
             onTap: () {
               if (formKey.currentState!.validate()) {
-                addList(listName: nameController.text);
+                UserListsServices.addList(listName: nameController.text);
                 Navigator.pop(context);
               }
             },

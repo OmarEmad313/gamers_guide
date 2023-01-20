@@ -116,7 +116,7 @@ class GameServices {
   }
 
   //--------------------------------
-  static Future<List<GameCoverModel>> getGameCovers(int id) async {
+  static Future<List<GamesCoverModel>> getGameCovers(int id) async {
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
@@ -135,13 +135,12 @@ class GameServices {
       tempList.add(v);
     }
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return GameCoverModel.games(tempList);
+    return GamesCoverModel.games(tempList);
   }
 
   //--------------------------------
   // used in genre_games page
-  static Future<List<GameCoverModel>> getGenreGameCovers(
-      String genreName) async {
+  Future<List<GamesCoverModel>> getGenreGameCovers(String genreName) async {
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
@@ -162,7 +161,7 @@ limit 8;''';
       tempList.add(v);
     }
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return GameCoverModel.games(tempList);
+    return GamesCoverModel.games(tempList);
   }
 
   //--------------------------------

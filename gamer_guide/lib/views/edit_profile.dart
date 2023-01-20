@@ -67,7 +67,7 @@ class _EditProfileState extends State<EditProfile> {
           height: MediaQuery.of(context).size.height,
           child: ListView(
             children: [
-              const SizedBox(height: 50),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               /* Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Container(
@@ -113,7 +113,7 @@ class _EditProfileState extends State<EditProfile> {
                         backgroundImage: const AssetImage('assets/logo.jpeg'),
                       ),
                     ),
-              const SizedBox(height: 50),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
               Form(
                 key: formKey,
                 child: Column(

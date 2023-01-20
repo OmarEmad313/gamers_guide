@@ -20,7 +20,8 @@ class _ListGamesReplacmentState extends State<ListGamesReplacment> {
       body: CustomScrollView(slivers: [
         MySliverAppbar(
           text: 'Loading',
-          ontap: () => context.go('/yourLists/${widget.userid}'),
+          //Navigator.pop(context);
+          ontap: () => context.go('/home/1'),
           noBack: false,
         ),
         const SliverToBoxAdapter(

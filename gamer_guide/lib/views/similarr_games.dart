@@ -6,6 +6,7 @@ import 'package:flutter_application_2/services/api_services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/game_cover_model.dart';
+import '../models/popular_games.dart';
 import '../widgets/sliver_app_bar.dart';
 
 class SimilarGamess extends StatefulWidget {
@@ -18,7 +19,7 @@ class SimilarGamess extends StatefulWidget {
 
 class _SimilarGamessState extends State<SimilarGamess> {
   List<SimilarGamesModel> similarGames = [];
-  List<GameCoverModel> gamecovers = [];
+  List<GamesCoverModel> gamecovers = [];
   List tempList = [];
   var isLoaded = false;
   var size = 0;

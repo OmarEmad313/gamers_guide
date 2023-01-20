@@ -30,7 +30,7 @@ class EditDelete extends StatelessWidget {
           ),
           MyIconButton(
             onPressed: () async {
-              await deleteList(listName: listName);
+              await UserListsServices.deleteList(listName: listName);
               //print('delete');
             },
             icon: const Icon(Icons.delete),

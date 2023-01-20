@@ -3,7 +3,7 @@ import 'package:flutter_application_2/services/user_services.dart';
 
 import 'package:go_router/go_router.dart';
 
-import '../models/game_cover_model.dart';
+import '../models/popular_games.dart';
 import '../services/api_services.dart';
 import '../services/user_lists_services.dart';
 import '../widgets/list_games_replacment.dart';
@@ -19,7 +19,7 @@ class ListGames extends StatefulWidget {
 
 class _ListGamesState extends State<ListGames> {
   List<String> userListGamesIds = [];
-  List<GameCoverModel> gamecovers = [];
+  List<GamesCoverModel> gamecovers = [];
   List tempList = [];
   bool isloaded = false;
   String myUserid = '';
@@ -31,7 +31,8 @@ class _ListGamesState extends State<ListGames> {
 
   Future<void> mainFunction() async {
     myUserid = await getUserId();
-    userListGamesIds = await getUserListGamesIds(widget.listName);
+    userListGamesIds =
+        await UserListsServices.getUserListGamesIds(widget.listName);
 
     for (var i = 0; i < userListGamesIds.length; i++) {
       gamecovers =
@@ -39,7 +40,7 @@ class _ListGamesState extends State<ListGames> {
       tempList.add(gamecovers[0].cover?.url);
     }
     //print(tempList[0]);
-    if (tempList.isNotEmpty) {
+    if (tempList.isNotEmpty && myUserid.isNotEmpty) {
       setState(() {
         isloaded = true;
       });

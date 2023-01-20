@@ -15,7 +15,7 @@ class HorizontalUserLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ListsRecordsModel>>(
-      stream: fetchListsRecords(myUserid),
+      stream: UserListsServices.fetchListsRecords(myUserid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print('error');

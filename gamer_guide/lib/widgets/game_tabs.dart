@@ -64,12 +64,12 @@ class GameTabs extends StatelessWidget {
                         borderRadius: borderRad,
                         color: Colors.grey.withOpacity(0.4),
                       ),
-                      height: 200,
+                      height: MediaQuery.of(context).size.height * 0.3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 125,
+                            width: MediaQuery.of(context).size.width * 0.35,
                             decoration: BoxDecoration(
                               borderRadius: borderRad,
                               image: DecorationImage(
@@ -83,7 +83,8 @@ class GameTabs extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                width: 159,
+                                width:
+                                    MediaQuery.of(context).size.width * 0.475,
                                 child: MyText(
                                   text: tempList[index].name!,
                                   paddingSize: 8,

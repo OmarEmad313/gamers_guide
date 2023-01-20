@@ -47,7 +47,7 @@ class GameDetails extends ConsumerWidget {
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https:${game[0].cover?.url != null ? game[0].cover?.url : ''}'),
+                                  'https:${game[0].cover?.url ?? ''}'),
                               fit: BoxFit.fill)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -232,20 +232,19 @@ class GameDetails extends ConsumerWidget {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(20)),
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    'https:${game[0].screenshots?[index].url}'),
-                                                fit: BoxFit.fill),
-                                          ),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.25,
-                                        ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(20)),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      'https:${game[0].screenshots?[index].url}'),
+                                                  fit: BoxFit.fill),
+                                            ),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.25),
                                       );
                                     },
                                   ),

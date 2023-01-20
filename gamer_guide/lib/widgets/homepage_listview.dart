@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePageListview extends StatelessWidget {
+  HomePageListview({super.key});
+
   List<String> genresNames = [
     'Shooter',
     'Adventure',
@@ -10,7 +12,6 @@ class HomePageListview extends StatelessWidget {
     'Sport'
   ];
   List<int> genresIds = [5, 31, 9, 10, 14];
-  HomePageListview({super.key});
 
   @override
   Widget build(BuildContext context) {

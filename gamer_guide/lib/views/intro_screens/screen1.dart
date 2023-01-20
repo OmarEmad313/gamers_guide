@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:lottie/lottie.dart';
 
@@ -13,7 +11,7 @@ class Screen1 extends StatelessWidget {
       child: Scaffold(
         body: Container(
           height: MediaQuery.of(context).size.height * 0.75,
-          padding: const EdgeInsets.all(40),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
           decoration: const BoxDecoration(
               color: Colors.deepPurpleAccent,
               borderRadius: BorderRadius.all(Radius.circular(60))),

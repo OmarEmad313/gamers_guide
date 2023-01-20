@@ -3,13 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/services/user_lists_services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
 import 'package:go_router/go_router.dart';
-
 import '../models/list_records_model.dart';
-import '../services/user_services.dart';
 import '../widgets/add_list_dialog.dart';
-import '../widgets/edit_delete.dart';
 import '../widgets/edit_list_dialog.dart';
 import '../widgets/my_text.dart';
 import '../widgets/sliver_app_bar.dart';
@@ -35,7 +31,7 @@ class _YourListsState extends State<YourLists> {
           ),
           SliverToBoxAdapter(
               child: StreamBuilder<List<ListsRecordsModel>>(
-            stream: fetchListsRecords(widget.userId),
+            stream: UserListsServices.fetchListsRecords(widget.userId),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 print('error');
@@ -45,7 +41,6 @@ class _YourListsState extends State<YourLists> {
                 //print('lists are $lists');
 
                 return SizedBox(
-                  width: 200,
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(
                       itemCount: lists!.length,
@@ -63,7 +58,6 @@ class _YourListsState extends State<YourLists> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
                                 onPressed: (context) {
-                                  // print('in $index');
                                   editListDialog(
                                       context, lists[index].listName!);
                                 },
@@ -76,7 +70,7 @@ class _YourListsState extends State<YourLists> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
                                 onPressed: (context) async {
-                                  await deleteList(
+                                  await UserListsServices.deleteList(
                                       listName: lists[index].listName!);
                                 },
                               )
@@ -95,7 +89,8 @@ class _YourListsState extends State<YourLists> {
                                       Radius.circular(20)),
                                   color: Colors.grey.withOpacity(0.4),
                                 ),
-                                height: 100,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -107,6 +102,8 @@ class _YourListsState extends State<YourLists> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         MyText(
+                                            size: 20,
+                                            weight: FontWeight.bold,
                                             text: lists[index]
                                                 .listName!), //listId[index]
                                         MyText(
