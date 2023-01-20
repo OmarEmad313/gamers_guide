@@ -9,10 +9,10 @@ class GamesCoverModel {
     cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
   }
 
-  static List<GamesCoverModel> games(List oneGame) {
-    return oneGame.map((data) {
+  static List<GamesCoverModel> games(List allGames) {
+    return allGames.map((oneGame) {
       //print("data $data");
-      return GamesCoverModel.fromJson(data);
+      return GamesCoverModel.fromJson(oneGame);
     }).toList();
   }
 }

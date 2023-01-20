@@ -11,7 +11,6 @@ void showButtons(
     required String gameId,
     required String userId}) {
   List<bool> isSelected = [false, false];
-  // List<bool> isSelected2 = [true];
   showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
@@ -21,7 +20,7 @@ void showButtons(
         builder: (context, setState) {
           return Container(
             padding: const EdgeInsets.all(20),
-            height: 300,
+            height: MediaQuery.of(context).size.height * 0.375,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,6 +31,7 @@ void showButtons(
                   weight: FontWeight.bold,
                   paddingSize: 8,
                 ),
+                const Divider(thickness: 2, color: Colors.black),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),

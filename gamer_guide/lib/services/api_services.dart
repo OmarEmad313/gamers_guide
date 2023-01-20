@@ -56,14 +56,15 @@ class GameServices {
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    // print("data ${data}"); // varaiable data contain multiple objects
+    /*  print("data ${data}"); // varaiable data contain multiple objects
     List tempList = [];
     for (var v in data) {
       //print("v $v"); // varaiable v is one object
       tempList.add(v);
     }
+    print(tempList); */
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return GamesCoverModel.games(tempList);
+    return GamesCoverModel.games(data);
   }
 
   //------------------------
@@ -81,13 +82,13 @@ class GameServices {
 
     var data = jsonDecode(response.body);
     // print("data ${data}"); // varaiable data contain multiple objects
-    List tempList = [];
+    /* List tempList = [];
     for (var v in data) {
       //print("v $v"); // varaiable v is one object
       tempList.add(v);
-    }
+    } */
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return GamesCoverModel.games(tempList);
+    return GamesCoverModel.games(data);
   }
 
   //------------------------
