@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/services/notification_api_services.dart';
-
 import '../models/list_records_model.dart';
 import '../services/user_games_services.dart';
 import '../services/user_lists_services.dart';
-import '../services/user_services.dart';
 
 class HorizontalUserLists extends StatelessWidget {
   final String myUserid;

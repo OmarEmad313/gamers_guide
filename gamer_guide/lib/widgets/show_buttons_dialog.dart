@@ -60,11 +60,6 @@ void showButtons(
                     onPressed: (index) {
                       setState(
                         () {
-                          /* for (var i = 0; i < isSelected.length; i++) {
-                            if (i == index) {
-                              isSelected[i] = !isSelected[i];
-                            }
-                          } */
                           if (index == 0) {
                             if (isSelected[index] == false) {
                               addGame(gameId, 'favGames');

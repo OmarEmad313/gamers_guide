@@ -7,7 +7,6 @@ import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/game_cover_model.dart';
 import '../models/popular_games.dart';
 import '../models/similar_games.dart';
 import '../models/user_games_model.dart';

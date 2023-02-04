@@ -10,8 +10,7 @@ import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
-import 'provider/theme_provider.dart';
+
 import 'views/bridge.dart';
 import 'views/comments.dart';
 import 'views/game_details.dart';
@@ -26,7 +25,7 @@ Future main() async {
 
   await Firebase.initializeApp();
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  print(fcmToken);
+  //print(fcmToken);
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -45,12 +44,12 @@ class MyApp extends StatelessWidget {
       routerConfig: _router,
       title: 'Flutter Demo',
       // themeMode: themeProvidor.themeMode,
-      /* theme: ThemeData(
-          primarySwatch: Colors.lightBlue,
-          //useMaterial3: true,
-        ), */
-      darkTheme: MyThemes.darkTheme,
-      theme: MyThemes.lightTheme,
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        //useMaterial3: true,
+      ),
+      /* darkTheme: MyThemes.darkTheme,
+      theme: MyThemes.lightTheme, */
     );
   }
 }
