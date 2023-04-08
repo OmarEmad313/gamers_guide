@@ -14,12 +14,13 @@ import '../models/user_games_model.dart';
 final gameProvider = Provider<GameServices>((ref) => GameServices());
 
 class GameServices {
+  static const accessToken = 'e258bfbhtkcrtwed6zi00ghv9nghlp';
   Future<List<GameDetailsModel>> getGameDetails(int id) async {
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body =
@@ -47,7 +48,7 @@ class GameServices {
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body =
@@ -72,7 +73,7 @@ class GameServices {
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body =
@@ -80,13 +81,7 @@ class GameServices {
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    // print("data ${data}"); // varaiable data contain multiple objects
-    /* List tempList = [];
-    for (var v in data) {
-      //print("v $v"); // varaiable v is one object
-      tempList.add(v);
-    } */
-    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
+
     return GamesCoverModel.games(data);
   }
 
@@ -97,7 +92,7 @@ class GameServices {
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body =
@@ -121,7 +116,7 @@ class GameServices {
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body = '''fields id,name,cover.url;\r\nwhere id=$id;\r\n''';
@@ -145,7 +140,7 @@ class GameServices {
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body = '''fields cover.url,genres.name,name;
@@ -171,20 +166,33 @@ limit 8;''';
     var url = Uri.parse('https://api.igdb.com/v4/games');
     var headers = {
       'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer t3vvy8cgeo4t89ga9reoppc5yj35mm',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'text/plain',
     };
     var body = '''fields name,cover.url,rating;\r\nwhere id=$id;''';
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    // print("data ${data}"); // varaiable data contain multiple objects
-    /* List tempList = [];
-    for (var v in data) {
-      //print("v $v"); // varaiable v is one object
-      tempList.add(v);
-    } */
-    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
     return UserGamesModel.games(data);
+  }
+
+  //-----------------------------------------------------------
+  static Future<List<GamesCoverModel>> userPreferenceGames() async {
+    var client = http.Client();
+    var url = Uri.parse('https://api.igdb.com/v4/games');
+    var headers = {
+      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'text/plain',
+    };
+    var body =
+        '''fields name , cover.url , first_release_date , platforms.abbreviation , rating , aggregated_rating,slug;
+                where category = (0,9) & platforms = (48)  & rating>95;
+                sort rating desc;
+                limit 10;''';
+    var response = await client.post(url, headers: headers, body: body);
+
+    var data = jsonDecode(response.body);
+    return GamesCoverModel.games(data);
   }
 }

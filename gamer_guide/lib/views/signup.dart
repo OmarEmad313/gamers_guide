@@ -148,7 +148,7 @@ class _SignupState extends State<Signup> {
                                         name: nameController.text,
                                         email: emailController.text,
                                       );
-                                      context.go('/parentIntro');
+                                      context.go('/userPreference');
                                     }).onError((error, stackTrace) {
                                       print("Error ${error.toString()}");
                                     });

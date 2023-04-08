@@ -6,6 +6,7 @@ import 'package:flutter_application_2/views/game_details_temp.dart';
 import 'package:flutter_application_2/views/intro_screens/parent.dart';
 import 'package:flutter_application_2/views/listGames.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
+import 'package:flutter_application_2/views/user_preference.dart';
 import 'package:flutter_application_2/views/your_comments.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,9 +46,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       // themeMode: themeProvidor.themeMode,
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        //useMaterial3: true,
-      ),
+          primarySwatch: Colors.deepPurple,
+          primaryColorDark: Colors.black,
+          brightness: Brightness.dark
+          //useMaterial3: true,
+          ),
       /* darkTheme: MyThemes.darkTheme,
       theme: MyThemes.lightTheme, */
     );
@@ -145,6 +148,12 @@ final GoRouter _router = GoRouter(
       path: '/listGames/:nameList',
       builder: (context, state) {
         return ListGames(listName: state.params["nameList"]!);
+      },
+    ),
+    GoRoute(
+      path: '/userPreference',
+      builder: (context, state) {
+        return const UserPreference();
       },
     ),
   ],

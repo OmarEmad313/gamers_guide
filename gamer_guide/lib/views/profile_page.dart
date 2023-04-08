@@ -128,6 +128,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   label: 'Privacy and Policy',
                   onTap: () {}),
+              SpeedDialChild(
+                  child: const Icon(
+                    Icons.help,
+                  ),
+                  label: 'Tutorial',
+                  onTap: () {
+                    context.go('/userPreference'); /* parentIntro */
+                  }),
             ],
           )),
     );
