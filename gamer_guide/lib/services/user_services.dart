@@ -49,6 +49,24 @@ Future update(
 //  snapshot.docs[0].reference.update({'listName': newMail}));
 ///////////////////////////////////////
 
+Future createUser({
+  required String name,
+  required String email,
+}) async {
+  final userInsatnce = FirebaseFirestore.instance.collection('users').doc();
+
+  final userData = {
+    'name': name,
+    'email': email,
+    'DOB': '',
+    'favGames': [],
+    'wishlist': [],
+  };
+
+  await userInsatnce.set(userData);
+}
+/////////////////////////////////////////////////
+
 class GetUsersNames extends StatelessWidget {
   final String userId;
   const GetUsersNames({super.key, required this.userId});

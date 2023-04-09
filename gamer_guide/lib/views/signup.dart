@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/text_form_field.dart';
 import 'package:go_router/go_router.dart';
@@ -22,23 +23,6 @@ class _SignupState extends State<Signup> {
   final TextEditingController nameController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-
-  Future createUser({
-    required String name,
-    required String email,
-  }) async {
-    final userInsatnce = FirebaseFirestore.instance.collection('users').doc();
-
-    final userData = {
-      'name': name,
-      'email': email,
-      'DOB': '',
-      'favGames': [],
-      'wishlist': [],
-    };
-
-    await userInsatnce.set(userData);
-  }
 
   @override
   void dispose() {

@@ -3,9 +3,11 @@ import 'package:flutter_application_2/models/popular_games.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MyStep extends StatelessWidget {
+  final int index;
   double rating;
   int gameId;
   final Function callBackFunction;
+  final Function callBackFunction2;
 
   final List<GamesCoverModel> covers;
   MyStep({
@@ -13,7 +15,9 @@ class MyStep extends StatelessWidget {
     required this.rating,
     required this.gameId,
     required this.covers,
+    required this.index,
     required this.callBackFunction,
+    required this.callBackFunction2,
   });
 
   @override
@@ -28,10 +32,11 @@ class MyStep extends StatelessWidget {
               perspective: 0.005,
               diameterRatio: 2,
               /* useMagnifier: true,
-                      magnification: 1.25, */
-              onSelectedItemChanged: (index) {
-                gameId = covers[index].id!;
-                //covers.removeAt(index);
+              magnification: 1.25, */
+              onSelectedItemChanged: (index2) {
+                gameId = covers[index2].id!;
+                //print(gameId);
+                callBackFunction2(gameId, index);
               },
               physics: const FixedExtentScrollPhysics(),
               childDelegate: ListWheelChildBuilderDelegate(
@@ -65,7 +70,7 @@ class MyStep extends StatelessWidget {
           },
           onRatingUpdate: (value) {
             rating = value;
-            callBackFunction(value, gameId);
+            callBackFunction(rating, index);
           },
         ),
       ],

@@ -1,5 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/popular_games.dart';
 import 'package:flutter_application_2/services/api_services.dart';
@@ -19,29 +22,44 @@ class _UserPreferenceState extends State<UserPreference> {
   List<GamesCoverModel> gamecovers = [];
   bool isloaded = false;
 
-  int game1_id = 0;
-  int game2_id = 0;
-  int game3_id = 0;
-  int game4_id = 0;
-  int game5_id = 0;
-  double rating1 = 0.5;
-  double rating2 = 0.5;
-  double rating3 = 0.5;
-  double rating4 = 0.5;
-  double rating5 = 0.5;
-  List<double> gameRatings = [];
-  List<int> gameIds = [];
+  List<double> gameRatings = [0.5, 0.5, 0.5, 0.5, 0.5];
+  List<int> gameIds = [0, 0, 0, 0, 0];
 
-  callback(gameRating, gameId) {
+  callback(gameRating, index) {
     setState(() {
-      gameRatings.add(gameRating);
-      gameIds.add(gameId);
+      if (index == 1) {
+        gameRatings[0] = gameRating;
+      }
+      if (index == 2) {
+        gameRatings[1] = gameRating;
+      }
+      if (index == 3) {
+        gameRatings[2] = gameRating;
+      }
+      if (index == 4) {
+        gameRatings[3] = gameRating;
+      } else {
+        gameRatings[4] = gameRating;
+      }
     });
   }
 
-  callback2(arg) {
+  callback2(gameId, index) {
     setState(() {
-      rating1 = arg;
+      if (index == 1) {
+        gameIds[0] = gameId;
+      }
+      if (index == 2) {
+        gameIds[1] = gameId;
+      }
+      if (index == 3) {
+        gameIds[2] = gameId;
+      }
+      if (index == 4) {
+        gameIds[3] = gameId;
+      } else {
+        gameIds[4] = gameId;
+      }
     });
   }
 
@@ -104,17 +122,22 @@ class _UserPreferenceState extends State<UserPreference> {
                       onPressed: () {
                         if (currentStep == getSteps().length - 1) {
                           //send data to server
-                          print(game1_id == 0 ? gamecovers[0].id : game1_id);
-                          print(gameRatings);
-                          print(gameIds);
+                          print(
+                              gameIds[0] == 0 ? gamecovers[0].id : gameIds[0]);
+                          print(gameIds[1]);
+                          print(gameIds[2]);
+                          print(gameIds[3]);
+                          print(gameIds[4]);
                         } else {
                           setState(() => currentStep += 1);
                           //gamecovers.removeAt(0);
-                          gamecovers.removeWhere((object) {
-                            //print(game1_id);
-                            return object.id == game1_id;
-                          });
-                          //print(gamecovers.length);
+                          for (var i = 0; i < gameIds.length; i++) {
+                            gamecovers.removeWhere((object) {
+                              return object.id == gameIds[i];
+                            });
+                          }
+                          //gamecovers.removeAt(0);
+                          print(gamecovers.length);
                         }
                       },
                     ),
@@ -140,10 +163,12 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 0,
           state: currentStep > 0 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: game1_id,
-            rating: rating1,
+            gameId: gameIds[0],
+            rating: gameRatings[0],
             covers: gamecovers,
+            index: 1,
             callBackFunction: callback,
+            callBackFunction2: callback2,
           ),
         ),
         Step(
@@ -151,10 +176,12 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 1,
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: game2_id,
-            rating: rating2,
+            gameId: gameIds[1],
+            rating: gameRatings[1],
             covers: gamecovers,
+            index: 2,
             callBackFunction: callback,
+            callBackFunction2: callback2,
           ),
         ),
         Step(
@@ -162,10 +189,12 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 2,
           state: currentStep > 2 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: game3_id,
-            rating: rating3,
+            gameId: gameIds[2],
+            rating: gameRatings[2],
             covers: gamecovers,
+            index: 3,
             callBackFunction: callback,
+            callBackFunction2: callback2,
           ),
         ),
         Step(
@@ -173,20 +202,24 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 3,
           state: currentStep > 3 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: game4_id,
-            rating: rating4,
+            gameId: gameIds[3],
+            rating: gameRatings[3],
             covers: gamecovers,
+            index: 4,
             callBackFunction: callback,
+            callBackFunction2: callback2,
           ),
         ),
         Step(
           title: const Text(''),
           isActive: currentStep >= 4,
           content: MyStep(
-            gameId: game5_id,
-            rating: rating5,
+            gameId: gameIds[4],
+            rating: gameRatings[4],
             covers: gamecovers,
+            index: 5,
             callBackFunction: callback,
+            callBackFunction2: callback2,
           ),
         ),
       ];
