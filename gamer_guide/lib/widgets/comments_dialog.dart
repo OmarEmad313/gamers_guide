@@ -38,7 +38,7 @@ void showcommentdialog(BuildContext context, String gameId) async {
                     ),
                     RatingBar.builder(
                       glow: true,
-                      glowColor: Colors.lightBlue,
+                      glowColor: Colors.deepPurple,
                       glowRadius: 2,
                       minRating: 0.5,
                       initialRating: 0.5,

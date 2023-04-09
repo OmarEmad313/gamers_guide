@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/popular_games.dart';
 import 'package:flutter_application_2/services/api_services.dart';
+import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_step.dart';
 import 'package:go_router/go_router.dart';
@@ -22,26 +23,25 @@ class _UserPreferenceState extends State<UserPreference> {
   List<GamesCoverModel> gamecovers = [];
   bool isloaded = false;
 
-  List<double> gameRatings = [0.5, 0.5, 0.5, 0.5, 0.5];
+  List<double> gameRatings = [1, 1, 1, 1, 1];
   List<int> gameIds = [0, 0, 0, 0, 0];
 
   callback(gameRating, index) {
-    setState(() {
-      if (index == 1) {
-        gameRatings[0] = gameRating;
-      }
-      if (index == 2) {
-        gameRatings[1] = gameRating;
-      }
-      if (index == 3) {
-        gameRatings[2] = gameRating;
-      }
-      if (index == 4) {
-        gameRatings[3] = gameRating;
-      } else {
-        gameRatings[4] = gameRating;
-      }
-    });
+    if (index == 1) {
+      gameRatings[0] = gameRating;
+    }
+    if (index == 2) {
+      gameRatings[1] = gameRating;
+    }
+    if (index == 3) {
+      gameRatings[2] = gameRating;
+    }
+    if (index == 4) {
+      gameRatings[3] = gameRating;
+    }
+    if (index == 5) {
+      gameRatings[4] = gameRating;
+    }
   }
 
   callback2(gameId, index) {
@@ -57,7 +57,8 @@ class _UserPreferenceState extends State<UserPreference> {
       }
       if (index == 4) {
         gameIds[3] = gameId;
-      } else {
+      }
+      if (index == 5) {
         gameIds[4] = gameId;
       }
     });
@@ -114,6 +115,12 @@ class _UserPreferenceState extends State<UserPreference> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    if (currentStep != 0)
+                      MyButton(
+                          text: 'Back',
+                          horizontalPadding: 15,
+                          color: Colors.red,
+                          onPressed: () => setState(() => currentStep -= 1)),
                     MyButton(
                       text: currentStep == getSteps().length - 1
                           ? 'Confirm'
@@ -122,15 +129,21 @@ class _UserPreferenceState extends State<UserPreference> {
                       onPressed: () {
                         if (currentStep == getSteps().length - 1) {
                           //send data to server
-                          print(
-                              gameIds[0] == 0 ? gamecovers[0].id : gameIds[0]);
-                          print(gameIds[1]);
-                          print(gameIds[2]);
-                          print(gameIds[3]);
-                          print(gameIds[4]);
+                          if (gameIds[4] == 0) {
+                            print('ana');
+                            gameIds[4] = gamecovers[0].id!;
+                          }
+                          for (var i = 0; i < gameIds.length; i++) {
+                            addUserPreference(
+                                game: gameIds[i], gameRating: gameRatings[i]);
+                          }
                         } else {
-                          setState(() => currentStep += 1);
-                          //gamecovers.removeAt(0);
+                          print(gameIds[0]);
+                          if (gameIds[currentStep] == 0) {
+                            print('in if ->' + currentStep.toString());
+                            gameIds[currentStep] = gamecovers[0].id!;
+                            gamecovers.removeAt(0);
+                          }
                           for (var i = 0; i < gameIds.length; i++) {
                             gamecovers.removeWhere((object) {
                               return object.id == gameIds[i];
@@ -138,15 +151,10 @@ class _UserPreferenceState extends State<UserPreference> {
                           }
                           //gamecovers.removeAt(0);
                           print(gamecovers.length);
+                          setState(() => currentStep += 1);
                         }
                       },
                     ),
-                    if (currentStep != 0)
-                      MyButton(
-                          text: 'Back',
-                          horizontalPadding: 15,
-                          color: Colors.red,
-                          onPressed: () => setState(() => currentStep -= 1))
                   ],
                 ),
               );
@@ -163,8 +171,6 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 0,
           state: currentStep > 0 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: gameIds[0],
-            rating: gameRatings[0],
             covers: gamecovers,
             index: 1,
             callBackFunction: callback,
@@ -176,8 +182,6 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 1,
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: gameIds[1],
-            rating: gameRatings[1],
             covers: gamecovers,
             index: 2,
             callBackFunction: callback,
@@ -189,8 +193,6 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 2,
           state: currentStep > 2 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: gameIds[2],
-            rating: gameRatings[2],
             covers: gamecovers,
             index: 3,
             callBackFunction: callback,
@@ -202,8 +204,6 @@ class _UserPreferenceState extends State<UserPreference> {
           isActive: currentStep >= 3,
           state: currentStep > 3 ? StepState.complete : StepState.indexed,
           content: MyStep(
-            gameId: gameIds[3],
-            rating: gameRatings[3],
             covers: gamecovers,
             index: 4,
             callBackFunction: callback,
@@ -214,8 +214,6 @@ class _UserPreferenceState extends State<UserPreference> {
           title: const Text(''),
           isActive: currentStep >= 4,
           content: MyStep(
-            gameId: gameIds[4],
-            rating: gameRatings[4],
             covers: gamecovers,
             index: 5,
             callBackFunction: callback,

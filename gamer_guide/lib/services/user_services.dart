@@ -46,9 +46,9 @@ Future update(
       (snapshot) =>
           snapshot.reference.update({'email': newEmail, 'name': newName}));
 }
-//  snapshot.docs[0].reference.update({'listName': newMail}));
-///////////////////////////////////////
+//////////////////////////////////////////////////////////
 
+//used in signup
 Future createUser({
   required String name,
   required String email,
@@ -65,7 +65,22 @@ Future createUser({
 
   await userInsatnce.set(userData);
 }
-/////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+
+Future addUserPreference({
+  required game,
+  required gameRating,
+}) async {
+  String myuserid = await getUserId();
+  final userPreferenceInsatnce = FirebaseFirestore.instance
+      .collection('users')
+      .doc(myuserid)
+      .collection('userPreference')
+      .doc();
+
+  final userPreferenceData = {'gameId': game, 'rating': gameRating};
+  await userPreferenceInsatnce.set(userPreferenceData);
+}
 
 class GetUsersNames extends StatelessWidget {
   final String userId;
