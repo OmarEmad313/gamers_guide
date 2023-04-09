@@ -1,12 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
-
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/popular_games.dart';
 import 'package:flutter_application_2/services/api_services.dart';
-import 'package:flutter_application_2/services/user_services.dart';
+import 'package:flutter_application_2/services/user_comments_services.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_step.dart';
 import 'package:go_router/go_router.dart';
@@ -130,7 +126,6 @@ class _UserPreferenceState extends State<UserPreference> {
                         if (currentStep == getSteps().length - 1) {
                           //send data to server
                           if (gameIds[4] == 0) {
-                            print('ana');
                             gameIds[4] = gamecovers[0].id!;
                           }
                           for (var i = 0; i < gameIds.length; i++) {
@@ -138,9 +133,9 @@ class _UserPreferenceState extends State<UserPreference> {
                                 game: gameIds[i], gameRating: gameRatings[i]);
                           }
                         } else {
-                          print(gameIds[0]);
+                          //print(gameIds[0]);
                           if (gameIds[currentStep] == 0) {
-                            print('in if ->' + currentStep.toString());
+                            //print('in if ->' + currentStep.toString());
                             gameIds[currentStep] = gamecovers[0].id!;
                             gamecovers.removeAt(0);
                           }
@@ -149,8 +144,8 @@ class _UserPreferenceState extends State<UserPreference> {
                               return object.id == gameIds[i];
                             });
                           }
-                          //gamecovers.removeAt(0);
-                          print(gamecovers.length);
+
+                          //print(gamecovers.length);
                           setState(() => currentStep += 1);
                         }
                       },

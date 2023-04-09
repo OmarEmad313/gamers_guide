@@ -8,16 +8,51 @@ Future createComment(
     required String comment,
     required double rating}) async {
   String myuserid = await getUserId();
-  final commentInsatnce =
+  final comment = await FirebaseFirestore.instance
+      .collection('comments')
+      .where('userId', isEqualTo: myuserid)
+      .where('gameId', isEqualTo: int.parse(gameId))
+      .get();
+  // If a comment already exists -> update it
+  if (comment.docs.isNotEmpty) {
+    /* comment.docs.first.reference.update({
+      'rating': rating,
+      'commentDescription': comment,
+    }); */
+    print('already exists');
+    //print(comment.docs.first.reference.id);
+  }
+  // If the comment doesn't exists -> create it
+  else {
+    print('in else');
+    final commentInsatnce =
+        FirebaseFirestore.instance.collection('comments').doc();
+
+    final commentData = {
+      'userId': myuserid,
+      'gameId': int.parse(gameId),
+      'rating': rating,
+      'commentDescription': comment,
+    };
+    //await commentInsatnce.set(commentData);
+  }
+}
+
+Future addUserPreference({
+  required game,
+  required gameRating,
+}) async {
+  String myuserid = await getUserId();
+  final userPreferenceInsatnce =
       FirebaseFirestore.instance.collection('comments').doc();
 
-  final commentData = {
+  final userPreferenceData = {
+    'gameId': game,
+    'rating': gameRating,
     'userId': myuserid,
-    'gameId': int.parse(gameId),
-    'starsNumber': rating,
-    'commentDescription': comment,
+    'commentDescription': ''
   };
-  await commentInsatnce.set(commentData);
+  await userPreferenceInsatnce.set(userPreferenceData);
 }
 
 // used in comments page

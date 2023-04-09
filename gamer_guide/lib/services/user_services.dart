@@ -67,21 +67,6 @@ Future createUser({
 }
 //////////////////////////////////////////////////////////
 
-Future addUserPreference({
-  required game,
-  required gameRating,
-}) async {
-  String myuserid = await getUserId();
-  final userPreferenceInsatnce = FirebaseFirestore.instance
-      .collection('users')
-      .doc(myuserid)
-      .collection('userPreference')
-      .doc();
-
-  final userPreferenceData = {'gameId': game, 'rating': gameRating};
-  await userPreferenceInsatnce.set(userPreferenceData);
-}
-
 class GetUsersNames extends StatelessWidget {
   final String userId;
   const GetUsersNames({super.key, required this.userId});
