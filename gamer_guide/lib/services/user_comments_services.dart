@@ -8,19 +8,17 @@ Future createComment(
     required String comment,
     required double rating}) async {
   String myuserid = await getUserId();
-  final comment = await FirebaseFirestore.instance
+  final comment2 = await FirebaseFirestore.instance
       .collection('comments')
       .where('userId', isEqualTo: myuserid)
       .where('gameId', isEqualTo: int.parse(gameId))
       .get();
   // If a comment already exists -> update it
-  if (comment.docs.isNotEmpty) {
-    /* comment.docs.first.reference.update({
-      'rating': rating,
+  if (comment2.docs.isNotEmpty) {
+    await comment2.docs[0].reference.update({
+      'starsNumber': rating,
       'commentDescription': comment,
-    }); */
-    print('already exists');
-    //print(comment.docs.first.reference.id);
+    });
   }
   // If the comment doesn't exists -> create it
   else {
@@ -31,13 +29,34 @@ Future createComment(
     final commentData = {
       'userId': myuserid,
       'gameId': int.parse(gameId),
-      'rating': rating,
+      'starsNumber': rating,
       'commentDescription': comment,
     };
-    //await commentInsatnce.set(commentData);
+
+    await commentInsatnce.set(commentData);
   }
 }
+///////////////////////////////////////////////////
 
+Future updateComment({
+  required gameRating,
+  required gameComment,
+  required gameId,
+}) async {
+  String myuserid = await getUserId();
+  final comment2 = await FirebaseFirestore.instance
+      .collection('comments')
+      .where('userId', isEqualTo: myuserid)
+      .where('gameId', isEqualTo: int.parse(gameId))
+      .get();
+  await comment2.docs[0].reference.update({
+    'starsNumber': gameRating,
+    'commentDescription': gameComment,
+  });
+}
+///////////////////////////////////////////////////
+
+//used in user preference page
 Future addUserPreference({
   required game,
   required gameRating,
@@ -48,7 +67,7 @@ Future addUserPreference({
 
   final userPreferenceData = {
     'gameId': game,
-    'rating': gameRating,
+    'starsNumber': gameRating,
     'userId': myuserid,
     'commentDescription': ''
   };

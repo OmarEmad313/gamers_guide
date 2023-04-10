@@ -35,6 +35,7 @@ class _YourCommentsState extends State<YourComments> {
           stream: fetchUserComments(widget.userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
+              print('error');
               print(snapshot.error);
             }
             if (snapshot.hasData && snapshot.data!.isNotEmpty) {

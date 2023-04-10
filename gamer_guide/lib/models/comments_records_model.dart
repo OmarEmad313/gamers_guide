@@ -23,7 +23,7 @@ class CommentsRecordsModel {
   factory CommentsRecordsModel.fromJson(Map<String, dynamic> json) =>
       CommentsRecordsModel(
         commentDescription: json["commentDescription"],
-        starsNumber: json["starsNumber"].toDouble(),
+        starsNumber: json["starsNumber"],
         gameId: json["gameId"],
         userId: json["userId"],
       );

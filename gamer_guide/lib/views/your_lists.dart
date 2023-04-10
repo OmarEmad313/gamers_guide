@@ -35,6 +35,7 @@ class _YourListsState extends State<YourLists> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 print('error');
+                print(snapshot.error);
               }
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 final lists = snapshot.data;
