@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/edit_profile.dart';
 import 'package:flutter_application_2/views/favorite_games_page.dart';
-import 'package:flutter_application_2/views/game_details_temp.dart';
 import 'package:flutter_application_2/views/intro_screens/parent.dart';
 import 'package:flutter_application_2/views/listGames.dart';
 import 'package:flutter_application_2/views/profile_page.dart';

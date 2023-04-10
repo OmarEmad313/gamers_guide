@@ -47,7 +47,7 @@ Future updateComment({
   final comment2 = await FirebaseFirestore.instance
       .collection('comments')
       .where('userId', isEqualTo: myuserid)
-      .where('gameId', isEqualTo: int.parse(gameId))
+      .where('gameId', isEqualTo: gameId)
       .get();
   await comment2.docs[0].reference.update({
     'starsNumber': gameRating,

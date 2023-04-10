@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/edit_comment_dialog.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +42,6 @@ class _YourCommentsState extends State<YourComments> {
             if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               final comments = snapshot.data;
               //print(comments!.length);
-              // print(userId[0]);
               return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
@@ -51,6 +51,24 @@ class _YourCommentsState extends State<YourComments> {
                         startActionPane: ActionPane(
                           motion: const StretchMotion(),
                           children: [
+                            SlidableAction(
+                              spacing: 10,
+                              //padding: const EdgeInsets.all(),
+                              label: 'Edit',
+                              icon: (Icons.edit),
+                              backgroundColor: Colors.deepPurple,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                              onPressed: (context) => editCommentDialog(
+                                context,
+                                gameId: comments[index].gameId,
+                                rating: comments[index].starsNumber,
+                                oldComment:
+                                    comments[index].commentDescription == ''
+                                        ? 'comment'
+                                        : comments[index].commentDescription,
+                              ),
+                            ),
                             SlidableAction(
                               spacing: 10,
                               label: 'Delete',
@@ -106,7 +124,10 @@ class _YourCommentsState extends State<YourComments> {
                                     color: Colors.white.withOpacity(0.4),
                                   ),
                                   child: MyText(
-                                    text: comments[index].commentDescription,
+                                    text: comments[index].commentDescription ==
+                                            ''
+                                        ? 'No Comment'
+                                        : comments[index].commentDescription,
                                     color: Colors.black.withOpacity(0.7),
                                   ),
                                 )

@@ -75,7 +75,8 @@ class _CommentsState extends State<Comments> {
                                     const BorderRadius.all(Radius.circular(20)),
                                 color: Colors.grey.withOpacity(0.4),
                               ),
-                              height: 200,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.275,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -84,9 +85,7 @@ class _CommentsState extends State<Comments> {
                                           .userId), // comments[index].userId
                                   RatingBar.builder(
                                     initialRating: comments[index].starsNumber,
-                                    minRating: 0.5,
                                     ignoreGestures: true,
-                                    allowHalfRating: true,
                                     itemSize: 20,
                                     itemBuilder: (context, index) {
                                       return const Icon(Icons.star,
@@ -96,12 +95,13 @@ class _CommentsState extends State<Comments> {
                                   ),
                                   const MyText(
                                     text: 'Comment :',
-                                    size: 10,
+                                    size: 15,
                                     paddingSize: 8,
                                   ),
                                   Container(
                                     padding: const EdgeInsets.all(10),
-                                    height: 94,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.12,
                                     width: MediaQuery.of(context).size.width,
                                     decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.all(
@@ -109,7 +109,11 @@ class _CommentsState extends State<Comments> {
                                       color: Colors.white.withOpacity(0.4),
                                     ),
                                     child: MyText(
-                                      text: comments[index].commentDescription,
+                                      text: comments[index]
+                                                  .commentDescription ==
+                                              ''
+                                          ? 'No Comment'
+                                          : comments[index].commentDescription,
                                       color: Colors.black.withOpacity(0.7),
                                     ),
                                   )
