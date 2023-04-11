@@ -176,7 +176,8 @@ limit 8;''';
     return UserGamesModel.games(data);
   }
 
-  //-----------------------------------------------------------
+  //-------------------------------------------------------------------
+  //used in userpreference page
   static Future<List<GamesCoverModel>> userPreferenceGames() async {
     var client = http.Client();
     var url = Uri.parse('https://api.igdb.com/v4/games');
@@ -194,5 +195,24 @@ limit 8;''';
 
     var data = jsonDecode(response.body);
     return GamesCoverModel.games(data);
+  }
+
+  //-------------------------------------------------------------------
+  //used in userpreference page
+  static Future<List<UserGamesModel>> gamesSearched(String gameName) async {
+    var client = http.Client();
+    var url = Uri.parse('https://api.igdb.com/v4/games');
+    var headers = {
+      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'text/plain',
+    };
+    var body = '''fields name , cover.url ,rating;
+            search " $gameName" ;
+            limit 8;''';
+    var response = await client.post(url, headers: headers, body: body);
+
+    var data = jsonDecode(response.body);
+    return UserGamesModel.games(data);
   }
 }

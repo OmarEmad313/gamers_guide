@@ -30,13 +30,13 @@ class _MyStepState extends State<MyStep> {
     return Column(
       children: [
         Container(
-            height: 375,
+            height: MediaQuery.of(context).size.height * 0.47,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.4),
               borderRadius: const BorderRadius.all(Radius.circular(30)),
             ),
             child: ListWheelScrollView.useDelegate(
-              itemExtent: 250,
+              itemExtent: MediaQuery.of(context).size.height * 0.33,
               perspective: 0.005,
               diameterRatio: 2,
               /* useMagnifier: true,
@@ -80,7 +80,7 @@ class _MyStepState extends State<MyStep> {
           child: RatingBar.builder(
             glow: true,
             glowColor: Colors.deepPurple,
-            glowRadius: 2,
+            glowRadius: 10,
             initialRating: rating,
             minRating: rating,
             itemSize: 50,
