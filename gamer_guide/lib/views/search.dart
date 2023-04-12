@@ -7,6 +7,8 @@ import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../widgets/Circular_progress.dart';
+
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
   @override
@@ -155,24 +157,9 @@ class MySearchDelegate extends SearchDelegate {
                             text: searchedGames[index].name!,
                             paddingSize: 8,
                           )),
-                      CircularPercentIndicator(
-                          radius: 20,
-                          percent: searchedGames[index].rating != null
-                              ? double.parse(
-                                  '0.${searchedGames[index].rating!.floor()}')
-                              : 0,
-                          backgroundColor: Colors.black.withOpacity(0.4),
-                          animation: true,
-                          linearGradient: LinearGradient(colors: [
-                            Colors.purpleAccent.withOpacity(0.5),
-                            Colors.deepPurple,
-                          ]),
-                          animationDuration: 2000,
-                          center: MyText(
-                              size: 12,
-                              text: searchedGames[index].rating != null
-                                  ? '${searchedGames[index].rating!.floor()}%'
-                                  : '0'))
+                      CircularProgressBar(
+                        percent: searchedGames[index].rating ?? 0,
+                      )
                     ],
                   )
                 ],

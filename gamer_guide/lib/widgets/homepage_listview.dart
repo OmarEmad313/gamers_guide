@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePageListview extends StatelessWidget {
@@ -38,7 +39,10 @@ class HomePageListview extends StatelessWidget {
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    child: Text(genresNames[index]),
+                    child: MyText(
+                      text: genresNames[index],
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),

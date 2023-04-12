@@ -3,9 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/similar_games.dart';
 import 'package:flutter_application_2/services/api_services.dart';
+import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
-
-import '../models/game_cover_model.dart';
 import '../models/popular_games.dart';
 import '../widgets/sliver_app_bar.dart';
 
@@ -22,7 +21,7 @@ class _SimilarGamessState extends State<SimilarGamess> {
   List<GamesCoverModel> gamecovers = [];
   List tempList = [];
   var isLoaded = false;
-  var size = 0;
+  var similarGamesAvailable = true;
 
   @override
   void initState() {
@@ -30,37 +29,71 @@ class _SimilarGamessState extends State<SimilarGamess> {
     super.initState();
   }
 
-  //Future<void>
   Future<void> getGames() async {
     similarGames = await GameServices.getSimilarGames(int.parse(widget.gameId));
-    //gamecovers = await GameServices.getGameCovers();
-    for (var i = 0; i < similarGames[0].similarGames!.length; i++) {
-      gamecovers =
-          await GameServices.getGameCovers(similarGames[0].similarGames![i]);
-      // print("cover $i ${gamecovers[0].cover?.url}");
-      tempList.add(gamecovers[0].cover?.url);
+    if (similarGames.isNotEmpty) {
+      for (var i = 0; i < similarGames[0].similarGames!.length / 2; i++) {
+        gamecovers =
+            await GameServices.getGameCovers(similarGames[0].similarGames![i]);
+        // print("cover $i ${gamecovers[0].cover?.url}");
+        gamecovers[0].cover != null
+            ? tempList.add(gamecovers[0].cover?.url)
+            : null;
+      }
+    } else {
+      setState(() => similarGamesAvailable = false);
     }
     //print("templist $tempList");
-    if (similarGames.isNotEmpty && gamecovers.isNotEmpty) {
-      setState(() {
-        isLoaded = true;
-        //print('id is  ${widget.gameId}');
-      });
-
-      //print('similar games ${similarGames[0].similarGames![0]}');
-      size = similarGames[0].similarGames!.length;
-      //print("size ${size}");
-      //print("gameCover ${gamecovers[0].cover?.url}");
+    if (gamecovers.isNotEmpty) {
+      setState(() => isLoaded = true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: isLoaded,
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
+        visible: similarGamesAvailable & isLoaded ? true : false,
+        child: Scaffold(
+          body: CustomScrollView(
+            slivers: <Widget>[
+              MySliverAppbar(
+                text: 'Similar Games ',
+                ontap: () {
+                  context.go('/gamedetails/${widget.gameId}');
+                },
+                noBack: false,
+              ),
+              SliverGrid(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.5,
+                  //spaces between grids zy elpadding (horizantal)
+                  childAspectRatio: 0.8,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  'https:${tempList[index].replaceAll('thumb', 'cover_big')}'), //url[index]
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                    );
+                  },
+                  childCount: tempList.length,
+                ),
+              ),
+            ],
+          ),
+        ),
+        replacement: Scaffold(
+          body: CustomScrollView(slivers: <Widget>[
             MySliverAppbar(
               text: 'Similar Games ',
               ontap: () {
@@ -68,38 +101,21 @@ class _SimilarGamessState extends State<SimilarGamess> {
               },
               noBack: false,
             ),
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200.0,
-                //spaces between grids zy elpadding (horizantal)
-                childAspectRatio: 0.8,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      // ignore: prefer_const_constructors
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        // ignore: prefer_const_constructors
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https:${tempList[index]}'), //url[index]
-                            fit: BoxFit.fill),
-                      ),
+            SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.4,
                     ),
-                  );
-                },
-                childCount: tempList.length,
+                    child: similarGamesAvailable
+                        ? const CircularProgressIndicator()
+                        : const MyText(
+                            text: 'No Similar Games Available',
+                            size: 30,
+                          )),
               ),
-            ),
-          ],
-        ),
-      ),
-      replacement: const Center(child: CircularProgressIndicator()),
-    );
+            )
+          ]),
+        ));
   }
 }

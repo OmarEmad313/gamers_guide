@@ -7,6 +7,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/game_details_model.dart';
 import '../services/data_provider.dart';
 import '../services/date_functions.dart';
+import '../widgets/Circular_progress.dart';
 import '../widgets/gamedetails_listview.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_container.dart';
@@ -40,7 +41,6 @@ class GameDetails extends ConsumerWidget {
               video = true;
             }
 
-            // String myUserId = getUserId();
             return Scaffold(
               body: SafeArea(
                 child: Stack(
@@ -76,210 +76,200 @@ class GameDetails extends ConsumerWidget {
                     Container(
                       margin: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height * 0.475),
-                      child: ListView(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 48, 48, 48),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40),
+                          ),
+                        ),
+                        child: ListView(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: MyText(
+                                text: game[0].name ?? 'No Name',
+                                paddingSize: 20,
+                                size: 36,
+                                weight: FontWeight.bold,
                               ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: MyText(
-                                        text: game[0].name ?? 'No Name',
-                                        paddingSize: 20,
-                                        size: 36,
-                                        weight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
+                            const Divider(
+                                color: Colors.white,
+                                thickness: 3,
+                                indent: 20,
+                                endIndent: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(children: [
+                                    const MyText(
+                                      text: 'Release Date : ',
+                                      weight: FontWeight.bold,
+                                      size: 20,
                                     ),
-                                  ],
-                                ),
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                  indent: 20,
-                                  endIndent: 20,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    MyText(
+                                      paddingSize: 8,
+                                      text: game[0].firstReleaseDate != null
+                                          ? getTime(game[0].firstReleaseDate!)
+                                          : 'No Date',
+                                    )
+                                  ]),
+
+                                  //const SizedBox(height: 10),
+                                  Row(
                                     children: [
-                                      MyText(
-                                        text:
-                                            'Release Date : ${game[0].firstReleaseDate != null ? getTime(game[0].firstReleaseDate!) : 'No Date'}',
-                                        color: Colors.black,
-                                      ),
-                                      MyText(
-                                        text:
-                                            'Rating : ${game[0].rating != null ? game[0].rating!.floor() : 'No Rating'}',
-                                        color: Colors.black,
+                                      const MyText(
+                                        text: 'Rating :    ',
                                         weight: FontWeight.bold,
+                                        size: 20,
                                       ),
+                                      CircularProgressBar(
+                                        percent: game[0].rating ?? 0,
+                                        time: 3000,
+                                      )
                                     ],
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      MyButton(
-                                        text: 'Comments',
-                                        onPressed: (() => context.go(
-                                            '/comments/${int.parse(gameId)}/${game[0].name}')),
-                                        size: 30,
-                                      ),
-                                      MyButton(
-                                        text: 'Add',
-                                        onPressed: () async {
-                                          var user = await getUserId();
-                                          showButtons(
-                                              context: context,
-                                              gameId: game[0].id.toString(),
-                                              userId: user);
-                                        },
-                                        size: 30,
-                                      ),
-                                    ],
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  MyButton(
+                                    text: 'Comments',
+                                    onPressed: (() => context.go(
+                                        '/comments/${int.parse(gameId)}/${game[0].name}')),
+                                    size: 30,
                                   ),
-                                ),
-                                MyContainer(
-                                  text: game[0]
-                                          .involvedCompanies![0]
-                                          .company!
-                                          .name ??
-                                      'UnKnown',
-                                  hintText: 'Developer',
-                                  horizontalPadding: 25,
-                                  verticalPadding: 5,
-                                  leadingIcon:
-                                      const Icon(Icons.developer_board),
-                                  onTap: () {},
-                                ),
-                                MyContainer(
-                                  text: 'Similar Games',
-                                  horizontalPadding: 25,
-                                  verticalPadding: 5,
-                                  leadingIcon: const Icon(Icons.publish),
-                                  onTap: () {
-                                    context.go(
-                                        '/similarGames/${int.parse(gameId)}');
-                                  },
-                                )
-                              ], //children
-                            ),
-                          ),
-                          Container(
-                            color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const MyText(
-                                  text: 'Genres',
-                                  paddingSize: 20,
-                                  size: 20,
-                                  weight: FontWeight.bold,
-                                ),
-                                HorizantalListview(
-                                  game: game,
-                                  isTheme: false,
-                                ),
-                                const MyText(
-                                  text: 'Themes',
-                                  paddingSize: 20,
-                                  size: 20,
-                                  weight: FontWeight.bold,
-                                ),
-                                HorizantalListview(
-                                  game: game,
-                                  isTheme: true,
-                                ),
-                                Container(
-                                  child: video
-                                      ? Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const MyText(
-                                                text: 'Videos',
-                                                paddingSize: 20,
-                                                size: 20,
-                                                weight: FontWeight.bold),
-                                            YoutubePlayer(
-                                              controller: controller,
-                                              showVideoProgressIndicator: true,
-                                            ),
-                                          ],
-                                        )
-                                      : const SizedBox(height: 1),
-                                ),
-                                const MyText(
-                                    text: 'Screenshots',
-                                    paddingSize: 20,
-                                    size: 20,
-                                    weight: FontWeight.bold),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
-                                  child: ListView.builder(
-                                    itemCount: game[0].screenshots?.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20)),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      'https:${game[0].screenshots?[index].url!.replaceAll('thumb', 'screenshot_big')}'),
-                                                  fit: BoxFit.fill),
-                                            ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.35),
-                                      );
+                                  MyButton(
+                                    text: 'Add',
+                                    onPressed: () async {
+                                      var user = await getUserId();
+                                      showButtons(
+                                          context: context,
+                                          gameId: game[0].id.toString(),
+                                          userId: user);
                                     },
+                                    size: 30,
                                   ),
-                                ),
-                                const MyText(
-                                    text: 'Summary',
-                                    paddingSize: 20,
-                                    size: 20,
-                                    weight: FontWeight.bold),
-                                MyText(
-                                  text: game[0].summary ?? 'No Summary',
-                                  paddingSize: 20,
-                                  size: 15,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ], //children
+                            MyContainer(
+                              text:
+                                  game[0].involvedCompanies![0].company!.name ??
+                                      'UnKnown',
+                              hintText: 'Developer',
+                              horizontalPadding: 25,
+                              verticalPadding: 5,
+                              leadingIcon: const Icon(Icons.developer_board),
+                              onTap: () {},
+                            ),
+                            MyContainer(
+                              text: 'Similar Games',
+                              horizontalPadding: 25,
+                              verticalPadding: 5,
+                              leadingIcon: const Icon(Icons.publish),
+                              onTap: () {
+                                context
+                                    .go('/similarGames/${int.parse(gameId)}');
+                              },
+                            ),
+                            const MyText(
+                              text: 'Genres',
+                              paddingSize: 20,
+                              size: 20,
+                              weight: FontWeight.bold,
+                            ),
+                            HorizantalListview(
+                              game: game,
+                              isTheme: false,
+                            ),
+                            const MyText(
+                              text: 'Themes',
+                              paddingSize: 20,
+                              size: 20,
+                              weight: FontWeight.bold,
+                            ),
+                            HorizantalListview(
+                              game: game,
+                              isTheme: true,
+                            ),
+                            Divider(
+                                color: Colors.white,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                thickness: 3,
+                                indent: 20,
+                                endIndent: 20),
+                            Container(
+                              child: video
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const MyText(
+                                            text: 'Videos',
+                                            paddingSize: 20,
+                                            size: 20,
+                                            weight: FontWeight.bold),
+                                        YoutubePlayer(
+                                          controller: controller,
+                                          showVideoProgressIndicator: true,
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox(height: 1),
+                            ),
+                            const MyText(
+                                text: 'Screenshots',
+                                paddingSize: 20,
+                                size: 20,
+                                weight: FontWeight.bold),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              child: ListView.builder(
+                                itemCount: game[0].screenshots?.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(20)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  'https:${game[0].screenshots?[index].url!.replaceAll('thumb', 'screenshot_big')}'),
+                                              fit: BoxFit.fill),
+                                        ),
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.35),
+                                  );
+                                },
+                              ),
+                            ),
+                            const MyText(
+                                text: 'Summary',
+                                size: 20,
+                                paddingSize: 20,
+                                weight: FontWeight.bold),
+                            MyText(
+                              text: game[0].summary ?? 'No Summary',
+                              paddingSize: 20,
+                              size: 15,
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                          ], //children
+                        ),
                       ),
                     )
                   ],

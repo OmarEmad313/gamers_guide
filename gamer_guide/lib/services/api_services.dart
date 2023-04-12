@@ -96,18 +96,12 @@ class GameServices {
       'Content-Type': 'text/plain',
     };
     var body =
-        '''fields id,name,similar_games;\r\nwhere id=$id;\r\nlimit 5;\r\n''';
+        '''fields id,name,similar_games; where id=$id & similar_games.cover.url!=null ; ''';
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    // print("data ${data}"); // varaiable data contain multiple objects
-    List tempList = [];
-    for (var v in data) {
-      // print("v $v"); // varaiable v is one object
-      tempList.add(v);
-    }
     // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return SimilarGamesModel.games(tempList);
+    return SimilarGamesModel.games(data);
   }
 
   //--------------------------------

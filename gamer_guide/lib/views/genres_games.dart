@@ -25,8 +25,8 @@ class GenreGames extends ConsumerWidget {
                   noBack: false,
                 ),
                 SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200.0,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.5,
                     //spaces between grids zy elpadding (horizantal)
                     childAspectRatio: 0.8,
                   ),
@@ -41,7 +41,7 @@ class GenreGames extends ConsumerWidget {
                                 const BorderRadius.all(Radius.circular(20)),
                             image: DecorationImage(
                                 image: NetworkImage(
-                                    'https:${games[index].cover!.url}'), //url[index]
+                                    'https:${games[index].cover!.url!.replaceAll('thumb', 'cover_big')}'), //url[index]
                                 fit: BoxFit.fill),
                           ),
                         ),
