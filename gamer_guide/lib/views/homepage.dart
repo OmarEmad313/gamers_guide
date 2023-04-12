@@ -23,13 +23,20 @@ class HomePageWidget extends ConsumerWidget {
             List<GamesCoverModel> games = popularGames.map((e) => e).toList();
             return ListView(
               children: [
-                HomePageContainer(covers: games, name: 'Popular'),
+                HomePageContainer(
+                  covers: games,
+                  name: 'POPULAR ',
+                  name2: 'Games',
+                ),
                 Consumer(
                   builder: (context, Ref, _) {
                     return Ref.watch(newGamesProvider).when(
                         data: (List<GamesCoverModel> newGames) {
                           return HomePageContainer(
-                              covers: newGames, name: 'Latest Releases');
+                            covers: newGames,
+                            name: 'LATEST ',
+                            name2: 'Releases',
+                          );
                         },
                         error: (error, stackTrace) => Text(error.toString()),
                         loading: () {

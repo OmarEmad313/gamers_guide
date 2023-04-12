@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/user_games_model.dart';
 import 'package:flutter_application_2/services/api_services.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class Search extends StatefulWidget {
@@ -74,150 +75,108 @@ class MySearchDelegate extends SearchDelegate {
         matchQuery.add(game.name!);
       }
     }
-    //searchFunction();
-    //print('length is ' + searchedGames.length.toString());
-    return ListView.builder(
-      itemCount: searchedGames.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.175,
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: borderRad,
-              color: Colors.black.withOpacity(0.4),
-            ),
-            child: Row(
-              children: [
-                searchedGames[index].cover != null
-                    ? Container(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        decoration: BoxDecoration(
-                          borderRadius: borderRad,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https:${searchedGames[index].cover!.url!.replaceAll('thumb', 'cover_big')}'), /* fit: BoxFit.fill */
-                          ),
-                        ),
-                      )
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                      ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.475,
-                        child: MyText(
-                          text: searchedGames[index].name!,
-                          paddingSize: 8,
-                        )),
-                    CircularPercentIndicator(
-                        radius: 20,
-                        percent: searchedGames[index].rating != null
-                            ? double.parse(
-                                '0.${searchedGames[index].rating!.floor()}')
-                            : 0,
-                        backgroundColor: Colors.black.withOpacity(0.4),
-                        animation: true,
-                        linearGradient: LinearGradient(colors: [
-                          Colors.purpleAccent.withOpacity(0.5),
-                          Colors.deepPurple,
-                        ]),
-                        animationDuration: 2000,
-                        center: MyText(
-                            size: 12,
-                            text: searchedGames[index].rating != null
-                                ? '${searchedGames[index].rating!.floor()}%'
-                                : '0'))
-                  ],
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    try {
+      return FutureBuilder(
+        future: searchFunction(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return myListViewBuilder();
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     try {
-      //sleep(const Duration(seconds: 2));
-      searchFunction();
-
       return FutureBuilder(
-        builder: (context, snapshot) {},
+        future: searchFunction(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return myListViewBuilder();
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       );
     } catch (e) {
       print(e);
-
       rethrow;
     }
   }
 
-  Widget myw() {
+  Widget myListViewBuilder() {
     return ListView.builder(
-      itemCount: searchedGames.isNotEmpty ? searchedGames.length - 1 : 0,
+      /* searchedGames.isNotEmpty ? searchedGames.length - 1 : 0, */
+      itemCount: searchedGames.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.175,
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: borderRad,
-              color: Colors.black.withOpacity(0.4),
-            ),
-            child: Row(
-              children: [
-                searchedGames[index].cover != null
-                    ? Container(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        decoration: BoxDecoration(
-                          borderRadius: borderRad,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https:${searchedGames[index].cover!.url!.replaceAll('thumb', 'cover_big')}'), /* fit: BoxFit.fill */
+          child: InkWell(
+            onTap: () {
+              context.go('/gamedetails/${searchedGames[index].id}');
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.175,
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: borderRad,
+                color: Colors.black.withOpacity(0.4),
+              ),
+              child: Row(
+                children: [
+                  searchedGames[index].cover != null
+                      ? Container(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          decoration: BoxDecoration(
+                            borderRadius: borderRad,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https:${searchedGames[index].cover!.url!.replaceAll('thumb', 'cover_big')}'), /* fit: BoxFit.fill */
+                            ),
                           ),
+                        )
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.35,
                         ),
-                      )
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                      ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.475,
-                        child: MyText(
-                          text: searchedGames[index].name!,
-                          paddingSize: 8,
-                        )),
-                    CircularPercentIndicator(
-                        radius: 20,
-                        percent: searchedGames[index].rating != null
-                            ? double.parse(
-                                '0.${searchedGames[index].rating!.floor()}')
-                            : 0,
-                        backgroundColor: Colors.black.withOpacity(0.4),
-                        animation: true,
-                        linearGradient: LinearGradient(colors: [
-                          Colors.purpleAccent.withOpacity(0.5),
-                          Colors.deepPurple,
-                        ]),
-                        animationDuration: 2000,
-                        center: MyText(
-                            size: 12,
-                            text: searchedGames[index].rating != null
-                                ? '${searchedGames[index].rating!.floor()}%'
-                                : '0'))
-                  ],
-                )
-              ],
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.475,
+                          child: MyText(
+                            text: searchedGames[index].name!,
+                            paddingSize: 8,
+                          )),
+                      CircularPercentIndicator(
+                          radius: 20,
+                          percent: searchedGames[index].rating != null
+                              ? double.parse(
+                                  '0.${searchedGames[index].rating!.floor()}')
+                              : 0,
+                          backgroundColor: Colors.black.withOpacity(0.4),
+                          animation: true,
+                          linearGradient: LinearGradient(colors: [
+                            Colors.purpleAccent.withOpacity(0.5),
+                            Colors.deepPurple,
+                          ]),
+                          animationDuration: 2000,
+                          center: MyText(
+                              size: 12,
+                              text: searchedGames[index].rating != null
+                                  ? '${searchedGames[index].rating!.floor()}%'
+                                  : '0'))
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );

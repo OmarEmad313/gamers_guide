@@ -49,9 +49,11 @@ class GameDetails extends ConsumerWidget {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.6,
                       decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https:${game[0].cover?.url ?? ''}'),
+                                  'https:${game[0].cover?.url?.replaceAll('thumb', 'cover_big') ?? ''}'),
                               fit: BoxFit.fill)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -159,7 +161,7 @@ class GameDetails extends ConsumerWidget {
                                           .involvedCompanies![0]
                                           .company!
                                           .name ??
-                                      'null',
+                                      'UnKnown',
                                   hintText: 'Developer',
                                   horizontalPadding: 25,
                                   verticalPadding: 5,
@@ -252,13 +254,13 @@ class GameDetails extends ConsumerWidget {
                                                       Radius.circular(20)),
                                               image: DecorationImage(
                                                   image: NetworkImage(
-                                                      'https:${game[0].screenshots?[index].url}'),
+                                                      'https:${game[0].screenshots?[index].url!.replaceAll('thumb', 'screenshot_big')}'),
                                                   fit: BoxFit.fill),
                                             ),
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.25),
+                                                0.35),
                                       );
                                     },
                                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/views/profile_page.dart';
+import 'package:flutter_application_2/views/recommended_games.dart';
 
 import 'package:flutter_application_2/views/search.dart';
 
@@ -20,7 +21,6 @@ class _NavbarState extends State<Navbar> {
   int index() {
     int index = 0;
     widget.id == '0' ? index = 0 : index = 2;
-    //print('init index $index');
     return index;
   }
 
@@ -32,26 +32,27 @@ class _NavbarState extends State<Navbar> {
     pageIndex = index();
   }
 
-  final screens = [const HomePageWidget(), const Search(), const ProfilePage()];
+  final screens = [
+    const HomePageWidget(),
+    const RecommendedGames(),
+    const Search(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[pageIndex],
       bottomNavigationBar: GNav(
-          onTabChange: (index) {
-            setState(() {
-              pageIndex = index;
-              //print('selected index = $pageIndex');
-            });
-          },
+          onTabChange: (index) => setState(() => pageIndex = index),
           selectedIndex: pageIndex,
-          rippleColor:
-              Colors.grey.shade800, // tab button ripple color when pressed
-          tabBorderRadius: 10,
+          tabBorderRadius: 15,
           curve: Curves.easeInOut, //animation when an icon is clicked
           gap: 6, // the tab button gap between icon and text
-          color: Colors.deepPurple, // unselected icon color
+          rippleColor: Colors.grey
+              .withOpacity(0.6), // tab button ripple color when pressed
+          backgroundColor: Colors.black.withOpacity(0.5),
+          color: Colors.deepPurpleAccent, // unselected icon color
           activeColor: Colors.white, // selected icon and text color
           iconSize: 30,
           // tab button icon size
@@ -64,6 +65,10 @@ class _NavbarState extends State<Navbar> {
             GButton(
               icon: LineIcons.home,
               text: 'Home',
+            ),
+            GButton(
+              icon: LineIcons.gamepad,
+              text: 'Recommended',
             ),
             GButton(
               icon: LineIcons.search,

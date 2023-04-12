@@ -6,12 +6,14 @@ import 'my_text.dart';
 
 class HomePageContainer extends StatelessWidget {
   final String name;
+  final String name2;
   final List<GamesCoverModel> covers;
 
   const HomePageContainer({
     super.key,
     required this.covers,
     required this.name,
+    required this.name2,
   });
 
   @override
@@ -21,15 +23,28 @@ class HomePageContainer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: Colors.grey.withOpacity(0.4),
+          color: Colors.black.withOpacity(0.5),
         ),
         height: MediaQuery.of(context).size.height * 0.325,
         child: Column(
           children: [
-            MyText(
-              text: name,
-              size: 20,
-              weight: FontWeight.bold,
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyText(
+                  text: name,
+                  size: 20,
+                  weight: FontWeight.bold,
+                  underlined: true,
+                ),
+                MyText(
+                  text: name2,
+                  size: 17,
+                  weight: FontWeight.bold,
+                  color: Colors.deepPurpleAccent,
+                ),
+              ],
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.275,
@@ -51,7 +66,7 @@ class HomePageContainer extends StatelessWidget {
                               const BorderRadius.all(Radius.circular(20)),
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https:${covers[index].cover?.url}'), //${covers[index].cover?.url}
+                                  'https:${covers[index].cover?.url!.replaceAll('thumb', 'cover_big')}'), //${covers[index].cover?.url}
                               fit: BoxFit.fill),
                         ),
                       ),

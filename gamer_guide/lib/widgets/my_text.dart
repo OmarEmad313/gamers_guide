@@ -7,6 +7,7 @@ class MyText extends StatelessWidget {
   final FontStyle? style;
   final Color? color;
   final double? paddingSize;
+  final bool? underlined;
 
   const MyText(
       {super.key,
@@ -15,7 +16,8 @@ class MyText extends StatelessWidget {
       this.weight,
       this.color,
       this.paddingSize,
-      this.style});
+      this.style,
+      this.underlined});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,9 @@ class MyText extends StatelessWidget {
             color: color,
             fontSize: size,
             fontWeight: weight,
-            fontStyle: style ?? FontStyle.italic),
+            fontStyle: style ?? FontStyle.italic,
+            decoration: underlined == true ? TextDecoration.underline : null,
+            decorationThickness: 3),
       ),
     );
   }
