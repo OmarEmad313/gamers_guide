@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/show_buttons_dialog.dart';
 import '../models/list_records_model.dart';
 import '../services/user_games_services.dart';
 import '../services/user_lists_services.dart';
@@ -33,11 +34,17 @@ class HorizontalUserLists extends StatelessWidget {
                     onTap: () async {
                       await addGameToUserList(
                           listName: lists[index].listName!, gameId: gamId);
-                      /* NotificationApi.showNotification(
-                          title: 'hello', body: 'game is added', payload: ''); */
+                      showToastMessage(
+                          text:
+                              'Game Added to (${lists[index].listName!}) Successfully');
                     },
-                    onLongPress: () async => await removeGameToUserList(
-                        listName: lists[index].listName!, gameId: gamId),
+                    onLongPress: () async {
+                      await removeGameToUserList(
+                          listName: lists[index].listName!, gameId: gamId);
+                      showToastMessage(
+                          text:
+                              'Game Removed from (${lists[index].listName!}) Successfully');
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius:
