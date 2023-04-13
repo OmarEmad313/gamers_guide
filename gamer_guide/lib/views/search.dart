@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/user_games_model.dart';
 import 'package:flutter_application_2/services/api_services.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../widgets/Circular_progress.dart';
 

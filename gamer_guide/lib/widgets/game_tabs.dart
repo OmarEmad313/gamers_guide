@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/my_image_container.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:go_router/go_router.dart';
@@ -62,22 +63,22 @@ class GameTabs extends StatelessWidget {
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         borderRadius: borderRad,
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Colors.black.withOpacity(0.4),
                       ),
                       height: MediaQuery.of(context).size.height * 0.3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.35,
-                            decoration: BoxDecoration(
-                              borderRadius: borderRad,
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      'https:${tempList[index].cover!.url}'),
-                                  fit: BoxFit.fill),
-                            ),
-                          ),
+                          tempList[index].cover != null
+                              ? MyImageContainer(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                  url: tempList[index].cover!.url!,
+                                  isFill: true)
+                              : SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
