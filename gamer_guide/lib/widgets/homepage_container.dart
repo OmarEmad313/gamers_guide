@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/views/game_details.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/popular_games.dart';
@@ -57,7 +58,14 @@ class HomePageContainer extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
                     child: InkWell(
                       onTap: () {
-                        context.go('/gamedetails/${covers[index].id}');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GameDetails(
+                              gameId: covers[index].id.toString(),
+                            ),
+                          ),
+                        );
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.3,

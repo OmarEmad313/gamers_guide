@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/services/user_services.dart';
+import 'package:flutter_application_2/views/comments.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -62,7 +63,7 @@ class GameDetails extends ConsumerWidget {
                           IconButton(
                             color: Colors.white,
                             onPressed: () {
-                              context.go('/home/0');
+                              Navigator.pop(context);
                             },
                             icon: const Icon(
                               Icons.arrow_circle_left,
@@ -144,8 +145,14 @@ class GameDetails extends ConsumerWidget {
                                 children: [
                                   MyButton(
                                     text: 'Comments',
-                                    onPressed: (() => context.go(
-                                        '/comments/${int.parse(gameId)}/${game[0].name}')),
+                                    onPressed: (() => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Comments(
+                                                gameId: gameId,
+                                                gameName: game[0].name!),
+                                          ),
+                                        )),
                                     size: 30,
                                   ),
                                   MyButton(

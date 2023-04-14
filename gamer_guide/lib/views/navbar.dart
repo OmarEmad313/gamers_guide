@@ -20,7 +20,7 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   int index() {
     int index = 0;
-    widget.id == '0' ? index = 0 : index = 2;
+    widget.id == '0' ? index = 0 : index = 3;
     return index;
   }
 

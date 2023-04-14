@@ -49,7 +49,10 @@ class _CommentsState extends State<Comments> {
         slivers: <Widget>[
           MySliverAppbar(
             text: 'Comments on \n${widget.gameName}',
-            ontap: () => context.go('/gamedetails/${int.parse(widget.gameId)}'),
+            ontap: () {
+              //context.go('/gamedetails/${int.parse(widget.gameId)}');
+              Navigator.pop(context);
+            },
             noBack: false,
           ),
           SliverToBoxAdapter(

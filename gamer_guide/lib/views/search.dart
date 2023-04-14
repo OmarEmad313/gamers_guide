@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/user_games_model.dart';
 import 'package:flutter_application_2/services/api_services.dart';
+import 'package:flutter_application_2/views/game_details.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
-import 'package:go_router/go_router.dart';
 
 import '../widgets/Circular_progress.dart';
 
@@ -118,9 +118,14 @@ class MySearchDelegate extends SearchDelegate {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
-            onTap: () {
-              context.go('/gamedetails/${searchedGames[index].id}');
-            },
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GameDetails(
+                  gameId: searchedGames[index].id.toString(),
+                ),
+              ),
+            ),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.175,
               padding: const EdgeInsets.all(8.0),
