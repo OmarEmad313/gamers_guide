@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/widgets/my_button.dart';
+import 'package:flutter_application_2/views/signup.dart';
+import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:flutter_application_2/widgets/text_form_field.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,10 +22,15 @@ class _LogInState extends State<LogIn> {
   final formKey = GlobalKey<FormState>();
 
   Future logIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
-    );
+    )
+        .onError((error, stackTrace) {
+      showToastMessage(text: error.toString());
+      throw e;
+    });
   }
 
   @override
@@ -52,12 +60,12 @@ class _LogInState extends State<LogIn> {
                   borderRadius: BorderRadius.circular(25),
                   child: Image.asset(
                     'assets/logo.jpeg',
-                    width: 164,
-                    height: 234,
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    height: MediaQuery.of(context).size.height * 0.32,
                     fit: BoxFit.fitHeight,
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: MediaQuery.of(context).size.width * 0.15),
                 Form(
                   key: formKey,
                   child: Column(
@@ -95,16 +103,18 @@ class _LogInState extends State<LogIn> {
                     ],
                   ),
                 ),
-                const Text(
-                  'OR',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                const MyText(
+                  text: 'or',
+                  size: 15,
+                  weight: FontWeight.bold,
+                  color: Colors.black,
                 ),
                 LoginButton(
                     text: 'Register', onTap: () => context.go('/signup')),
-                const Text(
-                  'if you dant have one already',
-                  style: TextStyle(fontSize: 12),
-                ),
+                const MyText(
+                    text: 'if you dant have one already',
+                    size: 12,
+                    color: Colors.black),
               ],
             ),
           ]),

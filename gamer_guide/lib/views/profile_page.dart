@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   label: 'Tutorial',
                   onTap: () {
-                    context.go('/userPreference'); /* parentIntro */
+                    context.go('/parentIntro'); /* parentIntro */
                   }),
             ],
           )),

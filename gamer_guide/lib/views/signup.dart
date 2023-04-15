@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/text_form_field.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,6 +24,28 @@ class _SignupState extends State<Signup> {
   final TextEditingController nameController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  Future signup() async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      )
+          .then((value) {
+        createUser(
+          name: nameController.text,
+          email: emailController.text,
+        );
+        context.go('/userPreference');
+      }).onError((error, stackTrace) {
+        showToastMessage(text: error.toString());
+      });
+    } on FirebaseAuthException catch (e) {
+      print("Error ${e.toString()}");
+      showToastMessage(text: e);
+    }
+  }
 
   @override
   void dispose() {
@@ -52,8 +75,8 @@ class _SignupState extends State<Signup> {
                 borderRadius: BorderRadius.circular(25),
                 child: Image.asset(
                   'assets/logo.jpeg',
-                  width: 165,
-                  height: 233,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.32,
                   fit: BoxFit.fitHeight,
                 ),
               ),
@@ -69,8 +92,7 @@ class _SignupState extends State<Signup> {
                             Text(
                               'Enter your name',
                               style: GoogleFonts.acme(
-                                fontSize: 20,
-                              ),
+                                  fontSize: 20, color: Colors.black),
                             ),
                             MyTextFormField(
                               text: 'Name',
@@ -79,13 +101,13 @@ class _SignupState extends State<Signup> {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter an Name';
                                 }
+                                return null;
                               },
                             ),
                             Text(
                               'Enter your email',
                               style: GoogleFonts.acme(
-                                fontSize: 20,
-                              ),
+                                  fontSize: 20, color: Colors.black),
                             ),
                             MyTextFormField(
                               text: 'Email',
@@ -98,8 +120,7 @@ class _SignupState extends State<Signup> {
                             Text(
                               'Enter your Password',
                               style: GoogleFonts.acme(
-                                fontSize: 20,
-                              ),
+                                  fontSize: 20, color: Colors.black),
                             ),
                             MyTextFormField(
                               secure: true,
@@ -123,19 +144,23 @@ class _SignupState extends State<Signup> {
                                     final isValid =
                                         formKey.currentState!.validate();
                                     if (!isValid) return;
-                                    FirebaseAuth.instance
-                                        .createUserWithEmailAndPassword(
-                                            email: emailController.text,
-                                            password: passwordController.text)
-                                        .then((value) {
-                                      createUser(
-                                        name: nameController.text,
-                                        email: emailController.text,
-                                      );
-                                      context.go('/userPreference');
-                                    }).onError((error, stackTrace) {
-                                      print("Error ${error.toString()}");
-                                    });
+                                    /* try {
+                                      FirebaseAuth.instance
+                                          .createUserWithEmailAndPassword(
+                                              email: emailController.text,
+                                              password: passwordController.text)
+                                          .then((value) {
+                                        createUser(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                        );
+                                        context.go('/userPreference');
+                                      });
+                                    } on FirebaseAuthException catch (e) {
+                                      print("Error ${e.toString()}");
+                                      showToastMessage(text: e);
+                                    } */
+                                    signup();
                                   },
                                 ),
                               ],
@@ -154,3 +179,9 @@ class _SignupState extends State<Signup> {
     );
   }
 }
+
+void showToastMessage({required text}) => Fluttertoast.showToast(
+    backgroundColor: Colors.black,
+    msg: text,
+    fontSize: 18,
+    gravity: ToastGravity.TOP);

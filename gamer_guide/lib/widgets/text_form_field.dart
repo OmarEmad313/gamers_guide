@@ -27,6 +27,7 @@ class MyTextFormField extends StatelessWidget {
         controller: controller,
         obscureText: secure ?? false,
         validator: validator,
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0XFFD3D3D3),
