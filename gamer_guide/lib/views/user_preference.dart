@@ -86,13 +86,6 @@ class _UserPreferenceState extends State<UserPreference> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            iconSize: 20.0,
-            onPressed: () {
-              context.go('/home/1');
-            },
-          ),
           title: const Text('Choose your Favorite Games'),
           centerTitle: true,
         ),
@@ -131,6 +124,7 @@ class _UserPreferenceState extends State<UserPreference> {
                           for (var i = 0; i < gameIds.length; i++) {
                             addUserPreference(
                                 game: gameIds[i], gameRating: gameRatings[i]);
+                            context.go('/home/0');
                           }
                         } else {
                           //print(gameIds[0]);

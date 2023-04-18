@@ -3,6 +3,7 @@ import 'package:flutter_application_2/models/user_games_model.dart';
 import 'package:flutter_application_2/services/api_services.dart';
 import 'package:flutter_application_2/views/game_details.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
+import 'package:lottie/lottie.dart';
 
 import '../widgets/Circular_progress.dart';
 
@@ -27,6 +28,10 @@ class _SearchState extends State<Search> {
                   showSearch(context: context, delegate: MySearchDelegate()),
             )
           ]),
+      body: Center(
+        child: Lottie.network(
+            'https://assets2.lottiefiles.com/packages/lf20_l5qvxwtf.json'),
+      ),
     );
   }
 }

@@ -54,7 +54,7 @@ class _ParentsIntroScreenState extends State<ParentsIntroScreen> {
                       ? MyButton(
                           text: 'Done',
                           onPressed: () {
-                            context.go('/home/1');
+                            context.go('/home/3');
                           },
                         )
                       : MyButton(

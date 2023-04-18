@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/widgets/circular_progress.dart';
 import 'package:flutter_application_2/widgets/my_image_container.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -94,11 +95,17 @@ class GameTabs extends StatelessWidget {
                                   size: 20,
                                 ),
                               ),
-                              MyText(
-                                text:
-                                    'Game Rating : ${tempList[index].rating!.floor()}',
-                                paddingSize: 8,
-                                style: FontStyle.italic,
+                              Row(
+                                children: [
+                                  const MyText(
+                                    text: 'Game Rating  :',
+                                    paddingSize: 8,
+                                    style: FontStyle.italic,
+                                  ),
+                                  CircularProgressBar(
+                                    percent: tempList[index].rating ?? 0,
+                                  )
+                                ],
                               ),
                             ],
                           ),

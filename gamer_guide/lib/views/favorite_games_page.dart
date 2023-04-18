@@ -36,7 +36,8 @@ class _FavoriteGamesState extends State<FavoriteGames> {
                 children: [
                   TabBar(
                       splashBorderRadius: borderRad,
-                      labelColor: Colors.black,
+                      labelColor: Colors.white,
+                      indicatorColor: Colors.white,
                       tabs: const [
                         Tab(
                           text: 'Fav',

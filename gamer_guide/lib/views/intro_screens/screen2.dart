@@ -20,7 +20,7 @@ class Screen2 extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(60))),
           child: Container(
             decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 48, 48, 48),
                 borderRadius: BorderRadius.all(Radius.circular(30))),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
