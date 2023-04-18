@@ -58,9 +58,7 @@ class _SimilarGamessState extends State<SimilarGamess> {
             slivers: <Widget>[
               MySliverAppbar(
                 text: 'Similar Games ',
-                ontap: () {
-                  context.go('/gamedetails/${widget.gameId}');
-                },
+                ontap: () => Navigator.pop(context),
                 noBack: false,
               ),
               SliverGrid(
@@ -96,9 +94,7 @@ class _SimilarGamessState extends State<SimilarGamess> {
           body: CustomScrollView(slivers: <Widget>[
             MySliverAppbar(
               text: 'Similar Games ',
-              ontap: () {
-                context.go('/gamedetails/${widget.gameId}');
-              },
+              ontap: () => Navigator.pop(context),
               noBack: false,
             ),
             SliverToBoxAdapter(

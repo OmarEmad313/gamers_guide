@@ -68,6 +68,8 @@ dependencies:
   firebase_core: ^2.4.1
   percent_indicator: ^4.2.3
   fluttertoast: ^8.2.1
+  file_picker: ^5.2.9
+  firebase_storage: ^11.1.1
 
 flutter_icons:
   android: true

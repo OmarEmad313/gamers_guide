@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/widgets/my_button.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
@@ -13,8 +15,6 @@ import 'package:path_provider/path_provider.dart';
 import '../services/date_functions.dart';
 import '../services/user_services.dart';
 import '../widgets/sliver_app_bar.dart';
-import '../widgets/theme_switch.dart';
-import 'package:path/path.dart';
 
 class EditProfile extends StatefulWidget {
   final String userName;
@@ -26,7 +26,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  File? image;
+  PlatformFile? pickedImage;
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
@@ -34,19 +34,19 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController nameController = TextEditingController();
 
   Future pickImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    print('in here');
+    final image = await FilePicker.platform.pickFiles();
     if (image == null) return;
-    final imageperm = await saveImagePermanantly(image.path);
     setState(() {
-      this.image = imageperm;
+      pickedImage = image.files.first;
     });
   }
 
-  Future<File> saveImagePermanantly(String path) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(path);
-    final image = File('${directory.path}/$name');
-    return File(path).copy(image.path);
+  Future uploadImage() async {
+    final path = 'files/${pickedImage!.name}';
+    final file = File(pickedImage!.path!);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    ref.putFile(file);
   }
 
   @override
@@ -58,7 +58,7 @@ class _EditProfileState extends State<EditProfile> {
           MySliverAppbar(
             text: 'Edit Profile',
             ontap: () {
-              context.go('/home/2');
+              context.go('/home/3');
             },
             noBack: false,
           ),
@@ -68,46 +68,21 @@ class _EditProfileState extends State<EditProfile> {
           child: ListView(
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              /* Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Container(
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20)),
-                      color: Colors.grey.withOpacity(0.4),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: const [
-                        MyText(
-                          text: 'Dark Theme',
-                          paddingSize: 0,
-                          size: 30,
-                          weight: FontWeight.bold,
-                        ),
-                        ThemeSwitch(),
-                      ],
-                    ),
-                  ),
-                ), */
-              image != null
+              pickedImage != null
                   ? InkWell(
                       onTap: () {
                         pickImage();
                       },
                       child: ClipOval(
                         child: Image.file(
-                          image!,
+                          File(pickedImage!.path!),
                           width: MediaQuery.of(context).size.width * 0.2,
                           height: MediaQuery.of(context).size.height * 0.15,
                         ),
                       ),
                     )
                   : InkWell(
-                      onTap: () {
-                        pickImage();
-                      },
+                      onTap: pickImage,
                       child: CircleAvatar(
                         radius: MediaQuery.of(context).size.width * 0.25,
                         backgroundImage: const AssetImage('assets/logo.jpeg'),
@@ -190,12 +165,13 @@ class _EditProfileState extends State<EditProfile> {
                       verticalPadding: 10,
                       horizontalPadding: 30,
                       onPressed: () {
+                        uploadImage();
                         if (formKey.currentState!.validate()) {
                           update(
                               newName: nameController.text.trim(),
                               newEmail: emailController.text.trim(),
                               newPass: passwordController.text.trim());
-                          context.go('/home/2');
+                          context.go('/home/3');
                         }
                       },
                     ),

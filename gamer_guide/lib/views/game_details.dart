@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_application_2/views/comments.dart';
+import 'package:flutter_application_2/views/similarr_games.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -62,9 +63,7 @@ class GameDetails extends ConsumerWidget {
                         children: [
                           IconButton(
                             color: Colors.white,
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => Navigator.pop(context),
                             icon: const Icon(
                               Icons.arrow_circle_left,
                               size: 60,
@@ -184,10 +183,14 @@ class GameDetails extends ConsumerWidget {
                               horizontalPadding: 25,
                               verticalPadding: 5,
                               leadingIcon: const Icon(Icons.publish),
-                              onTap: () {
-                                context
-                                    .go('/similarGames/${int.parse(gameId)}');
-                              },
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SimilarGamess(
+                                    gameId: gameId,
+                                  ),
+                                ),
+                              ),
                             ),
                             const MyText(
                               text: 'Genres',

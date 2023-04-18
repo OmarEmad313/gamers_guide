@@ -21,7 +21,7 @@ class _ListGamesReplacmentState extends State<ListGamesReplacment> {
         MySliverAppbar(
           text: 'Loading',
           //Navigator.pop(context);
-          ontap: () => context.go('/home/1'),
+          ontap: () => context.go('/home/3'),
           noBack: false,
         ),
         const SliverToBoxAdapter(
