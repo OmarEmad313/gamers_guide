@@ -37,18 +37,7 @@ class _SearchState extends State<Search> {
 }
 
 ////////////////////////////
-class MySearchDelegate extends SearchDelegate {
-  BorderRadius borderRad = const BorderRadius.all(Radius.circular(20));
 
-  List<UserGamesModel> searchedGames = [];
-  Future searchFunction() async {
-    print('in search function  ->' + '$query');
-    searchedGames = await GameServices.gamesSearched(query);
-    print('length is ' + searchedGames.length.toString());
-    for (var element in searchedGames) {
-      print(element.name);
-    }
-  }
 
   @override
   List<Widget>? buildActions(BuildContext context) {
