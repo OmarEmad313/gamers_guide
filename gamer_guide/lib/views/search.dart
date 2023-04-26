@@ -131,7 +131,47 @@ class MySearchDelegate extends SearchDelegate {
                 ),
               ),
             ),
-           
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.175,
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: borderRad,
+                color: Colors.black.withOpacity(0.4),
+              ),
+              child: Row(
+                children: [
+                  searchedGames[index].cover != null
+                      ? Container(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          decoration: BoxDecoration(
+                            borderRadius: borderRad,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https:${searchedGames[index].cover!.url!.replaceAll('thumb', 'cover_big')}'), /* fit: BoxFit.fill */
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                        ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.475,
+                          child: MyText(
+                            text: searchedGames[index].name!,
+                            paddingSize: 8,
+                          )),
+                      CircularProgressBar(
+                        percent: searchedGames[index].rating ?? 0,
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
           ),
         );
       },
