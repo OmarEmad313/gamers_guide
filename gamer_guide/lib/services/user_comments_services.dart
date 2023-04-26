@@ -76,7 +76,7 @@ Future addUserPreference({
 
 // used in comments page
 Stream<List<CommentsRecordsModel>> fetchGameComments(String gameId) {
-  return FirebaseFirestore.instance
+  final temp = FirebaseFirestore.instance
       .collection('comments')
       .where('gameId', isEqualTo: int.parse(gameId))
       .snapshots()
@@ -87,6 +87,8 @@ Stream<List<CommentsRecordsModel>> fetchGameComments(String gameId) {
               gameId: doc['gameId'],
               userId: doc['userId']))
           .toList());
+  //print(temp.first);
+  return temp;
 }
 
 // used in your_comments page

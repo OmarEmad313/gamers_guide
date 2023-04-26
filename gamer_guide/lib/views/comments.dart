@@ -32,16 +32,6 @@ class _CommentsState extends State<Comments> {
     super.initState();
   }
 
-  /*  void initComments() async {
-    comments = await fetchGameComments(widget.gameId);
-    if (comments.isNotEmpty) {
-      setState(() {
-        isloaded = true;
-        //print('Users id are ${comments[1].userId}');
-      });
-    }
-  } */
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +54,7 @@ class _CommentsState extends State<Comments> {
                 }
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   final comments = snapshot.data;
+                  print(comments![0]);
                   return SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
