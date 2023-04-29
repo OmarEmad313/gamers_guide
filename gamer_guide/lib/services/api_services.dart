@@ -2,8 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
+import 'package:flutter_application_2/models/recommended_games_model.dart';
+import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
@@ -56,14 +59,6 @@ class GameServices {
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    /*  print("data ${data}"); // varaiable data contain multiple objects
-    List tempList = [];
-    for (var v in data) {
-      //print("v $v"); // varaiable v is one object
-      tempList.add(v);
-    }
-    print(tempList); */
-    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
     return GamesCoverModel.games(data);
   }
 
@@ -209,4 +204,47 @@ limit 8;''';
     var data = jsonDecode(response.body);
     return UserGamesModel.games(data);
   }
+
+  //-------------------------------------------------
+  Future<List<RecommendedGamesModel>> getRecommendedGames() async {
+    //var idsArray = [6036, 75235, 7331];
+    var tempList = [];
+    String myuserid = await getUserId();
+    List<String> userGamesIds = [];
+    List<double> userMatching = [];
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(myuserid)
+        .collection('recommendedGames')
+        .get()
+        .then((value) {
+      //print(value.docs.first.data()['gameId']);
+      for (var doc in value.docs) {
+        //print(doc.data()['gameId']);
+        userGamesIds.add(doc.data()['gameId']);
+        userMatching.add(doc.data()['matching'] + .0);
+      }
+    });
+    //print(userGamesIds.length);
+
+    var client = http.Client();
+    for (var i = 0; i < userGamesIds.length; i++) {
+      var body =
+          '''fields name,cover.url,rating, first_release_date ; where id=${userGamesIds[i]};''';
+      var response = await client.post(url, headers: headers, body: body);
+
+      var data = jsonDecode(response.body);
+      tempList.add(data[0]);
+    }
+
+    return RecommendedGamesModel.games(tempList, userMatching);
+  }
+
+  var url = Uri.parse('https://api.igdb.com/v4/games');
+
+  var headers = {
+    'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
+    'Authorization': 'Bearer $accessToken',
+    'Content-Type': 'text/plain',
+  };
 }
