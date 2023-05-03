@@ -159,9 +159,9 @@ class GameServices {
         await testEndpoint(endpoint: '/recommendMobile', userId: myuserid); */
 
     int num = await getNumber();
-
-    if (num <= 10 || num % 5 == 0) {
-      flaskEndpoint(endpoint: '/retrainMobile');
+    num = 10;
+    if (num >= 10 || num % 5 == 0) {
+      //flaskEndpoint(endpoint: '/retrainMobile');
       flaskEndpoint(endpoint: '/recommendMobile', userId: myuserid);
     }
 
@@ -204,7 +204,7 @@ class GameServices {
 
 Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
   http.Response response;
-  if (endpoint == '/recommendMobile') {
+  /* if (endpoint == '/recommendMobile') {
     response = await http.get(
       Uri.parse('http://10.0.2.2:5000$endpoint?user_id=$userId'),
     );
@@ -212,13 +212,19 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
     response = await http.post(
       Uri.parse('http://10.0.2.2:5000$endpoint'),
     );
-  }
+  } */
 
-  if (response.statusCode == 200) {
-    var data = response.body;
-    print(data);
-
-    Map<String, dynamic> gameData = jsonDecode(data);
+  if (true) {
+    /* response.statusCode == 200 */
+    //var data = response.body;
+    // print(data);
+    String message = '''
+    {
+      "6036": 85,
+      "7334": 0
+    }
+    ''';
+    Map<String, dynamic> gameData = jsonDecode(message);
     for (String gameId in gameData.keys) {
       int matching = gameData[gameId];
 
@@ -231,12 +237,14 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
 
       if (querySnapshot.docs.isNotEmpty) {
         await querySnapshot.docs.first.reference.update({'matching': matching});
+        print('in if');
       } else {
+        print('in else');
         final recommendedGamesData = {
           'gameId': gameId,
           'matching': matching,
         };
-        await collectionRef.doc().set(recommendedGamesData);
+        await collectionRef.doc('tsting2').set(recommendedGamesData);
       }
     }
   } else {
