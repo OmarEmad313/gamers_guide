@@ -159,6 +159,7 @@ class GameServices {
         await testEndpoint(endpoint: '/recommendMobile', userId: myuserid); */
 
     int num = await getNumber();
+    num = 10;
 
     if (num <= 10 || num % 5 == 0) {
       flaskEndpoint(endpoint: '/retrainMobile');
@@ -214,12 +215,13 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
     );
   }
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 200 && endpoint == '/recommendMobile') {
     var data = response.body;
     print(data);
 
     Map<String, dynamic> gameData = jsonDecode(data);
     for (String gameId in gameData.keys) {
+      print(gameId);
       int matching = gameData[gameId];
 
       final collectionRef = FirebaseFirestore.instance
@@ -239,7 +241,5 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
         await collectionRef.doc().set(recommendedGamesData);
       }
     }
-  } else {
-    throw Exception('Failed to load data from the endpoint');
-  }
+  } 
 }
