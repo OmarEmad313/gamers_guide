@@ -26,3 +26,7 @@ final genreGamesProvider = FutureProvider.family<List<GamesCoverModel>, String>(
     (ref, genreName) async {
   return ref.watch(gameProvider).getGenreGameCovers(genreName);
 });
+
+final ratedGamesNum = FutureProvider<int>((ref) async {
+  return ref.watch(gameProvider).getNumber();
+});

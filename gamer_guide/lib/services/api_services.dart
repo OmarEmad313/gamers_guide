@@ -1,15 +1,12 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:flutter_application_2/models/recommended_games_model.dart';
 import 'package:flutter_application_2/services/user_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/popular_games.dart';
 import '../models/similar_games.dart';
 import '../models/user_games_model.dart';
@@ -17,15 +14,19 @@ import '../models/user_games_model.dart';
 final gameProvider = Provider<GameServices>((ref) => GameServices());
 
 class GameServices {
-  static const accessToken = 'e258bfbhtkcrtwed6zi00ghv9nghlp';
+  static const accessToken = 't5xiuzx1agiscerqcfxtxzjsp6gof1';
+
+  static var client = http.Client();
+
+  static var url = Uri.parse('https://api.igdb.com/v4/games');
+
+  static var headers = {
+    'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
+    'Authorization': 'Bearer $accessToken',
+    'Content-Type': 'text/plain',
+  };
+
   Future<List<GameDetailsModel>> getGameDetails(int id) async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body =
         '''fields name,genres.name,themes.name,rating,summary,first_release_date,
     \r\ninvolved_companies.company.name,involved_companies.developer,platforms.name,
@@ -46,14 +47,6 @@ class GameServices {
   //------------------------
 
   Future<List<GamesCoverModel>> populargames() async {
-    // the ? mark + PopularGames is the class name from (popular_games.dart)
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body =
         '''fields cover.url;\r\nwhere category = (0,9) & platforms = 48 & aggregated_rating>90;\r\nlimit 6;''';
     var response = await client.post(url, headers: headers, body: body);
@@ -64,13 +57,6 @@ class GameServices {
 
   //------------------------
   Future<List<GamesCoverModel>> newgames() async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body =
         '''fields cover.url;\r\nwhere platforms = 48 & first_release_date < 1609689433 & cover.url!=null; \r\nsort first_release_date desc;\r\nlimit 6;''';
     var response = await client.post(url, headers: headers, body: body);
@@ -101,13 +87,6 @@ class GameServices {
 
   //--------------------------------
   static Future<List<GamesCoverModel>> getGameCovers(int id) async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body = '''fields id,name,cover.url;\r\nwhere id=$id;\r\n''';
     var response = await client.post(url, headers: headers, body: body);
 
@@ -125,39 +104,18 @@ class GameServices {
   //--------------------------------
   // used in genre_games page
   Future<List<GamesCoverModel>> getGenreGameCovers(String genreName) async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body = '''fields cover.url,genres.name,name;
-where genres.name ="$genreName" & cover.url!=null & aggregated_rating>90; 
-limit 8;''';
+    where genres.name ="$genreName" & cover.url!=null & aggregated_rating>90; 
+    limit 8;''';
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    //print("data ${data}"); // varaiable data contain multiple objects
-    List tempList = [];
-    for (var v in data) {
-      //print("v $v"); // varaiable v is one object
-      tempList.add(v);
-    }
-    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return GamesCoverModel.games(tempList);
+    return GamesCoverModel.games(data);
   }
 
   //--------------------------------
   // used in fav_games_page
   static Future<List<UserGamesModel>> getUserGames(String id) async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body = '''fields name,cover.url,rating;\r\nwhere id=$id;''';
     var response = await client.post(url, headers: headers, body: body);
 
@@ -168,13 +126,6 @@ limit 8;''';
   //-------------------------------------------------------------------
   //used in userpreference page
   static Future<List<GamesCoverModel>> userPreferenceGames() async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body =
         '''fields name , cover.url , first_release_date , platforms.abbreviation , rating , aggregated_rating,slug;
                 where category = (0,9) & platforms = (48)  & rating>95;
@@ -187,15 +138,8 @@ limit 8;''';
   }
 
   //-------------------------------------------------------------------
-  //used in userpreference page
+  //used in search page
   static Future<List<UserGamesModel>> gamesSearched(String gameName) async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body = '''fields name , cover.url ,rating;
             search " $gameName" ;
             limit 8;''';
@@ -207,46 +151,20 @@ limit 8;''';
 
   //-------------------------------------------------
   Future<List<RecommendedGamesModel>> getRecommendedGames() async {
-    //var idsArray = [6036, 75235, 7331];
     String myuserid = await getUserId();
-    /* var test =
-        await testEndpoint(endpoint: '/recommendMobile', userId: myuserid); */
     var tempList = [];
-
-    /* int number = await FirebaseFirestore.instance
-        .collection('comments')
-        .where('userId', isEqualTo: myuserid)
-        .snapshots()
-        .length;
-    print(number); */
-    //---------------------------------------
-    String message = '''
-{
-  "6036": 85,
-  "7334": 0,
-  "76244": 100,
-  "119133": 81
-}
-''';
-    Map<String, dynamic> gameData = jsonDecode(message);
-    for (String gameId in gameData.keys) {
-      int matching = gameData[gameId];
-
-      final recommendedGamesInsatnce = FirebaseFirestore.instance
-          .collection('users')
-          .doc(myuserid)
-          .collection('recommendedGames')
-          .doc();
-      final recommendedGamesData = {
-        'gameId': gameId,
-        'matching': matching,
-      };
-      await recommendedGamesInsatnce.set(recommendedGamesData);
-    }
-    //---------------------------------------
-
     List<String> userGamesIds = [];
     List<double> userMatching = [];
+    /* var test =
+        await testEndpoint(endpoint: '/recommendMobile', userId: myuserid); */
+
+    int num = await getNumber();
+
+    if (num <= 10 || num % 5 == 0) {
+      flaskEndpoint(endpoint: '/retrainMobile');
+      flaskEndpoint(endpoint: '/recommendMobile', userId: myuserid);
+    }
+
     await FirebaseFirestore.instance
         .collection('users')
         .doc(myuserid)
@@ -261,8 +179,6 @@ limit 8;''';
       }
     });
     //print(userGamesIds.length);
-
-    var client = http.Client();
     for (var i = 0; i < userGamesIds.length; i++) {
       var body =
           '''fields name,cover.url,rating, first_release_date ; where id=${userGamesIds[i]};''';
@@ -271,20 +187,22 @@ limit 8;''';
       var data = jsonDecode(response.body);
       tempList.add(data[0]);
     }
-
     return RecommendedGamesModel.games(tempList, userMatching);
   }
 
-  var url = Uri.parse('https://api.igdb.com/v4/games');
+  Future<int> getNumber() async {
+    String myuserid = await getUserId();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('comments')
+        .where('userId', isEqualTo: myuserid)
+        .get();
 
-  var headers = {
-    'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-    'Authorization': 'Bearer $accessToken',
-    'Content-Type': 'text/plain',
-  };
+    int num = snapshot.size;
+    return num;
+  }
 }
 
-Future<void> testEndpoint({required String endpoint, String? userId}) async {
+Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
   http.Response response;
   if (endpoint == '/recommendMobile') {
     response = await http.get(
@@ -297,22 +215,30 @@ Future<void> testEndpoint({required String endpoint, String? userId}) async {
   }
 
   if (response.statusCode == 200) {
-    var data =
-        jsonDecode(response.body)['message'] ?? jsonEncode(response.body);
+    var data = response.body;
     print(data);
 
-    final recommendedGamesInsatnce = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('recommendedGames')
-        .doc();
-    final recommendedGamesData = {
-      'gameId': 'listName',
-      'matching': '',
-    };
-    await recommendedGamesInsatnce.set(recommendedGamesData);
+    Map<String, dynamic> gameData = jsonDecode(data);
+    for (String gameId in gameData.keys) {
+      int matching = gameData[gameId];
 
-    return data;
+      final collectionRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('recommendedGames');
+      QuerySnapshot querySnapshot =
+          await collectionRef.where('gameId', isEqualTo: gameId).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await querySnapshot.docs.first.reference.update({'matching': matching});
+      } else {
+        final recommendedGamesData = {
+          'gameId': gameId,
+          'matching': matching,
+        };
+        await collectionRef.doc().set(recommendedGamesData);
+      }
+    }
   } else {
     throw Exception('Failed to load data from the endpoint');
   }
