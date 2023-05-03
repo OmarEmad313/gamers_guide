@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/about.dart';
 
 class Privacy extends StatefulWidget {
   const Privacy({super.key});

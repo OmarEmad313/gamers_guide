@@ -208,8 +208,43 @@ limit 8;''';
   //-------------------------------------------------
   Future<List<RecommendedGamesModel>> getRecommendedGames() async {
     //var idsArray = [6036, 75235, 7331];
-    var tempList = [];
     String myuserid = await getUserId();
+    /* var test =
+        await testEndpoint(endpoint: '/recommendMobile', userId: myuserid); */
+    var tempList = [];
+
+    /* int number = await FirebaseFirestore.instance
+        .collection('comments')
+        .where('userId', isEqualTo: myuserid)
+        .snapshots()
+        .length;
+    print(number); */
+    //---------------------------------------
+    String message = '''
+{
+  "6036": 85,
+  "7334": 0,
+  "76244": 100,
+  "119133": 81
+}
+''';
+    Map<String, dynamic> gameData = jsonDecode(message);
+    for (String gameId in gameData.keys) {
+      int matching = gameData[gameId];
+
+      final recommendedGamesInsatnce = FirebaseFirestore.instance
+          .collection('users')
+          .doc(myuserid)
+          .collection('recommendedGames')
+          .doc();
+      final recommendedGamesData = {
+        'gameId': gameId,
+        'matching': matching,
+      };
+      await recommendedGamesInsatnce.set(recommendedGamesData);
+    }
+    //---------------------------------------
+
     List<String> userGamesIds = [];
     List<double> userMatching = [];
     await FirebaseFirestore.instance
@@ -247,4 +282,38 @@ limit 8;''';
     'Authorization': 'Bearer $accessToken',
     'Content-Type': 'text/plain',
   };
+}
+
+Future<void> testEndpoint({required String endpoint, String? userId}) async {
+  http.Response response;
+  if (endpoint == '/recommendMobile') {
+    response = await http.get(
+      Uri.parse('http://10.0.2.2:5000$endpoint?user_id=$userId'),
+    );
+  } else {
+    response = await http.post(
+      Uri.parse('http://10.0.2.2:5000$endpoint'),
+    );
+  }
+
+  if (response.statusCode == 200) {
+    var data =
+        jsonDecode(response.body)['message'] ?? jsonEncode(response.body);
+    print(data);
+
+    final recommendedGamesInsatnce = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('recommendedGames')
+        .doc();
+    final recommendedGamesData = {
+      'gameId': 'listName',
+      'matching': '',
+    };
+    await recommendedGamesInsatnce.set(recommendedGamesData);
+
+    return data;
+  } else {
+    throw Exception('Failed to load data from the endpoint');
+  }
 }

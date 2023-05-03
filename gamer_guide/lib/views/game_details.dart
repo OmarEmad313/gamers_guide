@@ -4,7 +4,6 @@ import 'package:flutter_application_2/views/comments.dart';
 import 'package:flutter_application_2/views/similarr_games.dart';
 import 'package:flutter_application_2/widgets/my_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/game_details_model.dart';
 import '../services/data_provider.dart';
