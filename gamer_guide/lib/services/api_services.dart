@@ -217,7 +217,7 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
 
   if (response.statusCode == 200 && endpoint == '/recommendMobile') {
     var data = response.body;
-    print(data);
+    //print(data);
 
     Map<String, dynamic> gameData = jsonDecode(data);
     for (String gameId in gameData.keys) {
