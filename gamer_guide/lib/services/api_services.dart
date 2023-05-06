@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_2/models/game_details_model.dart';
 import 'package:flutter_application_2/models/recommended_games_model.dart';
 import 'package:flutter_application_2/services/user_services.dart';
@@ -47,8 +48,17 @@ class GameServices {
   //------------------------
 
   Future<List<GamesCoverModel>> populargames() async {
-    var body =
-        '''fields cover.url;\r\nwhere category = (0,9) & platforms = 48 & aggregated_rating>90;\r\nlimit 6;''';
+    String myuserid = await getUserId();
+    int num = await getNumber();
+
+    if (num >= 5) {
+      flaskEndpoint(endpoint: '/retrainMobile');
+      flaskEndpoint(endpoint: '/recommendMobile', userId: myuserid);
+    }
+    var body = '''fields cover.url;
+        where category = (0,9) & platforms =( 48,167) & total_rating>90 & total_rating_count>100 &  cover.url!=null;
+        sort total_rating desc;
+        limit 10;''';
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
@@ -57,8 +67,10 @@ class GameServices {
 
   //------------------------
   Future<List<GamesCoverModel>> newgames() async {
-    var body =
-        '''fields cover.url;\r\nwhere platforms = 48 & first_release_date < 1609689433 & cover.url!=null; \r\nsort first_release_date desc;\r\nlimit 6;''';
+    var body = '''fields cover.url;
+        where platforms =(6,48,167,169) &first_release_date >1651735982 &hypes>20 &  total_rating_count>30 & cover.url!=null;
+        sort total_rating desc;
+        limit 8;''';
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
@@ -69,13 +81,6 @@ class GameServices {
   //------------------------
 
   static Future<List<SimilarGamesModel>> getSimilarGames(int id) async {
-    var client = http.Client();
-    var url = Uri.parse('https://api.igdb.com/v4/games');
-    var headers = {
-      'Client-ID': '7usxlk55pco8z3adgw7lho72zyf43p',
-      'Authorization': 'Bearer $accessToken',
-      'Content-Type': 'text/plain',
-    };
     var body =
         '''fields id,name,similar_games; where id=$id & similar_games.cover.url!=null ; ''';
     var response = await client.post(url, headers: headers, body: body);
@@ -91,14 +96,7 @@ class GameServices {
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
-    // print("data ${data}"); // varaiable data contain multiple objects
-    List tempList = [];
-    for (var v in data) {
-      //print("v $v"); // varaiable v is one object
-      tempList.add(v);
-    }
-    // print("List ${tempList}"); // varaiable tempList contain multiple objects same as data variable
-    return GamesCoverModel.games(tempList);
+    return GamesCoverModel.games(data);
   }
 
   //--------------------------------
@@ -126,11 +124,10 @@ class GameServices {
   //-------------------------------------------------------------------
   //used in userpreference page
   static Future<List<GamesCoverModel>> userPreferenceGames() async {
-    var body =
-        '''fields name , cover.url , first_release_date , platforms.abbreviation , rating , aggregated_rating,slug;
-                where category = (0,9) & platforms = (48)  & rating>95;
-                sort rating desc;
-                limit 10;''';
+    var body = '''fields cover.url;
+        where category = (0,9) & platforms =( 48,167) & total_rating>90 & total_rating_count>100 &  cover.url!=null;
+        sort total_rating desc;
+        limit 10;''';
     var response = await client.post(url, headers: headers, body: body);
 
     var data = jsonDecode(response.body);
@@ -155,26 +152,16 @@ class GameServices {
     var tempList = [];
     List<String> userGamesIds = [];
     List<double> userMatching = [];
-    /* var test =
-        await testEndpoint(endpoint: '/recommendMobile', userId: myuserid); */
-
-    int num = await getNumber();
-    num = 10;
-
-    if (num <= 10 || num % 5 == 0) {
-      flaskEndpoint(endpoint: '/retrainMobile');
-      flaskEndpoint(endpoint: '/recommendMobile', userId: myuserid);
-    }
 
     await FirebaseFirestore.instance
         .collection('users')
         .doc(myuserid)
         .collection('recommendedGames')
+        .orderBy('matching', descending: true)
+        .limit(10)
         .get()
         .then((value) {
-      //print(value.docs.first.data()['gameId']);
       for (var doc in value.docs) {
-        //print(doc.data()['gameId']);
         userGamesIds.add(doc.data()['gameId']);
         userMatching.add(doc.data()['matching'] + .0);
       }
@@ -221,7 +208,7 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
 
     Map<String, dynamic> gameData = jsonDecode(data);
     for (String gameId in gameData.keys) {
-      print(gameId);
+      //print(gameId);
       int matching = gameData[gameId];
 
       final collectionRef = FirebaseFirestore.instance
@@ -241,5 +228,5 @@ Future<void> flaskEndpoint({required String endpoint, String? userId}) async {
         await collectionRef.doc().set(recommendedGamesData);
       }
     }
-  } 
+  }
 }

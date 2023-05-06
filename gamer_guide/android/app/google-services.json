@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:118568774784:android:e018323be69449c3a8ca65",
         "android_client_info": {
-          "package_name": "com.example.mobile_app_final.GamersGuide"
+          "package_name": "com.boudy1qgmail.gamersGuide"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "118568774784-n01jppvij7j7q8n7jncd1su9bp92hebo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.mobileApp"
+                "bundle_id": "com.boudy1qgmail.gamersGuide"
               }
             }
           ]

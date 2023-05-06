@@ -122,12 +122,13 @@ class _YourListsState extends State<YourLists> {
                       }),
                 );
               } else {
-                return const Center(
-                    child: MyText(
-                  text: 'No Comments',
-                  size: 30,
-                  weight: FontWeight.bold,
-                ));
+                return Center(
+                    heightFactor: MediaQuery.of(context).size.height * 0.02,
+                    child: const MyText(
+                      text: 'No Lists',
+                      size: 30,
+                      weight: FontWeight.bold,
+                    ));
               }
             },
           )
