@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/views/game_details.dart';
-import 'package:flutter_application_2/widgets/my_image_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../models/popular_games.dart';
@@ -34,32 +32,18 @@ class GenreGames extends ConsumerWidget {
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GameDetails(
-                              gameId: games[index].id.toString(),
-                            ),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    'https:${games[index].cover!.url!.replaceAll('thumb', 'cover_big')}'), //url[index]
+                                fit: BoxFit.fill),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: games[index].cover != null
-                              ? MyImageContainer(
-                                  url: games[index].cover!.url!,
-                                  isFill: true,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.35,
-                                )
-                              : SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.35,
-                                ),
                         ),
                       );
                     },
