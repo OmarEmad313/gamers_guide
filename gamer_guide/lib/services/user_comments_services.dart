@@ -78,6 +78,7 @@ Future addUserPreference({
 Stream<List<CommentsRecordsModel>> fetchGameComments(String gameId) {
   final temp = FirebaseFirestore.instance
       .collection('comments')
+      .where('commentDescription', isNotEqualTo: "")
       .where('gameId', isEqualTo: int.parse(gameId))
       .snapshots()
       .map((snapshot) => snapshot.docs
@@ -95,6 +96,7 @@ Stream<List<CommentsRecordsModel>> fetchGameComments(String gameId) {
 Stream<List<CommentsRecordsModel>> fetchUserComments(String userid) {
   return FirebaseFirestore.instance
       .collection('comments')
+      .where('commentDescription', isNotEqualTo: "")
       .where('userId', isEqualTo: userid)
       .snapshots()
       .map((snapshot) => snapshot.docs
