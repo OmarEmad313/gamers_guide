@@ -226,7 +226,7 @@ class RecommendedGames extends ConsumerWidget {
   }
 }
 
-Future<int> getNumber() async {
+/* Future<int> getNumber() async {
   String myuserid = await getUserId();
   int number = await FirebaseFirestore.instance
       .collection('comments')
@@ -237,4 +237,4 @@ Future<int> getNumber() async {
   print(number);
 
   return number;
-}
+} */

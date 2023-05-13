@@ -72,13 +72,6 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // 8alebn htb2a list of model
-    List<String> matchQuery = [];
-    for (var game in searchedGames) {
-      if (game.name!.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(game.name!);
-      }
-    }
     try {
       return FutureBuilder(
         future: searchFunction(),
